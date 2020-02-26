@@ -29,7 +29,11 @@ class _OnBoardingWidgetState extends State<OnBoardingWidget> {
             Padding(
               padding: const EdgeInsets.only(right: 20, top: 50),
               child: FlatButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      "/Tabs", (Route<dynamic> route) => false,
+                      arguments: 2);
+                },
                 child: Text(
                   'Skip',
                   style: Theme.of(context).textTheme.button,
@@ -103,8 +107,9 @@ class _OnBoardingWidgetState extends State<OnBoardingWidget> {
                 padding: EdgeInsets.symmetric(horizontal: 35, vertical: 12),
                 onPressed: () {
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                      "/SignUp", (Route<dynamic> route) => false,
-                     );
+                    "/SignUp",
+                    (Route<dynamic> route) => false,
+                  );
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
