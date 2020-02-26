@@ -5,7 +5,7 @@ import 'package:country_pickers/country_pickers.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/Helper/error_helper.dart';
 import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
-import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
+import 'package:ecommerce_app_ui_kit/helper/screen_size_config.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -138,6 +138,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
 
 // /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
   Widget build(BuildContext context) {
+    ScreenSizeConfig().init(context);
     return Scaffold(
       backgroundColor: Theme.of(context).accentColor,
       body: SingleChildScrollView(
@@ -309,23 +310,25 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                           } else {
                             showDialog(
                               context: context,
-                              child: AlertDialog(
-                                title: Text('Alert !!!'),
-                                content: Text(
-                                    'Please check the terms and conditions'),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text('Ok'),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('Alert !!!'),
+                                  content: Text(
+                                      'Please check the terms and conditions'),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text('Ok'),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                );
+                              },
                             );
                           }
                         },
@@ -352,7 +355,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               ],
             ),
             Container(
-              margin: EdgeInsets.only(left: ScreenSizeConfig.safeBlockHorizontal*8),
+              margin: EdgeInsets.only(
+                  left: ScreenSizeConfig.safeBlockHorizontal * 8),
               child: Row(
                 children: <Widget>[
                   Checkbox(
@@ -364,7 +368,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                         });
                       }),
                   Container(
-                       width: ScreenSizeConfig.safeBlockHorizontal * 72,
+                      width: ScreenSizeConfig.safeBlockHorizontal * 72,
                       child: RichText(
                           maxLines: 5,
                           overflow: TextOverflow.ellipsis,
