@@ -82,14 +82,16 @@ class _OnBoardingWidgetState extends State<OnBoardingWidget> {
                   return Container(
                     width: 25.0,
                     height: 3.0,
-                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    margin:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(
                           Radius.circular(8),
                         ),
-                        color: _current == _onBoardingList.list.indexOf(boarding)
-                            ? Theme.of(context).hintColor.withOpacity(0.8)
-                            : Theme.of(context).hintColor.withOpacity(0.2)),
+                        color:
+                            _current == _onBoardingList.list.indexOf(boarding)
+                                ? Theme.of(context).hintColor.withOpacity(0.8)
+                                : Theme.of(context).hintColor.withOpacity(0.2)),
                   );
                 }).toList(),
               ),
@@ -100,7 +102,7 @@ class _OnBoardingWidgetState extends State<OnBoardingWidget> {
               child: FlatButton(
                 padding: EdgeInsets.symmetric(horizontal: 35, vertical: 12),
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/SignUp');
+                  Navigator.of(context).pushNamed('/Tabs', arguments: 2);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
