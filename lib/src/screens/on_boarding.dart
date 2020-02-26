@@ -102,7 +102,9 @@ class _OnBoardingWidgetState extends State<OnBoardingWidget> {
               child: FlatButton(
                 padding: EdgeInsets.symmetric(horizontal: 35, vertical: 12),
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/Tabs', arguments: 2);
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      "/SignUp", (Route<dynamic> route) => false,
+                     );
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
