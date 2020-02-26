@@ -103,7 +103,9 @@ class _OnBoardingWidgetState extends State<OnBoardingWidget> {
                 padding: EdgeInsets.symmetric(horizontal: 35, vertical: 12),
                 onPressed: () {
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                      "/SignUp", (Route<dynamic> route) => false,
+
+                      "/Tabs", (Route<dynamic> route) => false,arguments: 2
+
                      );
                 },
                 child: Row(
