@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenSizeConfig().init(context);
+    print("pratik");
     return MaterialApp(
       title: 'Pahuna',
       initialRoute: '/',
