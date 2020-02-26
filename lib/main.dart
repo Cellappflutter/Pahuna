@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
 
     print("ds");
 
+    print("object");
     return MaterialApp(
       title: 'Pahuna',
       initialRoute: '/',
