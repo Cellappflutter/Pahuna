@@ -1,3 +1,4 @@
+import 'package:ecommerce_app_ui_kit/config/app_config.dart' as appColors;
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/src/models/brand.dart';
 import 'package:ecommerce_app_ui_kit/src/models/category.dart';
@@ -18,7 +19,8 @@ class HomeWidget extends StatefulWidget {
   _HomeWidgetState createState() => _HomeWidgetState();
 }
 
-class _HomeWidgetState extends State<HomeWidget> with SingleTickerProviderStateMixin {
+class _HomeWidgetState extends State<HomeWidget>
+    with SingleTickerProviderStateMixin {
   List<Product> _productsOfCategoryList;
   List<Product> _productsOfBrandList;
   CategoriesList _categoriesList = new CategoriesList();
@@ -30,15 +32,16 @@ class _HomeWidgetState extends State<HomeWidget> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    animationController = AnimationController(duration: Duration(milliseconds: 200), vsync: this);
-    CurvedAnimation curve = CurvedAnimation(parent: animationController, curve: Curves.easeIn);
+    animationController =
+        AnimationController(duration: Duration(milliseconds: 200), vsync: this);
+    CurvedAnimation curve =
+        CurvedAnimation(parent: animationController, curve: Curves.easeIn);
     animationOpacity = Tween(begin: 0.0, end: 1.0).animate(curve)
       ..addListener(() {
         setState(() {});
       });
 
     animationController.forward();
-
     _productsOfCategoryList = _categoriesList.list.firstWhere((category) {
       return category.selected;
     }).products;
@@ -51,16 +54,30 @@ class _HomeWidgetState extends State<HomeWidget> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    appColors.App(context);
+
     return ListView(
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SearchBarWidget(),
         ),
-        //HomeSliderWidget(),
         Hometop(),
-        FlashSalesHeaderWidget(),
-        FlashSalesCarouselWidget(heroTag: 'home_flash_sales', productsList: _productsList.flashSalesList),
+        Center(
+          child: Wrap(
+            children: <Widget>[
+              featuresChip("Features1", () {}),
+              featuresChip("Features2", () {}),
+              featuresChip("Features3", () {}),
+              featuresChip("Features4", () {}),
+              featuresChip("Features5", () {}),
+              featuresChip("Features6", () {}),
+                featuresChip("Features6", () {}),
+            ],
+          ),
+        ),
+        //  FlashSalesHeaderWidget(),
+        //   FlashSalesCarouselWidget(heroTag: 'home_flash_sales', productsList: _productsList.flashSalesList),
         // Heading (Recommended for you)
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -77,57 +94,76 @@ class _HomeWidgetState extends State<HomeWidget> with SingleTickerProviderStateM
             ),
           ),
         ),
-        StickyHeader(
-          header: CategoriesIconsCarouselWidget(
-              heroTag: 'home_categories_1',
-              categoriesList: _categoriesList,
-              onChanged: (id) {
-                setState(() {
-                  animationController.reverse().then((f) {
-                    _productsOfCategoryList = _categoriesList.list.firstWhere((category) {
-                      return category.id == id;
-                    }).products;
-                    animationController.forward();
-                  });
-                });
-              }),
-          content: CategorizedProductsWidget(animationOpacity: animationOpacity, productsList: _productsOfCategoryList),
-        ),
+        // StickyHeader(
+        //   header: CategoriesIconsCarouselWidget(
+        //       heroTag: 'home_categories_1',
+        //       categoriesList: _categoriesList,
+        //       onChanged: (id) {
+        //         setState(() {
+        //           animationController.reverse().then((f) {
+        //             _productsOfCategoryList = _categoriesList.list.firstWhere((category) {
+        //               return category.id == id;
+        //             }).products;
+        //             animationController.forward();
+        //           });
+        //         });
+        //       }),
+        //   content: CategorizedProductsWidget(animationOpacity: animationOpacity, productsList: _productsOfCategoryList),
+        // ),
         // Heading (Brands)
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          child: ListTile(
-            dense: true,
-            contentPadding: EdgeInsets.symmetric(vertical: 0),
-            leading: Icon(
-              UiIcons.flag,
-              color: Theme.of(context).hintColor,
-            ),
-            title: Text(
-              'Brands',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ),
-        ),
-        StickyHeader(
-          header: BrandsIconsCarouselWidget(
-              heroTag: 'home_brand_1',
-              brandsList: _brandsList,
-              onChanged: (id) {
-                setState(() {
-                  animationController.reverse().then((f) {
-                    _productsOfBrandList = _brandsList.list.firstWhere((brand) {
-                      return brand.id == id;
-                    }).products;
-                    animationController.forward();
-                  });
-                });
-              }),
-          content: CategorizedProductsWidget(animationOpacity: animationOpacity, productsList: _productsOfBrandList),
-        ),
+
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        //   child: ListTile(
+        //     dense: true,
+        //     contentPadding: EdgeInsets.symmetric(vertical: 0),
+        //     leading: Icon(
+        //       UiIcons.flag,
+        //       color: Theme.of(context).hintColor,
+        //     ),
+        //     title: Text(
+        //       'Brands',
+        //       style: Theme.of(context).textTheme.display1,
+        //     ),
+        //   ),
+        // ),
+        // StickyHeader(
+        //   header: BrandsIconsCarouselWidget(
+        //       heroTag: 'home_brand_1',
+        //       brandsList: _brandsList,
+        //       onChanged: (id) {
+        //         setState(() {
+        //           animationController.reverse().then((f) {
+        //             _productsOfBrandList = _brandsList.list.firstWhere((brand) {
+        //               return brand.id == id;
+        //             }).products;
+        //             animationController.forward();
+        //           });
+        //         });
+        //       }),
+        //   content: CategorizedProductsWidget(animationOpacity: animationOpacity, productsList: _productsOfBrandList),
+        // ),
       ],
     );
 //      ],
 //    );
+  }
+
+  featuresChip(String title, void onTap()) {
+    return Container(
+      margin: EdgeInsets.only(left: appColors.App(context).appHeight(3)),
+      child: RaisedButton(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: Text(
+            title,
+            style: TextStyle(color: Colors.white),
+          ),
+          color: appColors.Colors().mainColor(1),
+         // splashColor: appColors.Colors().mainColor(1),
+          onPressed: () {
+            onTap();
+          }),
+    );
   }
 }
