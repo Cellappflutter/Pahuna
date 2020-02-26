@@ -1,11 +1,11 @@
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/country_pickers.dart';
-//import 'package:ecommerce_app_ui_kit/Helper/error_helper.dart';
+
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/Helper/error_helper.dart';
 import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
-import 'package:ecommerce_app_ui_kit/helper/screen_size_config.dart';
+import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
