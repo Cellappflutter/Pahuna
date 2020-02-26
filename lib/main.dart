@@ -13,6 +13,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     ScreenSizeConfig().init(context);
     print("he");
+
+    print("ds");
+
+    print("object");
     return MaterialApp(
       title: 'Pahuna',
       initialRoute: '/',
