@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     print("he");
 
     print("ds");
-
+    print('wat');
     print("object");
     return MaterialApp(
       title: 'Pahuna',
