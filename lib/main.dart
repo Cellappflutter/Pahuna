@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:connectivity/connectivity.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
@@ -11,8 +14,6 @@ import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-
-
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,13 +47,13 @@ class _AuthPageState extends State<AuthPage> {
     _auth.currentUser().then((firebaseUser) async {
       print(firebaseUser);
       await Future.delayed(Duration(seconds: 2));
-        DatabaseService.uid = "hello";
+      DatabaseService.uid = "hello";
       if (firebaseUser != null) {
         print(firebaseUser.uid);
         print("=============================================");
 
         // DatabaseService.uid = firebaseUser.uid;
-      
+
         // DatabaseService().checkPrevUser().then((onValue) {
         setState(() {
           gotoLogin = false;
@@ -101,7 +102,6 @@ class MainPageWrapper extends StatefulWidget {
 
 class _MainPageWrapperState extends State<MainPageWrapper> {
   bool isConnected;
-  // ProgressDialog pr;
   @override
   void initState() {
     super.initState();
@@ -127,6 +127,7 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
       providers: [
         StreamProvider<CurrentUserInfo>.value(
             value: DatabaseService().getUserData()),
+        FutureProvider<String>.value(value: StorageService().getUserAvatar()),
         StreamProvider<Position>.value(value: locationStream()),
         StreamProvider<ConnectivityResult>.value(
             value: Connectivity().onConnectivityChanged),
@@ -143,7 +144,6 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
     return geolocator.getPositionStream(locationOptions);
   }
 }
-
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
