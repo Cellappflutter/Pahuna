@@ -21,15 +21,12 @@ class _AccountWidgetState extends State<AccountWidget> {
     print("-------------");
     print(widget.userInfo.name);
     return MaterialApp(
-      home:  Scaffold(
-          body: SingleChildScrollView(
+      home: Scaffold(
+        body: SafeArea(
+                  child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(vertical: 7),
             child: Column(
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: SearchBarWidget(),
-                ),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -38,6 +35,13 @@ class _AccountWidgetState extends State<AccountWidget> {
                       Expanded(
                         child: Column(
                           children: <Widget>[
+                            Text(
+                              _user.name,
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.display2,
+                            ),
+                            Text(
+                              _user.email,
                             Text(
                               widget.userInfo.name,
                               textAlign: TextAlign.left,
@@ -50,6 +54,38 @@ class _AccountWidgetState extends State<AccountWidget> {
                             )
                           ],
                           crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                      ),
+                      SizedBox(
+                          width: 55,
+                          height: 55,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(300),
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed('/Tabs', arguments: 1);
+                            },
+                            child: CircleAvatar(
+                              backgroundImage: AssetImage(_user.avatar),
+                            ),
+                          )),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(6),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Theme.of(context).hintColor.withOpacity(0.15),
+                          offset: Offset(0, 3),
+                          blurRadius: 10)
+                    ],
+                  ),
+                  child: Row(
+                    children: <Widget>[
                         ),
                       ),
                       SizedBox(
@@ -120,12 +156,22 @@ class _AccountWidgetState extends State<AccountWidget> {
                           ),
                         ),
                       ),
+
                       Expanded(
                         child: FlatButton(
                           padding:
                               EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                           onPressed: () {
                             Navigator.of(context)
+
+                                .pushNamed('/Tabs', arguments: 4);
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              Icon(UiIcons.heart),
+                              Text(
+                                'Wish List',
+
                                 .pushNamed('/Tabs', arguments: 3);
                           },
                           child: Column(
@@ -133,6 +179,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                               Icon(UiIcons.chat_1),
                               Text(
                                 'Messages',
+
                                 style: Theme.of(context).textTheme.body1,
                               )
                             ],
