@@ -22,6 +22,7 @@ class DatabaseService {
 
   Stream<CurrentUserInfo> getUserData() {
     print(uid);
+    print("------");
     return reference.document(uid).snapshots().map(_userInfoMap);
   }
 

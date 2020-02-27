@@ -1,6 +1,8 @@
+import 'package:ecommerce_app_ui_kit/Helper/Animations/animation_set.dart';
+import 'package:ecommerce_app_ui_kit/Helper/Animations/animator.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_app_ui_kit/Helper/animations/animation_set.dart';
-import 'package:ecommerce_app_ui_kit/Helper/animations/animator.dart';
+//import 'package:ecommerce_app_ui_kit/Helper/animations/animation_set.dart';
+//import 'package:ecommerce_app_ui_kit/Helper/animations/animator.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/SignUpPages/pagehelper.dart';
 import 'package:ecommerce_app_ui_kit/themes.dart';
