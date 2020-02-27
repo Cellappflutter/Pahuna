@@ -1,10 +1,11 @@
+import 'dart:io';
+
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
-import 'package:ecommerce_app_ui_kit/src/models/user.dart';
-import 'package:ecommerce_app_ui_kit/src/widgets/ProfileSettingsDialog.dart';
-import 'package:ecommerce_app_ui_kit/src/widgets/SearchBarWidget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ecommerce_app_ui_kit/database/database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AccountWidget extends StatefulWidget {
   final CurrentUserInfo userInfo;
@@ -15,7 +16,8 @@ class AccountWidget extends StatefulWidget {
 
 class _AccountWidgetState extends State<AccountWidget> {
   // User _user = new User.init().getCurrentUser();
-
+  File _image;
+  bool _isLocalImage = false;
   @override
   Widget build(BuildContext context) {
     print("-------------");
@@ -23,7 +25,7 @@ class _AccountWidgetState extends State<AccountWidget> {
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(
-                  child: SingleChildScrollView(
+          child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(vertical: 7),
             child: Column(
               children: <Widget>[
@@ -35,13 +37,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                       Expanded(
                         child: Column(
                           children: <Widget>[
-                            Text(
-                              _user.name,
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.display2,
-                            ),
-                            Text(
-                              _user.email,
                             Text(
                               widget.userInfo.name,
                               textAlign: TextAlign.left,
@@ -60,47 +55,25 @@ class _AccountWidgetState extends State<AccountWidget> {
                           width: 55,
                           height: 55,
                           child: InkWell(
-                            borderRadius: BorderRadius.circular(300),
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed('/Tabs', arguments: 1);
-                            },
-                            child: CircleAvatar(
-                              backgroundImage: AssetImage(_user.avatar),
-                            ),
-                          )),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(6),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Theme.of(context).hintColor.withOpacity(0.15),
-                          offset: Offset(0, 3),
-                          blurRadius: 10)
-                    ],
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                        ),
-                      ),
-                      SizedBox(
-                          width: 55,
-                          height: 55,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(300),
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed('/Tabs', arguments: 1);
-                            },
-                            child: CircleAvatar(
-                              backgroundImage: AssetImage('widget.userInfo.avatar'),
-                            ),
-                          )),
+                              borderRadius: BorderRadius.circular(300),
+                              onTap: () async {
+                                await avatarPicker();
+                              },
+                              child: (_isLocalImage)
+                                  ? ((_image != null)
+                                      ? CircleAvatar(
+                                          backgroundImage: FileImage(_image),
+                                        )
+                                      : CircleAvatar(
+                                          backgroundColor: Colors.red,
+                                        ))
+                                  : ((widget.userInfo.avatar != "" &&
+                                          widget.userInfo.avatar != null)
+                                      ? CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              widget.userInfo.avatar),
+                                        )
+                                      : CircleAvatar()))),
                     ],
                   ),
                 ),
@@ -120,8 +93,8 @@ class _AccountWidgetState extends State<AccountWidget> {
                     children: <Widget>[
                       Expanded(
                         child: FlatButton(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
                           onPressed: () {
                             Navigator.of(context)
                                 .pushNamed('/Tabs', arguments: 4);
@@ -139,8 +112,8 @@ class _AccountWidgetState extends State<AccountWidget> {
                       ),
                       Expanded(
                         child: FlatButton(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
                           onPressed: () {
                             Navigator.of(context)
                                 .pushNamed('/Tabs', arguments: 0);
@@ -156,22 +129,12 @@ class _AccountWidgetState extends State<AccountWidget> {
                           ),
                         ),
                       ),
-
                       Expanded(
                         child: FlatButton(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
                           onPressed: () {
                             Navigator.of(context)
-
-                                .pushNamed('/Tabs', arguments: 4);
-                          },
-                          child: Column(
-                            children: <Widget>[
-                              Icon(UiIcons.heart),
-                              Text(
-                                'Wish List',
-
                                 .pushNamed('/Tabs', arguments: 3);
                           },
                           child: Column(
@@ -179,7 +142,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                               Icon(UiIcons.chat_1),
                               Text(
                                 'Messages',
-
                                 style: Theme.of(context).textTheme.body1,
                               )
                             ],
@@ -189,119 +151,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                     ],
                   ),
                 ),
-                // Container(
-                //   margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                //   decoration: BoxDecoration(
-                //     color: Theme.of(context).primaryColor,
-                //     borderRadius: BorderRadius.circular(6),
-                //     boxShadow: [
-                //       BoxShadow(
-                //           color: Theme.of(context).hintColor.withOpacity(0.15),
-                //           offset: Offset(0, 3),
-                //           blurRadius: 10)
-                //     ],
-                //   ),
-                //   child: ListView(
-                //     shrinkWrap: true,
-                //     primary: false,
-                //     children: <Widget>[
-                //       ListTile(
-                //         leading: Icon(UiIcons.inbox),
-                //         title: Text(
-                //           'My Orders',
-                //           style: Theme.of(context).textTheme.body2,
-                //         ),
-                //         trailing: ButtonTheme(
-                //           padding: EdgeInsets.all(0),
-                //           minWidth: 50.0,
-                //           height: 25.0,
-                //           child: FlatButton(
-                //             onPressed: () {
-                //               Navigator.of(context).pushNamed('/Orders');
-                //             },
-                //             child: Text(
-                //               "View all",
-                //               style: Theme.of(context).textTheme.body1,
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //       ListTile(
-                //         onTap: () {
-                //           Navigator.of(context).pushNamed('/Orders');
-                //         },
-                //         dense: true,
-                //         title: Text(
-                //           'Unpaid',
-                //           style: Theme.of(context).textTheme.body1,
-                //         ),
-                //         trailing: Chip(
-                //           padding: EdgeInsets.symmetric(horizontal: 10),
-                //           backgroundColor: Colors.transparent,
-                //           shape: StadiumBorder(
-                //               side: BorderSide(
-                //                   color: Theme.of(context).focusColor)),
-                //           label: Text(
-                //             '1',
-                //             style: TextStyle(color: Theme.of(context).focusColor),
-                //           ),
-                //         ),
-                //       ),
-                //       ListTile(
-                //         onTap: () {
-                //           Navigator.of(context).pushNamed('/Orders');
-                //         },
-                //         dense: true,
-                //         title: Text(
-                //           'To be shipped',
-                //           style: Theme.of(context).textTheme.body1,
-                //         ),
-                //         trailing: Chip(
-                //           padding: EdgeInsets.symmetric(horizontal: 10),
-                //           backgroundColor: Colors.transparent,
-                //           shape: StadiumBorder(
-                //               side: BorderSide(
-                //                   color: Theme.of(context).focusColor)),
-                //           label: Text(
-                //             '5',
-                //             style: TextStyle(color: Theme.of(context).focusColor),
-                //           ),
-                //         ),
-                //       ),
-                //       ListTile(
-                //         onTap: () {
-                //           Navigator.of(context).pushNamed('/Orders');
-                //         },
-                //         dense: true,
-                //         title: Text(
-                //           'Shipped',
-                //           style: Theme.of(context).textTheme.body1,
-                //         ),
-                //         trailing: Chip(
-                //           padding: EdgeInsets.symmetric(horizontal: 10),
-                //           backgroundColor: Colors.transparent,
-                //           shape: StadiumBorder(
-                //               side: BorderSide(
-                //                   color: Theme.of(context).focusColor)),
-                //           label: Text(
-                //             '3',
-                //             style: TextStyle(color: Theme.of(context).focusColor),
-                //           ),
-                //         ),
-                //       ),
-                //       ListTile(
-                //         onTap: () {
-                //           Navigator.of(context).pushNamed('/Orders');
-                //         },
-                //         dense: true,
-                //         title: Text(
-                //           'In dispute',
-                //           style: Theme.of(context).textTheme.body1,
-                //         ),
-                //       )
-                //     ],
-                //   ),
-                // ),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   decoration: BoxDecoration(
@@ -324,17 +173,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                           'Profile Settings',
                           style: Theme.of(context).textTheme.body2,
                         ),
-                        // trailing: ButtonTheme(
-                        //   padding: EdgeInsets.all(0),
-                        //   minWidth: 50.0,
-                        //   height: 25.0,
-                        //   child: ProfileSettingsDialog(
-                        //     user: this.widget.userInfo.name,
-                        //     onChanged: () {
-                        //       setState(() {});
-                        //     },
-                        //   ),
-                        // ),
                       ),
                       ListTile(
                         onTap: () {},
@@ -386,7 +224,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                         ),
                       ),
                       ListTile(
-                        onTap:(){},
+                        onTap: () {},
                         dense: true,
                         title: Text(
                           'Continent',
@@ -492,6 +330,34 @@ class _AccountWidgetState extends State<AccountWidget> {
             ),
           ),
         ),
+      ),
     );
+  }
+
+  avatarPicker() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _image = image;
+        _isLocalImage = true;
+      });
+    }
+    await uploadAvatar(context);
+  }
+
+  uploadAvatar(BuildContext context) async {
+    try {
+      String fileName = _image.path.split('/').removeLast();
+      print(fileName);
+      StorageReference storageReference = FirebaseStorage.instance
+          .ref()
+          .child(DatabaseService.uid)
+          .child("avatar.jpg");
+      StorageUploadTask task = storageReference.putFile(_image);
+      await task.onComplete;
+      print("UPLOADED");
+    } catch (e) {
+      print(e);
+    }
   }
 }
