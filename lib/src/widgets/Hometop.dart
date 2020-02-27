@@ -1,29 +1,47 @@
+import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+import 'package:ecommerce_app_ui_kit/Pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
+import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
 class Hometop extends StatefulWidget {
-@override
+  @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
     return _hometop();
-  }  
+  }
 }
-class _hometop extends State<Hometop> with TickerProviderStateMixin{
-  AnimationController _resizableController;
 
+class _hometop extends State<Hometop> with TickerProviderStateMixin {
+  AnimationController _resizableController;
+  CurrentUserInfo userData;
   AnimatedBuilder getContainer() {
     return new AnimatedBuilder(
         animation: _resizableController,
         builder: (context, child) {
-          return Container(
-            padding: EdgeInsets.all(24),
-            child: Text("Find Here",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w600)),
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-              border: Border.all(
-                  color:config.Colors().mainColor(1) , width: _resizableController.value * 10),
+          return InkWell(
+            child: Container(
+              padding: EdgeInsets.all(24),
+              child: Text("Find Here",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600)),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+                border: Border.all(
+                    color: config.Colors().mainColor(1),
+                    width: _resizableController.value * 10),
+              ),
             ),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return StreamProvider<Position>.value(
+                    value: Geolocator().getPositionStream(), child: HomePage(userData: userData,));
+              }));
+            },
           );
         });
   }
@@ -53,16 +71,18 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin{
     _resizableController.forward();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    userData = Provider.of<CurrentUserInfo>(context);
     return Stack(
       children: <Widget>[
         Container(
           margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           height: 200,
           decoration: BoxDecoration(
-             image: DecorationImage(image: AssetImage('img/looking.jpeg'), fit: BoxFit.cover),
+            image: DecorationImage(
+                image: AssetImage('img/looking.jpeg'), fit: BoxFit.cover),
             borderRadius: BorderRadius.circular(6),
             boxShadow: [
               BoxShadow(
@@ -89,12 +109,10 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin{
                       style: Theme.of(context)
                           .textTheme
                           .title
-                          .merge(TextStyle(height: 1,fontSize: 30)),
-                          
+                          .merge(TextStyle(height: 1, fontSize: 30)),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.fade,
                       maxLines: 3,
-                      
                     ),
                   ),
                   Align(

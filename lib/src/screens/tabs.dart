@@ -1,4 +1,6 @@
+import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
+import 'package:ecommerce_app_ui_kit/database/auth.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/account.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/chat.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/favorites.dart';
@@ -9,6 +11,7 @@ import 'package:ecommerce_app_ui_kit/src/widgets/DrawerWidget.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/FilterWidget.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/ShoppingCartButtonWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class TabsWidget extends StatefulWidget {
@@ -100,15 +103,17 @@ class _TabsWidgetState extends State<TabsWidget> {
         ),
         actions: <Widget>[
           new ShoppingCartButtonWidget(
-              iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
+              iconColor: Theme.of(context).hintColor,
+              labelColor: Theme.of(context).accentColor),
           Container(
               width: 30,
               height: 30,
               margin: EdgeInsets.only(top: 12.5, bottom: 12.5, right: 20),
               child: InkWell(
                 borderRadius: BorderRadius.circular(300),
-                onTap: () {
-                  Navigator.of(context).pushNamed('/Tabs', arguments: 1);
+                onTap: () async {
+                  CurrentUserInfo info = Provider.of<CurrentUserInfo>(context);
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AccountWidget(userInfo: info)));
                 },
                 child: CircleAvatar(
                   backgroundImage: AssetImage('img/user2.jpg'),
@@ -190,12 +195,17 @@ class _TabsWidgetState extends State<TabsWidget> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                        color: Theme.of(context).accentColor.withOpacity(0.4), blurRadius: 40, offset: Offset(0, 15)),
+                        color: Theme.of(context).accentColor.withOpacity(0.4),
+                        blurRadius: 40,
+                        offset: Offset(0, 15)),
                     BoxShadow(
-                        color: Theme.of(context).accentColor.withOpacity(0.4), blurRadius: 13, offset: Offset(0, 3))
+                        color: Theme.of(context).accentColor.withOpacity(0.4),
+                        blurRadius: 13,
+                        offset: Offset(0, 3))
                   ],
                 ),
-                child: new Icon(UiIcons.home, color: Theme.of(context).primaryColor),
+                child: new Icon(UiIcons.home,
+                    color: Theme.of(context).primaryColor),
               )),
           BottomNavigationBarItem(
             icon: new Icon(UiIcons.chat),
