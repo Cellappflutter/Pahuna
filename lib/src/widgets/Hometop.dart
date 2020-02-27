@@ -27,7 +27,7 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
               padding: EdgeInsets.all(24),
               child: Text("Find Here",
                   style: TextStyle(
-                      color: Colors.white,
+                      color: config.Colors().yellowColor(1),
                       fontSize: 20,
                       fontWeight: FontWeight.w600)),
               decoration: BoxDecoration(

@@ -23,7 +23,7 @@ class NearbySearch extends StatefulWidget {
     CurrentUserInfo userData;
   Position position;
   NearbySearch({this.userData,this.position});
-  final double size = 10.0;
+  final double size = 20.0;
   final Color color = pulsateColor;
   @override
   _NearbySearchState createState() => _NearbySearchState();
@@ -64,11 +64,14 @@ class _NearbySearchState extends State<NearbySearch>
               curve: const PulsateCurve(),
             ),
           ),
-          child: Icon(
-            Icons.access_alarm,
-            size: iconSize,
-            color: Colors.yellow,
-          ),
+          child: CircleAvatar(backgroundImage: NetworkImage("https://thumbor.forbes.com/thumbor/960x0/https%3A%2F%2Fspecials-images.forbesimg.com%2Fdam%2Fimageserve%2F122df3fa67e748eaafcb9e7a36fd3319%2F960x0.jpg%3Ffit%3Dscale"),
+          radius: 100,)
+          
+          // Icon(
+          //   Icons.access_alarm,
+          //   size: iconSize,
+          //   color: Colors.yellow,
+          // ),
         ),
       ),
     );
