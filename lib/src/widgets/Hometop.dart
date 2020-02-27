@@ -17,6 +17,8 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
   AnimationController _resizableController;
   CurrentUserInfo userData;
   AnimatedBuilder getContainer() {
+    final userData = Provider.of<CurrentUserInfo>(context);
+    final position= Provider.of<Position>(context);
     return new AnimatedBuilder(
         animation: _resizableController,
         builder: (context, child) {
@@ -35,12 +37,10 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
                     color: config.Colors().mainColor(1),
                     width: _resizableController.value * 10),
               ),
-
             ),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return StreamProvider<Position>.value(
-                    value: Geolocator().getPositionStream(), child: HomePage(userData: userData,));
+                return HomePage(position: position,userData: userData,);
               }));
             },
           );
@@ -75,7 +75,7 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    userData = Provider.of<CurrentUserInfo>(context);
+   // userData = Provider.of<CurrentUserInfo>(context);
     return Stack(
       children: <Widget>[
         Container(
@@ -107,11 +107,10 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
                     alignment: Alignment.center,
                     child: Text(
                       "Looking Around For a Travel Mate",
-                      style: Theme.of(context)
-                          .textTheme
-                          .title
-
-                          .merge(TextStyle(height: 1,fontSize: 30,color: config.Colors().yellowColor(1))),
+                      style: Theme.of(context).textTheme.title.merge(TextStyle(
+                          height: 1,
+                          fontSize: 30,
+                          color: config.Colors().yellowColor(1))),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.fade,
                       maxLines: 3,

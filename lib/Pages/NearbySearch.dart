@@ -20,6 +20,9 @@ import 'package:grafpix/pixbuttons/radial.dart';
 import 'package:provider/provider.dart';
 
 class NearbySearch extends StatefulWidget {
+    CurrentUserInfo userData;
+  Position position;
+  NearbySearch({this.userData,this.position});
   final double size = 10.0;
   final Color color = pulsateColor;
   @override
@@ -217,20 +220,15 @@ class _NearbySearchState extends State<NearbySearch>
   DatabaseService _databaseService = DatabaseService();
   @override
   Widget build(BuildContext context) {
-    // if (widget.searchData == null) {
-    //   print("no data------------------------");
-    // } else {
-    //   print(widget.searchData);
-    // }
-    final position = Provider.of<Position>(context) ?? Position();
-    final userInfo= Provider.of< CurrentUserInfo>(context);
-    if (position.latitude != null) {
-      _databaseService.updateLocation(position);
+    //final position = Provider.of<Position>(context) ?? Position();
+    //final userInfo= Provider.of< CurrentUserInfo>(context);
+    if (widget.position.latitude != null) {
+      _databaseService.updateLocation(widget.position);
     }
     _controller.repeat();
     print("000000000000000000000000000");
     return  StreamProvider.value(
-        value: _databaseService.getOnlineUsers(userInfo),
+        value: _databaseService.getOnlineUsers(widget.userData),
         child: CustomPaint(painter: CirclePainter(
                   _controller,
                   color: widget.color,
@@ -238,8 +236,8 @@ class _NearbySearchState extends State<NearbySearch>
           child: Stack(
             children: <Widget>[
               Text(
-                  position.latitude.toString() ??
-                      "" + " , " + position.longitude.toString() ??
+                  widget.position.latitude.toString() ??
+                      "" + " , " + widget.position.longitude.toString() ??
                       "",
                   style: TextStyle(color: Colors.yellow, fontSize: 30)),
               Center(
@@ -251,7 +249,7 @@ class _NearbySearchState extends State<NearbySearch>
               ),
               Consumer<List<UserData>>(builder: (context, data, child) {
                 return FutureBuilder(
-                  future: getRangedData(data, position),
+                  future: getRangedData(data, widget.position),
                   builder: (context, AsyncSnapshot<List<UserData>> snapshot) {
                     if (snapshot.hasData) {
                       return Stack(

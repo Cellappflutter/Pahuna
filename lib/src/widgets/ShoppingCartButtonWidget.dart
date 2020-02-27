@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/cart.dart';
 import 'package:flutter/material.dart';
 
 class ShoppingCartButtonWidget extends StatelessWidget {
@@ -19,7 +20,7 @@ class ShoppingCartButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlatButton(
       onPressed: () {
-        Navigator.of(context).pushNamed('/Cart');
+        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CartWidget()));
       },
       child: Stack(
         alignment: AlignmentDirectional.topEnd,

@@ -1,21 +1,16 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
-import 'package:ecommerce_app_ui_kit/Pages/InitialInfo.dart';
+import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
-import 'package:ecommerce_app_ui_kit/Pages/mainpage.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/route_generator.dart';
-
 import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:ecommerce_app_ui_kit/src/screens/cart.dart';
-import 'package:ecommerce_app_ui_kit/src/screens/home.dart';
-import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
-import 'package:ecommerce_app_ui_kit/src/screens/test.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -51,12 +46,13 @@ class _AuthPageState extends State<AuthPage> {
     _auth.currentUser().then((firebaseUser) async {
       print(firebaseUser);
       await Future.delayed(Duration(seconds: 2));
+        DatabaseService.uid = "hello";
       if (firebaseUser != null) {
         print(firebaseUser.uid);
         print("=============================================");
 
         // DatabaseService.uid = firebaseUser.uid;
-        DatabaseService.uid = "hello";
+      
         // DatabaseService().checkPrevUser().then((onValue) {
         setState(() {
           gotoLogin = false;
@@ -79,17 +75,7 @@ class _AuthPageState extends State<AuthPage> {
       gotoLogin = false;
       //  {
       if (!gotoLogin) {
-        //  if (isPrevUser != null) {
-//            if (isPrevUser) {
         return MainPageWrapper();
-        //          } else {
-        //          return InitialInfo();
-        //      }
-        //} else {
-        // return Container(
-        // color: Colors.green,
-        // );
-        // }
       } else {
         return LoginPage();
       }
