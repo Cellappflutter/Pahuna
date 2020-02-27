@@ -1,11 +1,13 @@
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/route_generator.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/cart.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/home.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/test.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(home: MyApp()));
+void main() => runApp(MaterialApp(home: CartWidget()));
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -24,8 +26,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData(
         fontFamily: 'Poppins',
-        primaryColor: Color(0xFF252525),
-        brightness: Brightness.dark,
+        primaryColor: config.Colors().whiteColor(1),
+        brightness: Brightness.light,
         scaffoldBackgroundColor: Color(0xFF2C2C2C),
         accentColor: config.Colors().mainDarkColor(1),
         hintColor: config.Colors().secondDarkColor(1),
@@ -70,8 +72,8 @@ class MyApp extends StatelessWidget {
       ),
       theme: ThemeData(
         fontFamily: 'Poppins',
-        primaryColor: Colors.white,
-        brightness: Brightness.light,
+        primaryColor: config.Colors().whiteColor(1),
+        brightness: Brightness.dark,
         accentColor: config.Colors().mainColor(1),
         focusColor: config.Colors().accentColor(1),
         hintColor: config.Colors().secondColor(1),
