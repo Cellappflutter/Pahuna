@@ -18,7 +18,11 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
   CurrentUserInfo userData;
   AnimatedBuilder getContainer() {
     final userData = Provider.of<CurrentUserInfo>(context);
-    final position= Provider.of<Position>(context);
+    final String avatar = Provider.of<String>(context);
+    if (avatar != null) {
+      userData.avatar = avatar;
+    }
+    final position = Provider.of<Position>(context);
     return new AnimatedBuilder(
         animation: _resizableController,
         builder: (context, child) {
@@ -40,7 +44,10 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
             ),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return HomePage(position: position,userData: userData,);
+                return HomePage(
+                  position: position,
+                  userData: userData,
+                );
               }));
             },
           );
@@ -75,7 +82,7 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-   // userData = Provider.of<CurrentUserInfo>(context);
+    // userData = Provider.of<CurrentUserInfo>(context);
     return Stack(
       children: <Widget>[
         Container(

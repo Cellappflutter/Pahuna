@@ -16,6 +16,7 @@ class _MatchRequestState extends State<MatchRequest> {
   StreamSubscription<List<RequestedUser>> matchRequestStream;
   Future<List<RequestedUser>> matchRequestDataStream;
   Stream<List<RequestedUser>> finalData;
+  
   Color pressed = Colors.white;
   Key dismissableKey = Key("Dismiss");
   bool isdismiss = false;
