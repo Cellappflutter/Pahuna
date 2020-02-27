@@ -10,6 +10,7 @@ import 'package:ecommerce_app_ui_kit/src/screens/notifications.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/DrawerWidget.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/FilterWidget.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/ShoppingCartButtonWidget.dart';
+import 'package:ecommerce_app_ui_kit/config/app_config.dart' as appColors;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -189,7 +190,7 @@ class _TabsWidgetState extends State<TabsWidget> {
                 width: 45,
                 height: 45,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor,
+                  color: appColors.Colors().mainColor(1),
                   borderRadius: BorderRadius.all(
                     Radius.circular(50),
                   ),
@@ -204,8 +205,7 @@ class _TabsWidgetState extends State<TabsWidget> {
                         offset: Offset(0, 3))
                   ],
                 ),
-                child: new Icon(UiIcons.home,
-                    color: Theme.of(context).primaryColor),
+                child: new Icon(UiIcons.home, color:appColors.Colors().whiteColor(1)),
               )),
           BottomNavigationBarItem(
             icon: new Icon(UiIcons.chat),

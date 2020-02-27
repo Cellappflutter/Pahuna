@@ -35,6 +35,7 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
                     color: config.Colors().mainColor(1),
                     width: _resizableController.value * 10),
               ),
+
             ),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
@@ -109,7 +110,8 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
                       style: Theme.of(context)
                           .textTheme
                           .title
-                          .merge(TextStyle(height: 1, fontSize: 30)),
+
+                          .merge(TextStyle(height: 1,fontSize: 30,color: config.Colors().yellowColor(1))),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.fade,
                       maxLines: 3,
