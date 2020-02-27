@@ -2,6 +2,7 @@ import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/route_generator.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/home.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/test.dart';
 import 'package:flutter/material.dart';
 
