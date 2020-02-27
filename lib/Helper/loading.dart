@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:grafpix/pixloaders/pix_loader.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-ProgressDialog loadingBar(BuildContext context,String message) {
-  ProgressDialog pr = new ProgressDialog(context,isDismissible: false,type: ProgressDialogType.Download);
+ProgressDialog loadingBar(BuildContext context, String message) {
+  ProgressDialog pr = new ProgressDialog(context,
+      isDismissible: false, type: ProgressDialogType.Download);
   pr.style(
       message: message,
       borderRadius: ScreenSizeConfig.blockSizeHorizontal * 5,
@@ -30,4 +31,22 @@ ProgressDialog loadingBar(BuildContext context,String message) {
           fontSize: ScreenSizeConfig.blockSizeHorizontal * 6,
           fontWeight: FontWeight.w600));
   return pr;
+}
+
+errorDialog(BuildContext context, String message) async {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(message),
+          actions: <Widget>[
+            RaisedButton(
+              child: Text("Ok"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      });
 }

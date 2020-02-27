@@ -1,6 +1,7 @@
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/country_pickers.dart';
+import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/Helper/error_helper.dart';
@@ -10,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 //import 'package:progress_dialog/progress_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -30,9 +32,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   Future<void> verifyPhone() async {
     final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
       this.verificationID = verId;
-      print('phone code verified');
-      pr.dismiss();
-      Navigator.of(context).pushNamed('/Categories');
     };
 
     final PhoneCodeSent smsCode = (String verId, [int foreceCodeResend]) {
@@ -44,27 +43,33 @@ class _SignUpWidgetState extends State<SignUpWidget> {
 
     final PhoneVerificationCompleted verifiedSuccess =
         (AuthCredential credential) {
+      pr.dismiss();
+      Navigator.of(context).pushNamed('/Categories');
       print("phone verified completed");
     };
 
     final PhoneVerificationFailed verifiedFailed = (AuthException exception) {
+      pr.dismiss();
       switch (exception.code) {
-        case verifyError:
-          {
-            break;
-          }
-        case invalidCredential:
-          {
-            break;
-          }
-        case invalidCode:
-          {
-            print("Invalid Code");
-            break;
-          }
+        // case verifyError:
+        //   {
+        //     errorDialog(context, "Verification Phone Number Error");
+        //     break;
+        //   }
+        // case invalidCredential:
+        //   {
+        //     errorDialog(
+        //         context, "Invalid Credentials, Please Enter your number again");
+        //     break;
+        //   }
+        // case invalidCode:
+        //   {
+        //     errorDialog(context, "Invalid Verification Code, Please retry");
+        //     break;
+        //   }
         default:
           {
-            print(exception.message);
+            errorDialog(context, exception.message);
             break;
           }
       }
@@ -77,6 +82,33 @@ class _SignUpWidgetState extends State<SignUpWidget> {
         verificationFailed: verifiedFailed,
         codeSent: smsCode,
         codeAutoRetrievalTimeout: autoRetrieve);
+  }
+
+  verifyFailed(PlatformException exception) {
+    pr.dismiss();
+    switch (exception.code) {
+      case verifyError:
+        {
+          errorDialog(context, "Verification Phone Number Error");
+          break;
+        }
+      case invalidCredential:
+        {
+          errorDialog(
+              context, "Invalid Credentials, Please Enter your number again");
+          break;
+        }
+      case invalidCode:
+        {
+          errorDialog(context, "Invalid Verification Code, Please retry");
+          break;
+        }
+      default:
+        {
+          errorDialog(context, exception.message);
+          break;
+        }
+    }
   }
 
   Future<bool> smsCodeDialogue(BuildContext context) {
@@ -96,9 +128,11 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               FlatButton(
                 onPressed: () {
                   if (this.smsCode == null || this.smsCode.length == 0) {
+                    print("----------------sms null");
                     showDialog(
-                        context: context,
-                        child: AlertDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
                           title: Text("Alert !!"),
                           content: Text("Please Enter Verification Code"),
                           actions: <Widget>[
@@ -109,7 +143,9 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                               child: Text("OK"),
                             )
                           ],
-                        ));
+                        );
+                      },
+                    );
                   } else {
                     Navigator.of(context).pop();
                     signIn();
@@ -132,7 +168,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
       await Prefs.setUserUid(authResult.user.uid);
       await Prefs.setIsFirstTime(authResult.additionalUserInfo.isNewUser);
     } catch (e) {
-      print(e);
+      verifyFailed(e);
+      print("---------------------------");
     }
   }
 
@@ -285,7 +322,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             EdgeInsets.symmetric(vertical: 12, horizontal: 70),
                         onPressed: () {
                           if (i) {
-                            verifyPhone();
                             if (this.phoneNo.isEmpty) {
                               try {
                                 showDialog(
@@ -306,6 +342,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                               } catch (e) {
                                 print(e);
                               }
+                            } else {
+                              pr = loadingBar(context, "Signing In");
+                              //  pr.show();
+                              verifyPhone();
                             }
                           } else {
                             showDialog(
