@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:flutter/material.dart';
 
@@ -27,9 +27,9 @@ class ShoppingCartButtonWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: Icon(
-              UiIcons.shopping_cart,
+              UiIcons.user_3,
               color: this.iconColor,
-              size: 28,
+              size: 30,
             ),
           ),
           Container(
@@ -37,12 +37,12 @@ class ShoppingCartButtonWidget extends StatelessWidget {
               this.labelCount.toString(),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.caption.merge(
-                    TextStyle(color: Theme.of(context).primaryColor, fontSize: 9),
+                    TextStyle(color: config.Colors().whiteColor(1), fontSize: 12),
                   ),
             ),
             padding: EdgeInsets.all(0),
-            decoration: BoxDecoration(color: this.labelColor, borderRadius: BorderRadius.all(Radius.circular(10))),
-            constraints: BoxConstraints(minWidth: 15, maxWidth: 15, minHeight: 15, maxHeight: 15),
+            decoration: BoxDecoration(color: config.Colors().mainColor(1), borderRadius: BorderRadius.all(Radius.circular(14))),
+            constraints: BoxConstraints(minWidth: 17, maxWidth: 17, minHeight: 17, maxHeight: 17),
           ),
         ],
       ),

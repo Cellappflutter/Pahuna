@@ -17,7 +17,7 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin{
         builder: (context, child) {
           return Container(
             padding: EdgeInsets.all(24),
-            child: Text("Find Here",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w600)),
+            child: Text("Find Here",style: TextStyle(color: config.Colors().yellowColor(1),fontSize: 20,fontWeight: FontWeight.w600)),
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -89,7 +89,7 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin{
                       style: Theme.of(context)
                           .textTheme
                           .title
-                          .merge(TextStyle(height: 1,fontSize: 30)),
+                          .merge(TextStyle(height: 1,fontSize: 30,color: config.Colors().yellowColor(1))),
                           
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.fade,
