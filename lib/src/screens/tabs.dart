@@ -82,6 +82,7 @@ class _TabsWidgetState extends State<TabsWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final info = Provider.of<CurrentUserInfo>(context);
     return Scaffold(
       key: _scaffoldKey,
       drawer: DrawerWidget(),
@@ -113,8 +114,8 @@ class _TabsWidgetState extends State<TabsWidget> {
               child: InkWell(
                 borderRadius: BorderRadius.circular(300),
                 onTap: () async {
-                  CurrentUserInfo info = Provider.of<CurrentUserInfo>(context);
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AccountWidget(userInfo: info)));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AccountWidget(userInfo: info)));
                 },
                 child: CircleAvatar(
                   backgroundImage: AssetImage('img/user2.jpg'),
@@ -205,7 +206,8 @@ class _TabsWidgetState extends State<TabsWidget> {
                         offset: Offset(0, 3))
                   ],
                 ),
-                child: new Icon(UiIcons.home, color:appColors.Colors().whiteColor(1)),
+                child: new Icon(UiIcons.home,
+                    color: appColors.Colors().whiteColor(1)),
               )),
           BottomNavigationBarItem(
             icon: new Icon(UiIcons.chat),

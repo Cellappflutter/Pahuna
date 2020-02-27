@@ -1,3 +1,6 @@
+import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+import 'package:ecommerce_app_ui_kit/src/models/product.dart';
+
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as appColors;
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/src/models/brand.dart';
@@ -6,6 +9,7 @@ import 'package:ecommerce_app_ui_kit/src/models/product.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/Hometop.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/SearchBarWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -48,7 +52,6 @@ class _HomeWidgetState extends State<HomeWidget>
   @override
   Widget build(BuildContext context) {
     appColors.App(context);
-
     return ListView(
       children: <Widget>[
         Padding(
@@ -65,7 +68,7 @@ class _HomeWidgetState extends State<HomeWidget>
               featuresChip("Features4", () {}),
               featuresChip("Features5", () {}),
               featuresChip("Features6", () {}),
-                featuresChip("Features6", () {}),
+              featuresChip("Features6", () {}),
             ],
           ),
         ),
@@ -153,7 +156,7 @@ class _HomeWidgetState extends State<HomeWidget>
             style: TextStyle(color: Colors.white),
           ),
           color: appColors.Colors().mainColor(1),
-         // splashColor: appColors.Colors().mainColor(1),
+          // splashColor: appColors.Colors().mainColor(1),
           onPressed: () {
             onTap();
           }),
