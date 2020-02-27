@@ -20,9 +20,9 @@ import 'package:grafpix/pixbuttons/radial.dart';
 import 'package:provider/provider.dart';
 
 class NearbySearch extends StatefulWidget {
-    CurrentUserInfo userData;
+  CurrentUserInfo userData;
   Position position;
-  NearbySearch({this.userData,this.position});
+  NearbySearch({this.userData, this.position});
   final double size = 10.0;
   final Color color = pulsateColor;
   @override
@@ -64,11 +64,16 @@ class _NearbySearchState extends State<NearbySearch>
               curve: const PulsateCurve(),
             ),
           ),
-          child: Icon(
-            Icons.access_alarm,
-            size: iconSize,
-            color: Colors.yellow,
-          ),
+          child:
+              (widget.userData.avatar != null && widget.userData.avatar != "")
+                  ? Image.network(
+                      widget.userData.avatar,
+                      height: iconSize,
+                    )
+                  : Icon(
+                      Icons.supervised_user_circle,
+                      size: iconSize,
+                    ),
         ),
       ),
     );
@@ -227,46 +232,47 @@ class _NearbySearchState extends State<NearbySearch>
     }
     _controller.repeat();
     print("000000000000000000000000000");
-    return  StreamProvider.value(
-        value: _databaseService.getOnlineUsers(widget.userData),
-        child: CustomPaint(painter: CirclePainter(
-                  _controller,
-                  color: widget.color,
-                ),
-          child: Stack(
-            children: <Widget>[
-              Text(
-                  widget.position.latitude.toString() ??
-                      "" + " , " + widget.position.longitude.toString() ??
-                      "",
-                  style: TextStyle(color: Colors.yellow, fontSize: 30)),
-              Center(
-                child: SizedBox(
-                  width: widget.size * 5.125,
-                  height: widget.size * 5.125,
-                  child: _animatedIcon(),
-                ),
-              ),
-              Consumer<List<UserData>>(builder: (context, data, child) {
-                return FutureBuilder(
-                  future: getRangedData(data, widget.position),
-                  builder: (context, AsyncSnapshot<List<UserData>> snapshot) {
-                    if (snapshot.hasData) {
-                      return Stack(
-                        children: userWidgets(snapshot.data),
-                      );
-                    } else {
-                      print("----------------NODATA_-----------------");
-                      return Container(
-                        height: 0,
-                      );
-                    }
-                  },
-                );
-              }),
-            ],
-          ),
+    return StreamProvider.value(
+      value: _databaseService.getOnlineUsers(widget.userData),
+      child: CustomPaint(
+        painter: CirclePainter(
+          _controller,
+          color: widget.color,
         ),
-      );
+        child: Stack(
+          children: <Widget>[
+            Text(
+                widget.position.latitude.toString() ??
+                    "" + " , " + widget.position.longitude.toString() ??
+                    "",
+                style: TextStyle(color: Colors.yellow, fontSize: 30)),
+            Center(
+              child: SizedBox(
+                width: widget.size * 5.125,
+                height: widget.size * 5.125,
+                child: _animatedIcon(),
+              ),
+            ),
+            Consumer<List<UserData>>(builder: (context, data, child) {
+              return FutureBuilder(
+                future: getRangedData(data, widget.position),
+                builder: (context, AsyncSnapshot<List<UserData>> snapshot) {
+                  if (snapshot.hasData) {
+                    return Stack(
+                      children: userWidgets(snapshot.data),
+                    );
+                  } else {
+                    print("----------------NODATA_-----------------");
+                    return Container(
+                      height: 0,
+                    );
+                  }
+                },
+              );
+            }),
+          ],
+        ),
+      ),
+    );
   }
 }
