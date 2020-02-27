@@ -7,7 +7,6 @@ import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/route_generator.dart';
-<<<<<<< HEAD
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,10 +15,7 @@ import 'package:ecommerce_app_ui_kit/src/screens/cart.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/home.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/test.dart';
-=======
-import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
-import 'package:firebase_auth/firebase_auth.dart';
->>>>>>> 00a897959d68db67708d0bd4b5491ce1ed929d33
+
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
