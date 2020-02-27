@@ -23,7 +23,7 @@ import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(home: MyApp()));
+  runApp(MaterialApp(debugShowCheckedModeBanner: false,home: MyApp()));
 }
 
 class InitializePage extends StatelessWidget {
