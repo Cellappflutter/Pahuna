@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
+import 'package:ecommerce_app_ui_kit/main.dart';
 import 'package:ecommerce_app_ui_kit/src/models/on_boarding.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -106,8 +107,8 @@ class _OnBoardingWidgetState extends State<OnBoardingWidget> {
               child: FlatButton(
                 padding: EdgeInsets.symmetric(horizontal: 35, vertical: 12),
                 onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/SignUp",
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => InitializePage()),
                     (Route<dynamic> route) => false,
                   );
                 },

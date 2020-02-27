@@ -1,5 +1,6 @@
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:ecommerce_app_ui_kit/config/app_config.dart' as appColors;
 
 class SearchBarWidget extends StatelessWidget {
   SearchBarWidget({
@@ -10,7 +11,7 @@ class SearchBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: appColors.Colors().whiteColor(1),
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(color: Theme.of(context).hintColor.withOpacity(0.10), offset: Offset(0, 4), blurRadius: 10)

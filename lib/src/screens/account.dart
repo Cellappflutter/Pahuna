@@ -1,3 +1,4 @@
+import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/src/models/user.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/ProfileSettingsDialog.dart';
@@ -5,6 +6,8 @@ import 'package:ecommerce_app_ui_kit/src/widgets/SearchBarWidget.dart';
 import 'package:flutter/material.dart';
 
 class AccountWidget extends StatefulWidget {
+  final CurrentUserInfo userInfo;
+  AccountWidget({this.userInfo});
   @override
   _AccountWidgetState createState() => _AccountWidgetState();
 }
@@ -14,6 +17,7 @@ class _AccountWidgetState extends State<AccountWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.userInfo.name);
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(vertical: 7),
       child: Column(
