@@ -4,7 +4,6 @@ import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/src/models/product.dart';
-import 'package:ecommerce_app_ui_kit/src/widgets/CartItemWidget.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +15,6 @@ class CartWidget extends StatefulWidget {
 
 class _CartWidgetState extends State<CartWidget> {
   ProductsList _productsList;
-
   Color pressed = Colors.white;
   Key dismissableKey = Key("Dismiss");
   bool isdismiss = false;

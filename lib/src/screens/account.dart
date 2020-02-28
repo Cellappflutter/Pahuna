@@ -1,14 +1,16 @@
-
 import 'dart:io';
 
+import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
+import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class AccountWidget extends StatefulWidget {
   final CurrentUserInfo userInfo;
@@ -100,9 +102,17 @@ class _AccountWidgetState extends State<AccountWidget> {
                       children: <Widget>[
                         Expanded(
                             child: InkWell(
-                          onTap: () {
-                            if(edit == true){
-                              _formKey.currentState.validate();
+                          onTap: () async {
+                            ProgressDialog pr =
+                                loadingBar(context, "Updating Information");
+                            if (edit == true) {
+                              if (_formKey.currentState.validate()) {
+                                pr.show();
+                                await DatabaseService()
+                                    .updateUserProfile(widget.userInfo);
+                                await uploadAvatar(context);
+                                pr.dismiss();
+                              }
                             }
                             setState(() {
                               edit = !edit;
@@ -170,7 +180,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              if(edit == true){
+                              if (edit == true) {
                                 return null;
                               } else {
                                 print("This is from message $edit");
@@ -224,7 +234,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                             style: Theme.of(context).textTheme.body1,
                           ),
                           trailing: Container(
-                            width: ScreenSizeConfig.safeBlockHorizontal *50,
+                            width: ScreenSizeConfig.safeBlockHorizontal * 50,
                             child: TextFormField(
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -234,7 +244,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                               textAlign: TextAlign.right,
                               enabled: edit,
                               validator: (value) {
-                                print(value);
+                                widget.userInfo.name = value;
                                 return null;
                               },
                               // enabled: edit,
@@ -253,7 +263,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                             style: Theme.of(context).textTheme.body1,
                           ),
                           trailing: Container(
-                            width: ScreenSizeConfig.safeBlockHorizontal *50,
+                            width: ScreenSizeConfig.safeBlockHorizontal * 50,
                             child: TextFormField(
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -263,7 +273,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                               textAlign: TextAlign.right,
                               enabled: edit,
                               validator: (value) {
-                                print(value);
+                                widget.userInfo.gender = value;
                                 return null;
                               },
                               initialValue: widget.userInfo.gender,
@@ -279,10 +289,24 @@ class _AccountWidgetState extends State<AccountWidget> {
                             'Interest',
                             style: Theme.of(context).textTheme.body1,
                           ),
-                          trailing: Text(
-                            widget.userInfo.interest.toString(),
-                            style:
-                                TextStyle(color: Theme.of(context).focusColor),
+                          trailing: Container(
+                            width: ScreenSizeConfig.safeBlockHorizontal * 50,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Age',
+                              ),
+                              textDirection: TextDirection.rtl,
+                              textAlign: TextAlign.right,
+                              enabled: edit,
+                              validator: (value) {
+                                widget.userInfo.age = int.parse(value);
+                                return null;
+                              },
+                              initialValue: widget.userInfo.age.toString(),
+                              style: TextStyle(
+                                  color: Theme.of(context).focusColor),
+                            ),
                           ),
                         ),
                         ListTile(
@@ -429,7 +453,6 @@ class _AccountWidgetState extends State<AccountWidget> {
         _isLocalImage = true;
       });
     }
-    await uploadAvatar(context);
   }
 
   uploadAvatar(BuildContext context) async {
@@ -442,9 +465,10 @@ class _AccountWidgetState extends State<AccountWidget> {
           .child("avatar.jpg");
       StorageUploadTask task = storageReference.putFile(_image);
       await task.onComplete;
-      print("UPLOADED");
+      return true;
     } catch (e) {
       print(e);
+      return false;
     }
   }
 }
