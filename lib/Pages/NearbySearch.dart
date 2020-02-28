@@ -22,8 +22,10 @@ import 'package:provider/provider.dart';
 class NearbySearch extends StatefulWidget {
   CurrentUserInfo userData;
   Position position;
-  NearbySearch({this.userData, this.position});
-  final double size = 10.0;
+
+  NearbySearch({this.userData,this.position});
+  final double size = 20.0;
+
   final Color color = pulsateColor;
   @override
   _NearbySearchState createState() => _NearbySearchState();
