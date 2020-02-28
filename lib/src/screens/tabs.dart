@@ -82,7 +82,11 @@ class _TabsWidgetState extends State<TabsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final info = Provider.of<CurrentUserInfo>(context);
+    final CurrentUserInfo info = Provider.of<CurrentUserInfo>(context);
+   final String avatar = Provider.of<String>(context);
+    if (avatar != null) {
+      info.avatar = avatar;
+    }
     return Scaffold(
       key: _scaffoldKey,
       drawer: DrawerWidget(),
@@ -117,50 +121,17 @@ class _TabsWidgetState extends State<TabsWidget> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => AccountWidget(userInfo: info)));
                 },
-                child: CircleAvatar(
-                  backgroundImage: AssetImage('img/user2.jpg'),
-                ),
+                child: (avatar != "" && avatar != null)
+                    ? CircleAvatar(
+                        backgroundImage: NetworkImage(info.avatar),
+                      )
+                    : CircleAvatar(
+                        backgroundColor: Colors.red,
+                      ),
               )),
         ],
       ),
       body: widget.currentPage,
-//      bottomNavigationBar: CurvedNavigationBar(
-//        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-//        buttonBackgroundColor: Theme.of(context).accentColor,
-//        color: Theme.of(context).focusColor.withOpacity(0.2),
-//        height: 60,
-//        index: widget.selectedTab,
-//        onTap: (int i) {
-//          this._selectTab(i);
-//        },
-//        items: <Widget>[
-//          Icon(
-//            UiIcons.bell,
-//            size: 23,
-//            color: Theme.of(context).focusColor,
-//          ),
-//          Icon(
-//            UiIcons.user_1,
-//            size: 23,
-//            color: Theme.of(context).focusColor,
-//          ),
-//          Icon(
-//            UiIcons.home,
-//            size: 23,
-//            color: Theme.of(context).focusColor,
-//          ),
-//          Icon(
-//            UiIcons.chat,
-//            size: 23,
-//            color: Theme.of(context).focusColor,
-//          ),
-//          Icon(
-//            UiIcons.heart,
-//            size: 23,
-//            color: Theme.of(context).focusColor,
-//          ),
-//        ],
-//      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Theme.of(context).accentColor,
