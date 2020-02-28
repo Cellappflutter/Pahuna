@@ -13,12 +13,10 @@ import 'package:ecommerce_app_ui_kit/route_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:ecommerce_app_ui_kit/src/screens/cart.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/home.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/test.dart';
-
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
