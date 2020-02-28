@@ -1,8 +1,11 @@
+
 import 'dart:io';
 
+import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,6 +21,8 @@ class _AccountWidgetState extends State<AccountWidget> {
   // User _user = new User.init().getCurrentUser();
   File _image;
   bool _isLocalImage = false;
+  bool edit = false;
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     print("-------------");
@@ -89,66 +94,101 @@ class _AccountWidgetState extends State<AccountWidget> {
                           blurRadius: 10)
                     ],
                   ),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: FlatButton(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 10),
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed('/Tabs', arguments: 4);
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                            child: InkWell(
+                          onTap: () {
+                            if(edit == true){
+                              _formKey.currentState.validate();
+                            }
+                            setState(() {
+                              edit = !edit;
+                            });
+                            print("edit : $edit");
                           },
-                          child: Column(
-                            children: <Widget>[
-                              Icon(UiIcons.heart),
-                              Text(
-                                'Wish List',
-                                style: Theme.of(context).textTheme.body1,
-                              )
-                            ],
+                          child: edit == false
+                              ? Container(
+                                  child: Column(children: <Widget>[
+                                  Icon(UiIcons.edit),
+                                  Text('Edit',
+                                      style: Theme.of(context).textTheme.body1)
+                                ]))
+                              : Container(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Icon(UiIcons.safebox),
+                                      Text(
+                                        'Save',
+                                        style:
+                                            Theme.of(context).textTheme.body1,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                        )
+                            // child: FlatButton(
+                            //   padding: EdgeInsets.symmetric(
+                            //       vertical: 15, horizontal: 10),
+                            //   onPressed: () {
+                            //     Navigator.of(context)
+                            //         .pushNamed('/Tabs', arguments: 4);
+                            //   },
+                            //   child: Column(
+                            //     children: <Widget>[
+                            //       Icon(UiIcons.edit),
+                            //       Text(
+                            //         'Wish List',
+                            //         style: Theme.of(context).textTheme.body1,
+                            //       )
+                            //     ],
+                            //   ),
+                            // ),
+                            ),
+                        Expanded(
+                            child: InkWell(
+                                onTap: () {
+                                  if (edit == true) {
+                                    return null;
+                                  } else {
+                                    print("This is from Following $edit");
+                                  }
+                                },
+                                child: Container(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Icon(UiIcons.favorites),
+                                      Text("Following",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .body1),
+                                    ],
+                                  ),
+                                ))),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              if(edit == true){
+                                return null;
+                              } else {
+                                print("This is from message $edit");
+                              }
+                            },
+                            child: Container(
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(UiIcons.chat_1),
+                                  Text('Messages',
+                                      style: Theme.of(context).textTheme.body1)
+                                ],
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: FlatButton(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 10),
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed('/Tabs', arguments: 0);
-                          },
-                          child: Column(
-                            children: <Widget>[
-                              Icon(UiIcons.favorites),
-                              Text(
-                                'Following',
-                                style: Theme.of(context).textTheme.body1,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: FlatButton(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 10),
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed('/Tabs', arguments: 3);
-                          },
-                          child: Column(
-                            children: <Widget>[
-                              Icon(UiIcons.chat_1),
-                              Text(
-                                'Messages',
-                                style: Theme.of(context).textTheme.body1,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Container(
@@ -163,79 +203,117 @@ class _AccountWidgetState extends State<AccountWidget> {
                           blurRadius: 10)
                     ],
                   ),
-                  child: ListView(
-                    shrinkWrap: true,
-                    primary: false,
-                    children: <Widget>[
-                      ListTile(
-                        leading: Icon(UiIcons.user_1),
-                        title: Text(
-                          'Profile Settings',
-                          style: Theme.of(context).textTheme.body2,
+                  child: Form(
+                    key: _formKey,
+                    child: ListView(
+                      shrinkWrap: true,
+                      primary: false,
+                      children: <Widget>[
+                        ListTile(
+                          leading: Icon(UiIcons.user_1),
+                          title: Text(
+                            'Profile Settings',
+                            style: Theme.of(context).textTheme.body2,
+                          ),
                         ),
-                      ),
-                      ListTile(
-                        onTap: () {},
-                        dense: true,
-                        title: Text(
-                          'Full name',
-                          style: Theme.of(context).textTheme.body1,
+                        ListTile(
+                          onTap: () {},
+                          dense: true,
+                          title: Text(
+                            'Full name',
+                            style: Theme.of(context).textTheme.body1,
+                          ),
+                          trailing: Container(
+                            width: ScreenSizeConfig.safeBlockHorizontal *50,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Full Name',
+                              ),
+                              textDirection: TextDirection.rtl,
+                              textAlign: TextAlign.right,
+                              enabled: edit,
+                              validator: (value) {
+                                print(value);
+                                return null;
+                              },
+                              // enabled: edit,
+                              initialValue: widget.userInfo.name,
+                              //1 widget.userInfo.name,
+                              style: TextStyle(
+                                  color: Theme.of(context).focusColor),
+                            ),
+                          ),
                         ),
-                        trailing: Text(
-                          widget.userInfo.name,
-                          style: TextStyle(color: Theme.of(context).focusColor),
+                        ListTile(
+                          onTap: () {},
+                          dense: true,
+                          title: Text(
+                            'Gender',
+                            style: Theme.of(context).textTheme.body1,
+                          ),
+                          trailing: Container(
+                            width: ScreenSizeConfig.safeBlockHorizontal *50,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Gender',
+                              ),
+                              textDirection: TextDirection.rtl,
+                              textAlign: TextAlign.right,
+                              enabled: edit,
+                              validator: (value) {
+                                print(value);
+                                return null;
+                              },
+                              initialValue: widget.userInfo.gender,
+                              style: TextStyle(
+                                  color: Theme.of(context).focusColor),
+                            ),
+                          ),
                         ),
-                      ),
-                      ListTile(
-                        onTap: () {},
-                        dense: true,
-                        title: Text(
-                          'Gender',
-                          style: Theme.of(context).textTheme.body1,
+                        ListTile(
+                          onTap: () {},
+                          dense: true,
+                          title: Text(
+                            'Interest',
+                            style: Theme.of(context).textTheme.body1,
+                          ),
+                          trailing: Text(
+                            widget.userInfo.interest.toString(),
+                            style:
+                                TextStyle(color: Theme.of(context).focusColor),
+                          ),
                         ),
-                        trailing: Text(
-                          widget.userInfo.gender,
-                          style: TextStyle(color: Theme.of(context).focusColor),
+                        ListTile(
+                          onTap: () {},
+                          dense: true,
+                          title: Text(
+                            'Match Preferences',
+                            style: Theme.of(context).textTheme.body1,
+                          ),
+                          trailing: Text(
+                            widget.userInfo.matchPrefs.toString(),
+                            // _user.getDateOfBirth()                          ,
+                            style:
+                                TextStyle(color: Theme.of(context).focusColor),
+                          ),
                         ),
-                      ),
-                      ListTile(
-                        onTap: () {},
-                        dense: true,
-                        title: Text(
-                          'Interest',
-                          style: Theme.of(context).textTheme.body1,
-                        ),
-                        trailing: Text(
-                          widget.userInfo.interest.toString(),
-                          style: TextStyle(color: Theme.of(context).focusColor),
-                        ),
-                      ),
-                      ListTile(
-                        onTap: () {},
-                        dense: true,
-                        title: Text(
-                          'Match Preferences',
-                          style: Theme.of(context).textTheme.body1,
-                        ),
-                        trailing: Text(
-                          widget.userInfo.matchPrefs.toString(),
-                          // _user.getDateOfBirth()                          ,
-                          style: TextStyle(color: Theme.of(context).focusColor),
-                        ),
-                      ),
-                      ListTile(
-                        onTap: () {},
-                        dense: true,
-                        title: Text(
-                          'Continent',
-                          style: Theme.of(context).textTheme.body1,
-                        ),
-                        trailing: Text(
-                          widget.userInfo.continent.toString(),
-                          style: TextStyle(color: Theme.of(context).focusColor),
-                        ),
-                      )
-                    ],
+                        ListTile(
+                          onTap: () {},
+                          dense: true,
+                          title: Text(
+                            'Continent',
+                            style: Theme.of(context).textTheme.body1,
+                          ),
+                          trailing: Text(
+                            widget.userInfo.continent.toString(),
+                            style:
+                                TextStyle(color: Theme.of(context).focusColor),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Container(
@@ -332,6 +410,15 @@ class _AccountWidgetState extends State<AccountWidget> {
         ),
       ),
     );
+  }
+
+  change() {
+    edit == false;
+    if (edit == false) {
+      Container(child: Icon(Icons.edit));
+    } else {
+      Container(child: Icon(Icons.save_alt));
+    }
   }
 
   avatarPicker() async {
