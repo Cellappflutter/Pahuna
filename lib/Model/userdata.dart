@@ -11,6 +11,7 @@ class UserData {
   String email;
   int age;
   String gender;
+  String description;
   UserData(
       {this.uid,
       this.name,
@@ -21,5 +22,6 @@ class UserData {
       this.longitude,
       this.continent,
       this.interest,
+      this.description,
       this.matchPrefs});
 }
