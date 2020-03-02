@@ -1,10 +1,10 @@
 class CurrentUserInfo {
-  String name="Name";
+  String name;
   int age=18;
   List<dynamic> continent = List<dynamic>();
   List<dynamic> interest = List<dynamic>();
   List<dynamic> matchPrefs = List<dynamic>();
-  String gender= "Female";
+  String gender;
   String uid;
   String avatar;
   String email;
@@ -19,7 +19,6 @@ class CurrentUserInfo {
       this.continent,
       this.interest,
       this.avatar,
-      this.email,
       this.description,
       this.phoneno,
       this.matchPrefs});
