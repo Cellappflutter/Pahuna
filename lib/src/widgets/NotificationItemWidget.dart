@@ -17,6 +17,19 @@ class _NotificationItemWidgetState extends State<NotificationItemWidget> {
     return Dismissible(
       key: Key(this.widget.notification.hashCode.toString()),
       background: Container(
+        color: Colors.green,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Icon(
+              Icons.check,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+      secondaryBackground:Container(
         color: Colors.red,
         child: Align(
           alignment: Alignment.centerRight,
@@ -28,7 +41,7 @@ class _NotificationItemWidgetState extends State<NotificationItemWidget> {
             ),
           ),
         ),
-      ),
+      ), 
       onDismissed: (direction) {
         // Remove the item from the data source.
         setState(() {

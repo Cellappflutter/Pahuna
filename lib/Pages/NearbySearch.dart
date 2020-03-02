@@ -144,6 +144,8 @@ class _NearbySearchState extends State<NearbySearch>
                               color: Colors.green,
                               child: Column(
                                 children: <Widget>[
+                                  Text(info[i].name.toString()),
+                                  Text(info[i].email.toString()),
                                   Text(info[i].uid),
                                   Row(
                                       mainAxisAlignment:
@@ -256,6 +258,8 @@ class _NearbySearchState extends State<NearbySearch>
               ),
             ),
             Consumer<List<UserData>>(builder: (context, data, child) {
+              print("---------------");
+              print(data);
               return FutureBuilder(
                 future: getRangedData(data, widget.position),
                 builder: (context, AsyncSnapshot<List<UserData>> snapshot) {
