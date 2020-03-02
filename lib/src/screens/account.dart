@@ -52,7 +52,9 @@ class _AccountWidgetState extends State<AccountWidget> {
                               style: Theme.of(context).textTheme.display2,
                             ),
                             Text(
-                              "umesh@example.com",
+                              (widget.userInfo.phoneno != null)
+                              ? (widget.userInfo.phoneno)
+                              : ("98XXXXXXXX"),
                               // widget.userInfo.email,
                               style: Theme.of(context).textTheme.caption,
                             )
@@ -222,11 +224,17 @@ class _AccountWidgetState extends State<AccountWidget> {
                       primary: false,
                       children: <Widget>[
                         ListTile(
-                          leading: Icon(UiIcons.user_1),
-                          title: Text(
-                            'Profile Settings',
-                            style: Theme.of(context).textTheme.body2,
-                          ),
+                          // leading: Icon(UiIcons.user_1),
+                          // title: Text(
+                          //   'Profile Settings',
+                          //   style: Theme.of(context).textTheme.body2,
+                          // ),
+                          title:Row(children: <Widget>[
+                            Icon(UiIcons.user_1),
+                            SizedBox(width:10),
+                            Text("Profile Settings",
+                            style: Theme.of(context).textTheme.body2)
+                          ],),
                         ),
                         ListTile(
                           onTap: () {},
@@ -275,7 +283,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                               textAlign: TextAlign.right,
                               enabled: edit,
                               validator: (value) {
-                                
                                 if (value == "Male" ||
                                     value == "Female" ||
                                     value == "Others") {
@@ -283,7 +290,6 @@ class _AccountWidgetState extends State<AccountWidget> {
 
                                   return null;
                                 } 
-                                else return "Invalid Gender";
                               },
                               initialValue: widget.userInfo.gender,
                               style: TextStyle(
@@ -304,21 +310,16 @@ class _AccountWidgetState extends State<AccountWidget> {
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Age',
-                                
                               ),
                               keyboardType: TextInputType.number,
                               textDirection: TextDirection.rtl,
                               textAlign: TextAlign.right,
                               enabled: edit,
                               validator: (value) {
-                                if(int.parse(value)>=18){
+                                if (int.parse(value) >= 18) {
                                   widget.userInfo.age = int.parse(value);
-                                return null;
+                                  return null;
                                 }
-                                else{
-                                  return "Age must be above 18";
-                                }
-                                
                               },
                               initialValue: widget.userInfo.age.toString(),
                               style: TextStyle(
@@ -329,30 +330,44 @@ class _AccountWidgetState extends State<AccountWidget> {
                         ListTile(
                           onTap: () {},
                           dense: true,
-                          title: Text(
-                            'Match Preferences',
+                          title: (Text(
+                            'Email',
                             style: Theme.of(context).textTheme.body1,
-                          ),
+                          )),
                           trailing: Text(
-                            widget.userInfo.matchPrefs.toString(),
-                            // _user.getDateOfBirth()                          ,
-                            style:
-                                TextStyle(color: Theme.of(context).focusColor),
-                          ),
+                              (widget.userInfo.email != null)
+                                  ? widget.userInfo.email
+                                  : "email here...",
+                              style: TextStyle(
+                                  color: Theme.of(context).focusColor)),
                         ),
-                        ListTile(
-                          onTap: () {},
-                          dense: true,
-                          title: Text(
-                            'Continent',
-                            style: Theme.of(context).textTheme.body1,
-                          ),
-                          trailing: Text(
-                            widget.userInfo.continent.toString(),
-                            style:
-                                TextStyle(color: Theme.of(context).focusColor),
-                          ),
-                        )
+                        // ListTile(
+                        //   onTap: () {},
+                        //   dense: true,
+                        //   title: Text(
+                        //     'Match Preferences',
+                        //     style: Theme.of(context).textTheme.body1,
+                        //   ),
+                        //   trailing: Text(
+                        //     widget.userInfo.matchPrefs.toString(),
+                        //     // _user.getDateOfBirth()                          ,
+                        //     style:
+                        //         TextStyle(color: Theme.of(context).focusColor),
+                        //   ),
+                        // ),
+                        // ListTile(
+                        //   onTap: () {},
+                        //   dense: true,
+                        //   title: Text(
+                        //     'Continent',
+                        //     style: Theme.of(context).textTheme.body1,
+                        //   ),
+                        //   trailing: Text(
+                        //     widget.userInfo.continent.toString(),
+                        //     style:
+                        //         TextStyle(color: Theme.of(context).focusColor),
+                        //   ),
+                        // )
                       ],
                     ),
                   ),
@@ -374,10 +389,129 @@ class _AccountWidgetState extends State<AccountWidget> {
                     primary: false,
                     children: <Widget>[
                       ListTile(
-                        leading: Icon(UiIcons.settings_1),
+                          // leading: Icon(UiIcons.file_2),
+                          // title: Text('Description',
+                          //     style: Theme.of(context).textTheme.body2)),
+                          title:Row(children: <Widget>[
+                            Icon(UiIcons.file_2),
+                            SizedBox(width:10),
+                            Text("Description",
+                            style: Theme.of(context).textTheme.body2)
+                          ],),),
+                      ListTile(
+                        subtitle: TextFormField(
+                          keyboardType: TextInputType.multiline,
+                          textInputAction: TextInputAction.newline,
+                          maxLines: 6,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "About yourself..."),
+                          enabled: edit,
+                          validator: (value) {
+                            widget.userInfo.description = value;
+                            return null;
+                          },
+                          initialValue: widget.userInfo.description,
+                          style:
+                              TextStyle(color: Theme.of(context).focusColor),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(6),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).hintColor.withOpacity(0.15),
+                        offset: Offset(0,3),
+                        blurRadius: 10),
+                    ],
+                  ),
+                  child: ListView(
+                    shrinkWrap: true,
+                    primary: false,
+                    children: <Widget>[
+                      
+                      ListTile(
+                        // leading: Icon(UiIcons.loupe),
+                        title:Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Icon(UiIcons.loupe),
+                          SizedBox(width:10),
+                          Text("Search Preferences",
+                          style: Theme.of(context).textTheme.body2,)
+                        ],
+                      ),
+                      ),
+                      ListTile(
+                        dense: true,
                         title: Text(
-                          'Account Settings',
-                          style: Theme.of(context).textTheme.body2,
+                          "Match Preferences",
+                          style:Theme.of(context).textTheme.body1
+                        ),
+                        trailing: Text(
+                          widget.userInfo.matchPrefs.toString(),
+                          style: TextStyle(color: Theme.of(context).focusColor)),
+                      ),
+                      ListTile(
+                        dense: true,
+                        title: Text(
+                          "Continent",
+                          style: Theme.of(context).textTheme.body1
+                        ),
+                        trailing: Text(
+                          widget.userInfo.continent.toString(),
+                          style: TextStyle(color:Theme.of(context).focusColor)
+                        ),
+                      ),
+                      ListTile(
+                        dense: false,
+                        title: Text(
+                          "Interest",
+                          style:Theme.of(context).textTheme.body1
+                        ),
+                        trailing: Text(
+                          widget.userInfo.interest.toString(),
+                          style: TextStyle(color: Theme.of(context).focusColor),
+                        )
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(6),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Theme.of(context).hintColor.withOpacity(0.15),
+                          offset: Offset(0, 3),
+                          blurRadius: 10)
+                    ],
+                  ),
+                  child: ListView(
+                    shrinkWrap: true,
+                    primary: false,
+                    children: <Widget>[
+                      ListTile(
+                        // leading: Icon(UiIcons.settings_1),
+                        // title: Text(
+                        //   'Account Settings',
+                        //   style: Theme.of(context).textTheme.body2,
+                        // ),
+                        title: Row(
+                          children: <Widget>[
+                            Icon(UiIcons.settings),
+                            SizedBox(width: 10),
+                            Text("Accoutn Settings",
+                            style:Theme.of(context).textTheme.body2),
+                          ],
                         ),
                       ),
                       ListTile(

@@ -8,6 +8,8 @@ class CurrentUserInfo {
   String uid;
   String avatar;
   String email;
+  String description;
+  String phoneno;
   CurrentUserInfo(
       {this.uid,
       this.name,
@@ -17,5 +19,8 @@ class CurrentUserInfo {
       this.continent,
       this.interest,
       this.avatar,
+      this.email,
+      this.description,
+      this.phoneno,
       this.matchPrefs});
 }
