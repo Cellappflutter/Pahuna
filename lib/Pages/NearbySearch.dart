@@ -5,6 +5,7 @@ import 'package:ecommerce_app_ui_kit/Helper/Animations/ripples.dart';
 import 'package:ecommerce_app_ui_kit/Helper/constant.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
+import 'package:ecommerce_app_ui_kit/Helper/search_bottomsheet.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/userdata.dart';
@@ -121,70 +122,7 @@ class _NearbySearchState extends State<NearbySearch>
                   backgroundColor: Colors.white,
                   context: context,
                   builder: (builder) {
-                    return Container(
-                      decoration: BoxDecoration(boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 10)
-                      ]),
-                      margin: EdgeInsets.only(top: 30),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              height: 200,
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.red,
-                              child: CircleAvatar(),
-                            ),
-                            Container(
-                              height: 200,
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.green,
-                              child: Column(
-                                children: <Widget>[
-                                  Text(info[i].uid),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        RaisedButton(
-                                          child: Text('Send Request'),
-                                          onPressed: () {
-                                            final pr = loadingBar(
-                                                context, "Sending Request");
-                                            pr.show();
-                                            DatabaseService()
-                                                .sendReq(info[i].uid)
-                                                .then((onValue) {
-                                              pr.dismiss();
-                                            });
-                                          },
-                                        ),
-                                        SizedBox(width: 10.0),
-                                        RaisedButton(
-                                          child: Text('Follow'),
-                                          onPressed: () {},
-                                        )
-                                      ]),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              height: 200,
-                              color: Colors.blue,
-                            ),
-                            Container(
-                              height: 200,
-                              color: Colors.yellow,
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
+                    return Search_BottomSheet(info[i].email,info[i].name);
                   });
             },
           ),

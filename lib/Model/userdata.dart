@@ -8,9 +8,15 @@ class UserData {
   String uid;
   double bearing;
   double distance;
+  String email;
+  int age;
+  String gender;
   UserData(
       {this.uid,
       this.name,
+      this.email,
+      this.age,
+      this.gender,
       this.latitude,
       this.longitude,
       this.continent,
