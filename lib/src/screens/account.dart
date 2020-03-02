@@ -45,7 +45,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                         child: Column(
                           children: <Widget>[
                             Text(
-                              widget.userInfo.name,
+                              widget.userInfo.name.toString(),
                               textAlign: TextAlign.left,
                               style: Theme.of(context).textTheme.display2,
                             ),

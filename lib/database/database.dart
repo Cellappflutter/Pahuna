@@ -28,26 +28,28 @@ class DatabaseService {
 
   CurrentUserInfo _userInfoMap(DocumentSnapshot snapshot) {
     Map<dynamic, dynamic> data = snapshot.data['profile'];
-    return CurrentUserInfo(
-      age: data['age'] ?? 0,
-      gender: data['gender'],
-      name: data['name'],
-      uid: snapshot.documentID,
-      interest: data['interest'],
-      continent: _continentValues(data),
-      matchPrefs: _matchPrefsValues(data),
-    );
+    if (data != null) {
+      return CurrentUserInfo(
+        age: data['age'] ?? 0,
+        gender: data['gender'],
+        name: data['name'],
+        uid: snapshot.documentID,
+        interest: data['interest'],
+        continent: _continentValues(data),
+        matchPrefs: _matchPrefsValues(data),
+      );
+    }
+    return CurrentUserInfo();
   }
 
-  Stream<List<UserData>> getOnlineUsers(CurrentUserInfo searchPrefsdata){
+  Stream<List<UserData>> getOnlineUsers(CurrentUserInfo searchPrefsdata) {
     print("Checkuser");
-      Query q = reference;
-      Query datatwo = _matchPrefsQuery(searchPrefsdata.matchPrefs, q);
-      Query datathree = _matchContinentsQuery(searchPrefsdata.continent, datatwo);
-      Query datafour = datathree.where("profile.interest",
-          arrayContainsAny: searchPrefsdata.interest);
-      return datafour.snapshots().map(_onlineUserList);
-    
+    Query q = reference;
+    Query datatwo = _matchPrefsQuery(searchPrefsdata.matchPrefs, q);
+    Query datathree = _matchContinentsQuery(searchPrefsdata.continent, datatwo);
+    Query datafour = datathree.where("profile.interest",
+        arrayContainsAny: searchPrefsdata.interest);
+    return datafour.snapshots().map(_onlineUserList);
   }
 
   Query _matchPrefsQuery(List<dynamic> matchPrefs, Query dataone) {
