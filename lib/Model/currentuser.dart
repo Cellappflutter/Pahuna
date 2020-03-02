@@ -7,10 +7,12 @@ class CurrentUserInfo {
   String gender= "Female";
   String uid;
   String avatar;
+  String email;
   CurrentUserInfo(
       {this.uid,
       this.name,
       this.age,
+      this.email,
       this.gender,
       this.continent,
       this.interest,

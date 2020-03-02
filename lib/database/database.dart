@@ -28,24 +28,27 @@ class DatabaseService {
 
   CurrentUserInfo _userInfoMap(DocumentSnapshot snapshot) {
     Map<dynamic, dynamic> data = snapshot.data['profile'];
-    try{
+    try {
       return CurrentUserInfo(
-      age: data['age'] ?? 0,
-      gender: data['gender'],
-      name: data['name'],
-      uid: snapshot.documentID,
-      interest: data['interest'],
-      continent: _continentValues(data),
-      matchPrefs: _matchPrefsValues(data),
-    );
-    }
-    catch(e){
+        age: data['age'] ?? 0,
+        gender: data['gender'] ?? '',
+        name: data['name'] ?? '',
+        email: data['email'] ?? '',
+        uid: snapshot.documentID ?? '',
+        interest: data['interest'] ?? [],
+        continent: _continentValues(data) ?? [],
+        matchPrefs: _matchPrefsValues(data) ?? [],
+      );
+    } catch (e) {
       return CurrentUserInfo();
     }
   }
 
   Stream<List<UserData>> getOnlineUsers(CurrentUserInfo searchPrefsdata) {
     print("Checkuser");
+    print(searchPrefsdata.continent);
+    print(searchPrefsdata.interest);
+    print(searchPrefsdata.matchPrefs);
     Query q = reference;
     Query datatwo = _matchPrefsQuery(searchPrefsdata.matchPrefs, q);
     Query datathree = _matchContinentsQuery(searchPrefsdata.continent, datatwo);
@@ -205,6 +208,7 @@ class DatabaseService {
     profile['age'] = userInfo.age;
     profile['name'] = userInfo.name;
     profile['gender'] = userInfo.gender;
+    profile['email'] = userInfo.email;
     profile['interest'] = userInfo.interest;
     profile['matchPrefs'] = _setMatchPrefs(userInfo.matchPrefs);
     profile['continent'] = _setContinentPrefs(userInfo.continent);
@@ -248,14 +252,19 @@ class DatabaseService {
       final document = snapshot.documents;
       document.forEach((doc) {
         if (doc.documentID.compareTo(uid) != 0) {
+          print("dasssssssssssssssssss");
+          print(doc.data['profile']['name'].toString());
           _userData.add(UserData(
-            name: doc.data['name'] ?? "null",
-            latitude: doc.data['latitude'] ?? "null",
-            longitude: doc.data['longitude'] ?? "null",
-            uid: doc.documentID ?? "null",
-            interest: _interestValues(doc.data['profile']),
-            continent: _interestValues(doc.data['profile']),
-            matchPrefs: _matchPrefsValues(doc.data['profile']) ?? "null",
+            name: doc.data['profile']['name'] ?? "",
+            latitude: doc.data['latitude'] ?? "",
+            longitude: doc.data['longitude'] ?? "",
+            email: doc.data['profile']['email'] ?? "",
+            age: doc.data['profile']['age'] ?? 18,
+            gender: doc.data['profile']['gender'] ?? "Other",
+            uid: doc.documentID ?? "",
+            interest: _interestValues(doc.data['profile']) ?? [],
+            continent: _interestValues(doc.data['profile']) ?? [],
+            matchPrefs: _matchPrefsValues(doc.data['profile']) ?? [],
           ));
         }
       });
@@ -263,6 +272,10 @@ class DatabaseService {
     } else
       return null;
   }
+
+  // ProfileData(Map<dynamic, dynamic> data){
+
+  // }
 
   List<dynamic> _interestValues(Map<dynamic, dynamic> data) {
     return data['interest'];
