@@ -52,14 +52,9 @@ class _AccountWidgetState extends State<AccountWidget> {
                           child: Column(
                             children: <Widget>[
                               Text(
-                                (widget.userInfo.name != null)
-                                    ? ("widget.userInfo.name")
-                                    : ("Your Name"),
-                                textAlign: TextAlign.left,
-                                style: Theme.of(context).textTheme.display2,
-                              ),
-                              Text(
-                                "umesh@example.com",
+                                (widget.userInfo.phoneno != null)
+                                    ? (widget.userInfo.phoneno)
+                                    : ("98XXXXXXXX"),
                                 // widget.userInfo.email,
                                 style: Theme.of(context).textTheme.caption,
                               )
@@ -324,7 +319,21 @@ class _AccountWidgetState extends State<AccountWidget> {
                             ),
                           ),
                           ListTile(
-                            onTap: () {},
+                            onTap: () async {
+                              await showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (context) {
+                                    return StatefulBuilder(
+                                        builder: (context, setState) {
+                                      return Dialog(
+                                        child: Stack(
+                                            children: _interestChipDesign()),
+                                      );
+                                    });
+                                  });
+                              setState(() {});
+                            },
                             dense: true,
                             title: Text(
                               'Match Preferences',
