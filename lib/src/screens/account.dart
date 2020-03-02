@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
@@ -25,6 +26,7 @@ class _AccountWidgetState extends State<AccountWidget> {
   bool _isLocalImage = false;
   bool edit = false;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController _genderController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     print("-------------");
@@ -53,8 +55,8 @@ class _AccountWidgetState extends State<AccountWidget> {
                             ),
                             Text(
                               (widget.userInfo.phoneno != null)
-                              ? (widget.userInfo.phoneno)
-                              : ("98XXXXXXXX"),
+                                  ? (widget.userInfo.phoneno)
+                                  : ("98XXXXXXXX"),
                               // widget.userInfo.email,
                               style: Theme.of(context).textTheme.caption,
                             )
@@ -229,12 +231,14 @@ class _AccountWidgetState extends State<AccountWidget> {
                           //   'Profile Settings',
                           //   style: Theme.of(context).textTheme.body2,
                           // ),
-                          title:Row(children: <Widget>[
-                            Icon(UiIcons.user_1),
-                            SizedBox(width:10),
-                            Text("Profile Settings",
-                            style: Theme.of(context).textTheme.body2)
-                          ],),
+                          title: Row(
+                            children: <Widget>[
+                              Icon(UiIcons.user_1),
+                              SizedBox(width: 10),
+                              Text("Profile Settings",
+                                  style: Theme.of(context).textTheme.body2)
+                            ],
+                          ),
                         ),
                         ListTile(
                           onTap: () {},
@@ -266,7 +270,11 @@ class _AccountWidgetState extends State<AccountWidget> {
                           ),
                         ),
                         ListTile(
-                          onTap: () {},
+                          enabled: edit,
+                          onTap: () async {
+                            if(edit){await genderDialog();
+                            setState(() {});}
+                          },
                           dense: true,
                           title: Text(
                             'Gender',
@@ -274,24 +282,28 @@ class _AccountWidgetState extends State<AccountWidget> {
                           ),
                           trailing: Container(
                             width: ScreenSizeConfig.safeBlockHorizontal * 50,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Gender',
-                              ),
+                            child: Text(
+                              widget.userInfo.gender,
+                              // controller: _genderController,
+                              // decoration: InputDecoration(
+                              //   border: InputBorder.none,
+                              //   hintText: 'Gender',
+                              // ),
                               textDirection: TextDirection.rtl,
                               textAlign: TextAlign.right,
-                              enabled: edit,
-                              validator: (value) {
-                                if (value == "Male" ||
-                                    value == "Female" ||
-                                    value == "Others") {
-                                  widget.userInfo.gender = value;
 
-                                  return null;
-                                } 
-                              },
-                              initialValue: widget.userInfo.gender,
+                              //    enabled: edit,
+                              // validator: (value) {
+                              //   if (value == "Male" ||
+                              //       value == "Female" ||
+                              //       value == "Others") {
+                              //     widget.userInfo.gender = value;
+
+                              //     return null;
+                              //   } else
+                              //     return "Invalid Gender";
+                              // },
+                              // //   initialValue: widget.userInfo.gender,
                               style: TextStyle(
                                   color: Theme.of(context).focusColor),
                             ),
@@ -389,15 +401,18 @@ class _AccountWidgetState extends State<AccountWidget> {
                     primary: false,
                     children: <Widget>[
                       ListTile(
-                          // leading: Icon(UiIcons.file_2),
-                          // title: Text('Description',
-                          //     style: Theme.of(context).textTheme.body2)),
-                          title:Row(children: <Widget>[
+                        // leading: Icon(UiIcons.file_2),
+                        // title: Text('Description',
+                        //     style: Theme.of(context).textTheme.body2)),
+                        title: Row(
+                          children: <Widget>[
                             Icon(UiIcons.file_2),
-                            SizedBox(width:10),
+                            SizedBox(width: 10),
                             Text("Description",
-                            style: Theme.of(context).textTheme.body2)
-                          ],),),
+                                style: Theme.of(context).textTheme.body2)
+                          ],
+                        ),
+                      ),
                       ListTile(
                         subtitle: TextFormField(
                           keyboardType: TextInputType.multiline,
@@ -412,8 +427,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                             return null;
                           },
                           initialValue: widget.userInfo.description,
-                          style:
-                              TextStyle(color: Theme.of(context).focusColor),
+                          style: TextStyle(color: Theme.of(context).focusColor),
                         ),
                       )
                     ],
@@ -426,60 +440,89 @@ class _AccountWidgetState extends State<AccountWidget> {
                     borderRadius: BorderRadius.circular(6),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context).hintColor.withOpacity(0.15),
-                        offset: Offset(0,3),
-                        blurRadius: 10),
+                          color: Theme.of(context).hintColor.withOpacity(0.15),
+                          offset: Offset(0, 3),
+                          blurRadius: 10),
                     ],
                   ),
                   child: ListView(
                     shrinkWrap: true,
                     primary: false,
                     children: <Widget>[
-                      
                       ListTile(
                         // leading: Icon(UiIcons.loupe),
-                        title:Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Icon(UiIcons.loupe),
-                          SizedBox(width:10),
-                          Text("Search Preferences",
-                          style: Theme.of(context).textTheme.body2,)
-                        ],
-                      ),
+                        title: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Icon(UiIcons.loupe),
+                            SizedBox(width: 10),
+                            Text(
+                              "Search Preferences",
+                              style: Theme.of(context).textTheme.body2,
+                            )
+                          ],
+                        ),
                       ),
                       ListTile(
+                        onTap: () async {
+                          if(edit){await showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) {
+                                return Dialog(
+                                  child: Wrap(children: _matchPrefsChipDesign()),
+                                );
+                              });
+                          setState(() {});}
+                        },
                         dense: true,
-                        title: Text(
-                          "Match Preferences",
-                          style:Theme.of(context).textTheme.body1
-                        ),
-                        trailing: Text(
-                          widget.userInfo.matchPrefs.toString(),
-                          style: TextStyle(color: Theme.of(context).focusColor)),
+                        title: Text("Match Preferences",
+                            style: Theme.of(context).textTheme.body1),
+                        trailing: Text(widget.userInfo.matchPrefs.toString(),
+                            style:
+                                TextStyle(color: Theme.of(context).focusColor)),
                       ),
                       ListTile(
+                        onTap: () async {
+                          if(edit){await showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) {
+                                return Dialog(
+                                  child: Wrap(children: _continentChipDesign()),
+                                );
+                              });
+                          setState(() {});}
+                        },
                         dense: true,
-                        title: Text(
-                          "Continent",
-                          style: Theme.of(context).textTheme.body1
-                        ),
-                        trailing: Text(
-                          widget.userInfo.continent.toString(),
-                          style: TextStyle(color:Theme.of(context).focusColor)
-                        ),
+                        title: Text("Continent",
+                            style: Theme.of(context).textTheme.body1),
+                        trailing: Text(widget.userInfo.continent.toString(),
+                            style:
+                                TextStyle(color: Theme.of(context).focusColor)),
                       ),
                       ListTile(
-                        dense: false,
-                        title: Text(
-                          "Interest",
-                          style:Theme.of(context).textTheme.body1
-                        ),
-                        trailing: Text(
-                          widget.userInfo.interest.toString(),
-                          style: TextStyle(color: Theme.of(context).focusColor),
-                        )
-                      )
+                          onTap: () async {
+                            if(edit){await showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) {
+                                
+                                    return Dialog(
+                                      child:
+                                          Wrap(children: _interestChipDesign()),
+                                    );
+                                  });
+                            setState(() {});}
+                          },
+                          dense: false,
+                          title: Text("Interest",
+                              style: Theme.of(context).textTheme.body1),
+                          trailing: Text(
+                            widget.userInfo.interest.toString(),
+                            style:
+                                TextStyle(color: Theme.of(context).focusColor),
+                          ))
                     ],
                   ),
                 ),
@@ -510,7 +553,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                             Icon(UiIcons.settings),
                             SizedBox(width: 10),
                             Text("Accoutn Settings",
-                            style:Theme.of(context).textTheme.body2),
+                                style: Theme.of(context).textTheme.body2),
                           ],
                         ),
                       ),
@@ -621,5 +664,178 @@ class _AccountWidgetState extends State<AccountWidget> {
       print(e);
       return false;
     }
+  }
+
+  List<Widget> _matchPrefsChipDesign() {
+    ProfileMatchPreferences pp = ProfileMatchPreferences();
+    List<Widget> widgets = List<Widget>();
+    for (int i = 0; i < pp.preferences.length; i++) {
+      Widget widget1 = StatefulBuilder(
+        builder: (BuildContext context, setState) {
+          return Container(
+            child: ChoiceChip(
+              label: Text(pp.preferences[i],
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+              backgroundColor: Color(pp.colors[i]),
+              selected: widget.userInfo.matchPrefs.contains(pp.preferences[i]),
+              pressElevation: 5.0,
+              // disabledColor: Colors.red,
+              selectedColor: Colors.blue,
+              onSelected: (bool selected) {
+                if (selected) {
+                  widget.userInfo.matchPrefs.add(pp.preferences[i]);
+                } else {
+                  widget.userInfo.matchPrefs.remove(pp.preferences[i]);
+                }
+                setState(() {});
+              },
+              shadowColor: Colors.grey[50],
+              padding: EdgeInsets.all(4.0),
+            ),
+            margin: EdgeInsets.only(left: 12, right: 12, top: 2, bottom: 2),
+          );
+        },
+      );
+      widgets.add(widget1);
+    }
+    return widgets;
+  }
+
+  List<Widget> _continentChipDesign() {
+    ProfileContinentPreferences pp = ProfileContinentPreferences();
+    List<Widget> widgets = List<Widget>();
+    for (int i = 0; i < pp.preferences.length; i++) {
+      Widget widget1 = StatefulBuilder(
+        builder: (BuildContext context, setState) {
+          return Container(
+            child: ChoiceChip(
+              label: Text(pp.preferences[i],
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+              backgroundColor: Color(pp.colors[i]),
+              selected: widget.userInfo.continent.contains(pp.preferences[i]),
+              pressElevation: 5.0,
+              // disabledColor: Colors.red,
+              selectedColor: Colors.blue,
+              onSelected: (bool selected) {
+                if (selected) {
+                  widget.userInfo.continent.add(pp.preferences[i]);
+                } else {
+                  widget.userInfo.continent.remove(pp.preferences[i]);
+                }
+                setState(() {});
+              },
+              shadowColor: Colors.grey[50],
+              padding: EdgeInsets.all(4.0),
+            ),
+            margin: EdgeInsets.only(left: 12, right: 12, top: 2, bottom: 2),
+          );
+        },
+      );
+      widgets.add(widget1);
+    }
+    return widgets;
+  }
+
+  List<Widget> _interestChipDesign() {
+    ProfileInterestPreferences pp = ProfileInterestPreferences();
+    List<Widget> widgets = List<Widget>();
+    //print(editableInfo.matchPrefs);
+    // print(editableInfo.interest);
+    print("++++++++++++++++++++++");
+
+//interestChips=userInfo.interest;
+    for (int i = 0; i < pp.preferences.length; i++) {
+      Widget widget1 = StatefulBuilder(
+        builder: (BuildContext context, setState) {
+          return Container(
+            child: ChoiceChip(
+              label: Text(pp.preferences[i],
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+              backgroundColor: Color(pp.colors[i]),
+              selected: widget.userInfo.interest.contains(pp.preferences[i]),
+              pressElevation: 5.0,
+              // disabledColor: Colors.red,
+              selectedColor: Colors.blue,
+              onSelected: (bool selected) {
+                if (selected) {
+                  widget.userInfo.interest.add(pp.preferences[i]);
+                } else {
+                  widget.userInfo.interest.remove(pp.preferences[i]);
+                }
+                setState(() {
+                  // check = 2;
+                  // pp.isSelected[i] = !pp.isSelected[i];
+                });
+              },
+              shadowColor: Colors.grey[50],
+              padding: EdgeInsets.all(4.0),
+            ),
+            margin: EdgeInsets.only(left: 12, right: 12, top: 2, bottom: 2),
+          );
+        },
+      );
+      widgets.add(widget1);
+    }
+    return widgets;
+  }
+
+  genderDialog() async {
+    await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+              elevation: 5,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  RadioListTile(
+                      title: Text("Male"),
+                      value: "Male",
+                      groupValue: widget.userInfo.gender,
+                      onChanged: (value) {
+                        setState(() {
+                          widget.userInfo.gender = value;
+                        });
+                      }),
+                  RadioListTile(
+                      title: Text("Female"),
+                      value: "Female",
+                      groupValue: widget.userInfo.gender,
+                      onChanged: (value) {
+                        setState(() {
+                          widget.userInfo.gender = value;
+                        });
+                      }),
+                  RadioListTile(
+                      title: Text("Others"),
+                      value: "Others",
+                      groupValue: widget.userInfo.gender,
+                      onChanged: (value) {
+                        setState(() {
+                          widget.userInfo.gender = value;
+                        });
+                      }),
+                  Center(
+                    child: FlatButton(
+                        onPressed: () {
+                          _genderController.text =
+                              widget.userInfo.gender.toString();
+                          Navigator.of(context).pop();
+                        },
+                        child: Text("OK")),
+                  ),
+                ],
+              ),
+            );
+          });
+        });
   }
 }
