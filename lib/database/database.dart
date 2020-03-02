@@ -28,18 +28,20 @@ class DatabaseService {
 
   CurrentUserInfo _userInfoMap(DocumentSnapshot snapshot) {
     Map<dynamic, dynamic> data = snapshot.data['profile'];
-    if (data != null) {
+    try{
       return CurrentUserInfo(
-        age: data['age'] ?? 0,
-        gender: data['gender'],
-        name: data['name'],
-        uid: snapshot.documentID,
-        interest: data['interest'],
-        continent: _continentValues(data),
-        matchPrefs: _matchPrefsValues(data),
-      );
+      age: data['age'] ?? 0,
+      gender: data['gender'],
+      name: data['name'],
+      uid: snapshot.documentID,
+      interest: data['interest'],
+      continent: _continentValues(data),
+      matchPrefs: _matchPrefsValues(data),
+    );
     }
-    return CurrentUserInfo();
+    catch(e){
+      return CurrentUserInfo();
+    }
   }
 
   Stream<List<UserData>> getOnlineUsers(CurrentUserInfo searchPrefsdata) {

@@ -45,7 +45,9 @@ class _AccountWidgetState extends State<AccountWidget> {
                         child: Column(
                           children: <Widget>[
                             Text(
-                              widget.userInfo.name.toString(),
+                              (widget.userInfo.name != null)
+                                  ? (widget.userInfo.name)
+                                  : ("Your Name"),
                               textAlign: TextAlign.left,
                               style: Theme.of(context).textTheme.display2,
                             ),
@@ -273,8 +275,15 @@ class _AccountWidgetState extends State<AccountWidget> {
                               textAlign: TextAlign.right,
                               enabled: edit,
                               validator: (value) {
-                                widget.userInfo.gender = value;
-                                return null;
+                                
+                                if (value == "Male" ||
+                                    value == "Female" ||
+                                    value == "Others") {
+                                  widget.userInfo.gender = value;
+
+                                  return null;
+                                } 
+                                else return "Invalid Gender";
                               },
                               initialValue: widget.userInfo.gender,
                               style: TextStyle(
@@ -286,7 +295,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                           onTap: () {},
                           dense: true,
                           title: Text(
-                            'Interest',
+                            'Age',
                             style: Theme.of(context).textTheme.body1,
                           ),
                           trailing: Container(
@@ -295,13 +304,21 @@ class _AccountWidgetState extends State<AccountWidget> {
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Age',
+                                
                               ),
+                              keyboardType: TextInputType.number,
                               textDirection: TextDirection.rtl,
                               textAlign: TextAlign.right,
                               enabled: edit,
                               validator: (value) {
-                                widget.userInfo.age = int.parse(value);
+                                if(int.parse(value)>=18){
+                                  widget.userInfo.age = int.parse(value);
                                 return null;
+                                }
+                                else{
+                                  return "Age must be above 18";
+                                }
+                                
                               },
                               initialValue: widget.userInfo.age.toString(),
                               style: TextStyle(
