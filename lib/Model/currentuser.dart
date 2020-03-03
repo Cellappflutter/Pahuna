@@ -19,7 +19,6 @@ class CurrentUserInfo {
       this.continent,
       this.interest,
       this.avatar,
-      this.email,
       this.description,
       this.phoneno,
       this.matchPrefs});

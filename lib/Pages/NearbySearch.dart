@@ -122,7 +122,7 @@ class _NearbySearchState extends State<NearbySearch>
                   backgroundColor: Colors.white,
                   context: context,
                   builder: (builder) {
-                    return Search_BottomSheet(info[i].email,info[i].name);
+                    return Search_BottomSheet(info[i].email,info[i].name,);
                   });
             },
           ),
