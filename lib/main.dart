@@ -78,17 +78,20 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   checkPermission() async {
+    await PermissionHandler().requestPermissions([PermissionGroup.location]);
+
     await Geolocator().checkGeolocationPermissionStatus().then((onValue) async {
+      
       print("000000000000000000000000000000000000");
       print(onValue);
+      print("dssdsdsdsdsdsd");
       if (onValue != GeolocationStatus.granted) {
-        print("dssdsdsdsdsdsd");
         await showDialog(
             context: context,
             builder: (context) {
               return AlertDialog(
                 content: Text(
-                    "Please enable permission for location and Restart the application"),
+                    "Please enable permission for location and Restart the application."),
                 actions: <Widget>[
                   FlatButton(
                       onPressed: () async {
