@@ -152,7 +152,7 @@ class _AuthPageState extends State<AuthPage> {
     _auth.currentUser().then((firebaseUser) async {
       print(firebaseUser);
       await Future.delayed(Duration(seconds: 2));
-      WidgetsBinding.instance.addPostFrameCallback((_) => checkPermission());
+     WidgetsBinding.instance.addPostFrameCallback((_) => checkPermission());
       if (firebaseUser != null) {
         print(firebaseUser.uid);
         print("=============================================");
@@ -207,6 +207,7 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+   
     if (gotoLogin != null && islocation == true) {
       print("***********************");
       print(DatabaseService.uid);

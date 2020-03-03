@@ -63,6 +63,7 @@ class _CartWidgetState extends State<CartWidget> {
                     return Dismissible(
                       key: dismissableKey,
                       confirmDismiss: (direction) {
+                       // RangeSlider(values: null, onChanged: null)
                         // if (direction == DismissDirection.startToEnd) {
                         //   DatabaseService().acceptReq(item.uid).then((onValue) {
                         //     if (onValue) {
