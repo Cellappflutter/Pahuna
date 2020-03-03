@@ -84,7 +84,9 @@ class _searchsheet extends State<Search_BottomSheet> {
                     Align(
                         alignment: Alignment.bottomCenter,
                         child: RaisedButton.icon(
-                            onPressed: () => print("send request"),
+                            onPressed: (){
+                              DatabaseService().sendReq("uid");
+                            },
                             icon: Icon(Icons.check),
                             label: Text("Send Request")))
                   ],

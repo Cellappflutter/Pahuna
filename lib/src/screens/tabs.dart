@@ -93,10 +93,6 @@ class _TabsWidgetState extends State<TabsWidget> {
       endDrawer: FilterWidget(),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-//        leading: new IconButton(
-//          icon: new Icon(UiIcons.return_icon, color: Theme.of(context).hintColor),
-//          onPressed: () => Navigator.of(context).pop(),
-//        ),
         leading: new IconButton(
           icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
           onPressed: () => _scaffoldKey.currentState.openDrawer(),
