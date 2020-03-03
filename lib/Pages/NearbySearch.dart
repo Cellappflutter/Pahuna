@@ -166,6 +166,10 @@ class _NearbySearchState extends State<NearbySearch>
   @override
   Widget build(BuildContext context) {
     _controller.repeat();
+    print(widget.userData.interest.toString() + "" +
+        widget.userData.matchPrefs.toString() +"" +
+        widget.userData.name + "" +
+        widget.userData.continent.toString());
     print("000000000000000000000000000");
     return StreamProvider.value(
       value: _databaseService.getOnlineUsers(widget.userData),

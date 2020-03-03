@@ -1,7 +1,10 @@
+
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/src/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/database/auth.dart';
 
