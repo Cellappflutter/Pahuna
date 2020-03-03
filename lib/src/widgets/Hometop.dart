@@ -45,8 +45,8 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return HomePage(
-                  position: position,
-                  userData: userData,
+                //  position: position,
+                 // userData: userData,
                 );
               }));
             },

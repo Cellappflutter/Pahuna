@@ -327,7 +327,7 @@ class DatabaseService {
 
   Stream<List<String>> getter() {
     return requestReference
-        .document("TqYPZHH36e2T9GFiz8cp")
+        .document(uid)
         .collection("Pending")
         .snapshots()
         .map(convert);
