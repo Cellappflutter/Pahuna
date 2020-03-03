@@ -34,6 +34,7 @@ class DatabaseService {
         gender: data['gender'] ?? '',
         name: data['name'] ?? '',
         email: data['email'] ?? '',
+        description: data['description'] ?? '',
         uid: snapshot.documentID ?? '',
         interest: data['interest'] ?? [],
         continent: _continentValues(data) ?? [],
@@ -205,13 +206,14 @@ class DatabaseService {
 
   _updateProfileData(CurrentUserInfo userInfo) {
     Map<dynamic, dynamic> profile = Map<dynamic, dynamic>();
-    profile['age'] = userInfo.age;
-    profile['name'] = userInfo.name;
-    profile['gender'] = userInfo.gender;
-    profile['email'] = userInfo.email;
-    profile['interest'] = userInfo.interest;
-    profile['matchPrefs'] = _setMatchPrefs(userInfo.matchPrefs);
-    profile['continent'] = _setContinentPrefs(userInfo.continent);
+    profile['age'] = userInfo.age ?? 18;
+    profile['name'] = userInfo.name ?? '';
+    profile['gender'] = userInfo.gender ?? '';
+    profile['email'] = userInfo.email ?? '';
+    profile['description'] = userInfo.description ?? '';
+    profile['interest'] = userInfo.interest ?? [];
+    profile['matchPrefs'] = _setMatchPrefs(userInfo.matchPrefs) ?? [];
+    profile['continent'] = _setContinentPrefs(userInfo.continent) ?? [];
     return profile;
   }
 
@@ -259,6 +261,7 @@ class DatabaseService {
             latitude: doc.data['latitude'] ?? "",
             longitude: doc.data['longitude'] ?? "",
             email: doc.data['profile']['email'] ?? "",
+            description: doc.data['profile']['description'] ?? "",
             age: doc.data['profile']['age'] ?? 18,
             gender: doc.data['profile']['gender'] ?? "Other",
             uid: doc.documentID ?? "",

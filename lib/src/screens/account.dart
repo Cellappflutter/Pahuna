@@ -7,6 +7,7 @@ import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/customappbar.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -22,19 +23,35 @@ class AccountWidget extends StatefulWidget {
 
 class _AccountWidgetState extends State<AccountWidget> {
   // User _user = new User.init().getCurrentUser();
+  TextEditingController _genderController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _ageController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+
   File _image;
   bool _isLocalImage = false;
   bool edit = false;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _genderController = TextEditingController();
+  CurrentUserInfo editableInfo;
+  int check = 1;
   @override
   Widget build(BuildContext context) {
+    if (check == 1) {
+      editableInfo = widget.userInfo;
+      _nameController.text = editableInfo.name.toString();
+      _ageController.text = editableInfo.age.toString();
+      _emailController.text = editableInfo.email.toString();
+      _descriptionController.text = editableInfo.description.toString();
+      check = 2;
+    }
     print("-------------");
-    print(widget.userInfo.name);
+    print(editableInfo.name);
     return MaterialApp(
-      home: Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
+      home: SafeArea(
+        child: Scaffold(
+          appBar: customAppBar(context, "Profile"),
+          body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(vertical: 7),
             child: Column(
               children: <Widget>[
@@ -47,17 +64,17 @@ class _AccountWidgetState extends State<AccountWidget> {
                         child: Column(
                           children: <Widget>[
                             Text(
-                              (widget.userInfo.name != null)
-                                  ? (widget.userInfo.name)
+                              (editableInfo.name != null)
+                                  ? (editableInfo.name)
                                   : ("Your Name"),
                               textAlign: TextAlign.left,
                               style: Theme.of(context).textTheme.display2,
                             ),
                             Text(
-                              (widget.userInfo.phoneno != null)
-                                  ? (widget.userInfo.phoneno)
+                              (editableInfo.phoneno != null)
+                                  ? (editableInfo.phoneno)
                                   : ("98XXXXXXXX"),
-                              // widget.userInfo.email,
+                              // editableInfo.email,
                               style: Theme.of(context).textTheme.caption,
                             )
                           ],
@@ -80,11 +97,11 @@ class _AccountWidgetState extends State<AccountWidget> {
                                       : CircleAvatar(
                                           backgroundColor: Colors.red,
                                         ))
-                                  : ((widget.userInfo.avatar != "" &&
-                                          widget.userInfo.avatar != null)
+                                  : ((editableInfo.avatar != "" &&
+                                          editableInfo.avatar != null)
                                       ? CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              widget.userInfo.avatar),
+                                          backgroundImage:
+                                              NetworkImage(editableInfo.avatar),
                                         )
                                       : CircleAvatar()))),
                     ],
@@ -109,21 +126,59 @@ class _AccountWidgetState extends State<AccountWidget> {
                         Expanded(
                             child: InkWell(
                           onTap: () async {
-                            ProgressDialog pr =
-                                loadingBar(context, "Updating Information");
-                            if (edit == true) {
-                              if (_formKey.currentState.validate()) {
-                                pr.show();
-                                await DatabaseService()
-                                    .updateUserProfile(widget.userInfo);
-                                await uploadAvatar(context);
-                                pr.dismiss();
-                              }
+                            if (edit) {
+                              showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text("Are you Sure"),
+                                      content: Text("Do you want to Save?"),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                            onPressed: () async {
+                                              ProgressDialog pr = loadingBar(
+                                                  context,
+                                                  "Updating Information");
+                                              if (_formKey.currentState
+                                                      .validate() &&
+                                                  _descriptionController.text !=
+                                                      null &&
+                                                  _descriptionController.text
+                                                          .trim() !=
+                                                      '') {
+                                                pr.show();
+                                                editableInfo.description =
+                                                    _descriptionController.text;
+                                                await DatabaseService()
+                                                    .updateUserProfile(
+                                                        editableInfo);
+                                                await uploadAvatar(context);
+                                                pr.dismiss();
+                                                Navigator.of(context).pop();
+                                                setState(() {
+                                                  edit = !edit;
+                                                });
+                                              }
+                                            },
+                                            child: Text("Yes")),
+                                        FlatButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                edit = !edit;
+                                                check = 1;
+                                              });
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text("NO"))
+                                      ],
+                                    );
+                                  });
+                            } else {
+                              setState(() {
+                                edit = !edit;
+                              });
                             }
-                            setState(() {
-                              edit = !edit;
-                            });
-                            print("edit : $edit");
                           },
                           child: edit == false
                               ? Container(
@@ -144,30 +199,14 @@ class _AccountWidgetState extends State<AccountWidget> {
                                     ],
                                   ),
                                 ),
-                        )
-                            // child: FlatButton(
-                            //   padding: EdgeInsets.symmetric(
-                            //       vertical: 15, horizontal: 10),
-                            //   onPressed: () {
-                            //     Navigator.of(context)
-                            //         .pushNamed('/Tabs', arguments: 4);
-                            //   },
-                            //   child: Column(
-                            //     children: <Widget>[
-                            //       Icon(UiIcons.edit),
-                            //       Text(
-                            //         'Wish List',
-                            //         style: Theme.of(context).textTheme.body1,
-                            //       )
-                            //     ],
-                            //   ),
-                            // ),
-                            ),
+                        )),
                         Expanded(
                             child: InkWell(
                                 onTap: () {
                                   if (edit == true) {
-                                    return null;
+                                    setState(() {
+                                      edit = false;
+                                    });
                                   } else {
                                     print("This is from Following $edit");
                                   }
@@ -258,12 +297,13 @@ class _AccountWidgetState extends State<AccountWidget> {
                               textAlign: TextAlign.right,
                               enabled: edit,
                               validator: (value) {
-                                widget.userInfo.name = value;
+                                editableInfo.name = value;
                                 return null;
                               },
                               // enabled: edit,
-                              initialValue: widget.userInfo.name,
-                              //1 widget.userInfo.name,
+                              // initialValue: editableInfo.name,
+                              controller: _nameController,
+                              //1 editableInfo.name,
                               style: TextStyle(
                                   color: Theme.of(context).focusColor),
                             ),
@@ -272,8 +312,10 @@ class _AccountWidgetState extends State<AccountWidget> {
                         ListTile(
                           enabled: edit,
                           onTap: () async {
-                            if(edit){await genderDialog();
-                            setState(() {});}
+                            if (edit) {
+                              await genderDialog();
+                              setState(() {});
+                            }
                           },
                           dense: true,
                           title: Text(
@@ -283,7 +325,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                           trailing: Container(
                             width: ScreenSizeConfig.safeBlockHorizontal * 50,
                             child: Text(
-                              widget.userInfo.gender,
+                              editableInfo.gender,
                               // controller: _genderController,
                               // decoration: InputDecoration(
                               //   border: InputBorder.none,
@@ -291,19 +333,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                               // ),
                               textDirection: TextDirection.rtl,
                               textAlign: TextAlign.right,
-
-                              //    enabled: edit,
-                              // validator: (value) {
-                              //   if (value == "Male" ||
-                              //       value == "Female" ||
-                              //       value == "Others") {
-                              //     widget.userInfo.gender = value;
-
-                              //     return null;
-                              //   } else
-                              //     return "Invalid Gender";
-                              // },
-                              // //   initialValue: widget.userInfo.gender,
                               style: TextStyle(
                                   color: Theme.of(context).focusColor),
                             ),
@@ -319,6 +348,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                           trailing: Container(
                             width: ScreenSizeConfig.safeBlockHorizontal * 50,
                             child: TextFormField(
+                              // controller: _ageController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Age',
@@ -329,11 +359,12 @@ class _AccountWidgetState extends State<AccountWidget> {
                               enabled: edit,
                               validator: (value) {
                                 if (int.parse(value) >= 18) {
-                                  widget.userInfo.age = int.parse(value);
+                                  editableInfo.age = int.parse(value);
                                   return null;
                                 }
                               },
-                              initialValue: widget.userInfo.age.toString(),
+                              // initialValue: editableInfo.age.toString(),
+                              controller: _ageController,
                               style: TextStyle(
                                   color: Theme.of(context).focusColor),
                             ),
@@ -346,12 +377,30 @@ class _AccountWidgetState extends State<AccountWidget> {
                             'Email',
                             style: Theme.of(context).textTheme.body1,
                           )),
-                          trailing: Text(
-                              (widget.userInfo.email != null)
-                                  ? widget.userInfo.email
-                                  : "email here...",
+                          trailing: Container(
+                            width: ScreenSizeConfig.safeBlockHorizontal * 50,
+                            child: TextFormField(
+                              //  controller: _emailController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Email',
+                              ),
+                              keyboardType: TextInputType.number,
+                              textDirection: TextDirection.rtl,
+                              textAlign: TextAlign.right,
+                              enabled: edit,
+                              validator: (value) {
+                                //    if (int.parse(value) >= 18) {
+                                editableInfo.email = value;
+                                //    return null;
+                                // }
+                              },
+                              //  initialValue: editableInfo.email.toString(),
+                              controller: _emailController,
                               style: TextStyle(
-                                  color: Theme.of(context).focusColor)),
+                                  color: Theme.of(context).focusColor),
+                            ),
+                          ),
                         ),
                         // ListTile(
                         //   onTap: () {},
@@ -361,7 +410,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                         //     style: Theme.of(context).textTheme.body1,
                         //   ),
                         //   trailing: Text(
-                        //     widget.userInfo.matchPrefs.toString(),
+                        //     editableInfo.matchPrefs.toString(),
                         //     // _user.getDateOfBirth()                          ,
                         //     style:
                         //         TextStyle(color: Theme.of(context).focusColor),
@@ -375,7 +424,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                         //     style: Theme.of(context).textTheme.body1,
                         //   ),
                         //   trailing: Text(
-                        //     widget.userInfo.continent.toString(),
+                        //     editableInfo.continent.toString(),
                         //     style:
                         //         TextStyle(color: Theme.of(context).focusColor),
                         //   ),
@@ -415,6 +464,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                       ),
                       ListTile(
                         subtitle: TextFormField(
+                          controller: _descriptionController,
                           keyboardType: TextInputType.multiline,
                           textInputAction: TextInputAction.newline,
                           maxLines: 6,
@@ -423,10 +473,10 @@ class _AccountWidgetState extends State<AccountWidget> {
                               hintText: "About yourself..."),
                           enabled: edit,
                           validator: (value) {
-                            widget.userInfo.description = value;
+                            editableInfo.description = value;
                             return null;
                           },
-                          initialValue: widget.userInfo.description,
+                          //  initialValue: editableInfo.description,
                           style: TextStyle(color: Theme.of(context).focusColor),
                         ),
                       )
@@ -465,61 +515,89 @@ class _AccountWidgetState extends State<AccountWidget> {
                       ),
                       ListTile(
                         onTap: () async {
-                          if(edit){await showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return Dialog(
-                                  child: Wrap(children: _matchPrefsChipDesign()),
-                                );
-                              });
-                          setState(() {});}
+                          if (edit) {
+                            await showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) {
+                                  return Dialog(
+                                      child: Column(
+                                    children: <Widget>[
+                                      Wrap(children: _matchPrefsChipDesign()),
+                                      FlatButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("Ok"))
+                                    ],
+                                  ));
+                                });
+                            setState(() {});
+                          }
                         },
                         dense: true,
                         title: Text("Match Preferences",
                             style: Theme.of(context).textTheme.body1),
-                        trailing: Text(widget.userInfo.matchPrefs.toString(),
+                        trailing: Text(editableInfo.matchPrefs.toString(),
                             style:
                                 TextStyle(color: Theme.of(context).focusColor)),
                       ),
                       ListTile(
                         onTap: () async {
-                          if(edit){await showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return Dialog(
-                                  child: Wrap(children: _continentChipDesign()),
-                                );
-                              });
-                          setState(() {});}
+                          if (edit) {
+                            await showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) {
+                                  return Dialog(
+                                      child: Column(
+                                    children: <Widget>[
+                                      Wrap(children: _continentChipDesign()),
+                                      FlatButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("Ok"))
+                                    ],
+                                  ));
+                                });
+                            setState(() {});
+                          }
                         },
                         dense: true,
                         title: Text("Continent",
                             style: Theme.of(context).textTheme.body1),
-                        trailing: Text(widget.userInfo.continent.toString(),
+                        trailing: Text(editableInfo.continent.toString(),
                             style:
                                 TextStyle(color: Theme.of(context).focusColor)),
                       ),
                       ListTile(
                           onTap: () async {
-                            if(edit){await showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (context) {
-                                
+                            if (edit) {
+                              await showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (context) {
                                     return Dialog(
-                                      child:
-                                          Wrap(children: _interestChipDesign()),
-                                    );
+                                        child: Column(
+                                      children: <Widget>[
+                                        Wrap(children: _interestChipDesign()),
+                                        FlatButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text("Ok"))
+                                      ],
+                                    ));
                                   });
-                            setState(() {});}
+                              setState(() {});
+                            }
                           },
                           dense: false,
                           title: Text("Interest",
                               style: Theme.of(context).textTheme.body1),
                           trailing: Text(
-                            widget.userInfo.interest.toString(),
+                            editableInfo.interest.toString(),
                             style:
                                 TextStyle(color: Theme.of(context).focusColor),
                           ))
@@ -625,6 +703,7 @@ class _AccountWidgetState extends State<AccountWidget> {
               ],
             ),
           ),
+          //  ),
         ),
       ),
     );
@@ -658,6 +737,7 @@ class _AccountWidgetState extends State<AccountWidget> {
           .child(DatabaseService.uid)
           .child("avatar.jpg");
       StorageUploadTask task = storageReference.putFile(_image);
+      
       await task.onComplete;
       return true;
     } catch (e) {
@@ -679,15 +759,15 @@ class _AccountWidgetState extends State<AccountWidget> {
                     color: Colors.white,
                   )),
               backgroundColor: Color(pp.colors[i]),
-              selected: widget.userInfo.matchPrefs.contains(pp.preferences[i]),
+              selected: editableInfo.matchPrefs.contains(pp.preferences[i]),
               pressElevation: 5.0,
               // disabledColor: Colors.red,
               selectedColor: Colors.blue,
               onSelected: (bool selected) {
                 if (selected) {
-                  widget.userInfo.matchPrefs.add(pp.preferences[i]);
+                  editableInfo.matchPrefs.add(pp.preferences[i]);
                 } else {
-                  widget.userInfo.matchPrefs.remove(pp.preferences[i]);
+                  editableInfo.matchPrefs.remove(pp.preferences[i]);
                 }
                 setState(() {});
               },
@@ -716,15 +796,15 @@ class _AccountWidgetState extends State<AccountWidget> {
                     color: Colors.white,
                   )),
               backgroundColor: Color(pp.colors[i]),
-              selected: widget.userInfo.continent.contains(pp.preferences[i]),
+              selected: editableInfo.continent.contains(pp.preferences[i]),
               pressElevation: 5.0,
               // disabledColor: Colors.red,
               selectedColor: Colors.blue,
               onSelected: (bool selected) {
                 if (selected) {
-                  widget.userInfo.continent.add(pp.preferences[i]);
+                  editableInfo.continent.add(pp.preferences[i]);
                 } else {
-                  widget.userInfo.continent.remove(pp.preferences[i]);
+                  editableInfo.continent.remove(pp.preferences[i]);
                 }
                 setState(() {});
               },
@@ -758,15 +838,15 @@ class _AccountWidgetState extends State<AccountWidget> {
                     color: Colors.white,
                   )),
               backgroundColor: Color(pp.colors[i]),
-              selected: widget.userInfo.interest.contains(pp.preferences[i]),
+              selected: editableInfo.interest.contains(pp.preferences[i]),
               pressElevation: 5.0,
               // disabledColor: Colors.red,
               selectedColor: Colors.blue,
               onSelected: (bool selected) {
                 if (selected) {
-                  widget.userInfo.interest.add(pp.preferences[i]);
+                  editableInfo.interest.add(pp.preferences[i]);
                 } else {
-                  widget.userInfo.interest.remove(pp.preferences[i]);
+                  editableInfo.interest.remove(pp.preferences[i]);
                 }
                 setState(() {
                   // check = 2;
@@ -799,35 +879,35 @@ class _AccountWidgetState extends State<AccountWidget> {
                   RadioListTile(
                       title: Text("Male"),
                       value: "Male",
-                      groupValue: widget.userInfo.gender,
+                      groupValue: editableInfo.gender,
                       onChanged: (value) {
                         setState(() {
-                          widget.userInfo.gender = value;
+                          editableInfo.gender = value;
                         });
                       }),
                   RadioListTile(
                       title: Text("Female"),
                       value: "Female",
-                      groupValue: widget.userInfo.gender,
+                      groupValue: editableInfo.gender,
                       onChanged: (value) {
                         setState(() {
-                          widget.userInfo.gender = value;
+                          editableInfo.gender = value;
                         });
                       }),
                   RadioListTile(
                       title: Text("Others"),
                       value: "Others",
-                      groupValue: widget.userInfo.gender,
+                      groupValue: editableInfo.gender,
                       onChanged: (value) {
                         setState(() {
-                          widget.userInfo.gender = value;
+                          editableInfo.gender = value;
                         });
                       }),
                   Center(
                     child: FlatButton(
                         onPressed: () {
                           _genderController.text =
-                              widget.userInfo.gender.toString();
+                              editableInfo.gender.toString();
                           Navigator.of(context).pop();
                         },
                         child: Text("OK")),
