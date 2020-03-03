@@ -89,7 +89,7 @@ class _TabsWidgetState extends State<TabsWidget> {
     }
     return Scaffold(
       key: _scaffoldKey,
-      drawer: DrawerWidget(),
+      drawer: DrawerWidget(info:info),
       endDrawer: FilterWidget(),
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -117,13 +117,7 @@ class _TabsWidgetState extends State<TabsWidget> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => AccountWidget(userInfo: info)));
                 },
-                child: (avatar != "" && avatar != null)
-                    ? CircleAvatar(
-                        backgroundImage: NetworkImage(info.avatar),
-                      )
-                    : CircleAvatar(
-                        backgroundColor: Colors.red,
-                      ),
+                child: Icon(UiIcons.user_1,color: appColors.Colors().accentColor(1),)
               )),
         ],
       ),
