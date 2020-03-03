@@ -4,6 +4,7 @@ import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
+import 'package:ecommerce_app_ui_kit/Model/settings.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
@@ -35,6 +36,7 @@ class _AccountWidgetState extends State<AccountWidget> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   CurrentUserInfo editableInfo;
   int check = 1;
+  // RangeValues values=DiscoverySetting.agePrefs;
   @override
   Widget build(BuildContext context) {
     if (check == 1) {
@@ -519,7 +521,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                             SizedBox(width: 10),
                             Text(
                               "Search Preferences",
-                              style: Theme.of(context).textTheme.body2,
+                              // style: Theme.of(context).textTheme.body2,
                             )
                           ],
                         ),
@@ -615,6 +617,74 @@ class _AccountWidgetState extends State<AccountWidget> {
                     ],
                   ),
                 ),
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(6),
+                      boxShadow: [
+                        BoxShadow(
+                            color:
+                                Theme.of(context).hintColor.withOpacity(0.15),
+                            offset: Offset(0, 3),
+                            blurRadius: 10),
+                      ],
+                    ),
+                    child: ListView(
+                      shrinkWrap: true,
+                      primary: false,
+                      children: <Widget>[
+                        ListTile(
+                            title: Row(
+                          children: <Widget>[
+                            Icon(
+                              UiIcons.settings_2,
+                            ),
+                            SizedBox(width: 10),
+                            Text("Discovery Settings",
+                                style: Theme.of(context).textTheme.body2),
+                          ],
+                        )),
+                        ListTile(
+                          dense: true,
+                          title: Text("Range"),
+                          trailing: Text(DiscoverySetting.range.toString()),
+                          subtitle: Slider(
+                            value: DiscoverySetting.range,
+                            onChanged: (value) {
+                              setState(() {
+                                DiscoverySetting.range = value;
+                              });
+                            },
+                            activeColor: Colors.red,
+                            inactiveColor: Colors.red,
+                            min: 0,
+                            max: 20,
+                            divisions: 10,
+                            // label: DiscoverySetting.range.toString(),
+                          ),
+                        ),
+                        ListTile(
+                          dense: true,
+                          title: Text("Age Preferences"),
+
+                          trailing: Text(DiscoverySetting.agePrefs.start.round().toString()+"-"+DiscoverySetting.agePrefs.end.round().toString()),
+                          subtitle: RangeSlider(
+                            onChanged: (value){
+                              setState(() {
+                                DiscoverySetting.agePrefs = value;
+                              });
+                            },
+                            values: DiscoverySetting.agePrefs,
+                            activeColor: Colors.red,
+                            min: 18,
+                            max: 80,
+                            inactiveColor: Colors.red,
+                            divisions: 10,
+                          ),
+                        )
+                      ],
+                    )),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   decoration: BoxDecoration(
