@@ -100,6 +100,15 @@ class _NearbySearchState extends State<NearbySearch>
       print("------------------------------");
       print(info[i].uid);
       print(info.length);
+      print(-(ScreenSizeConfig.blockSizeHorizontal *
+          8 *
+          cos(info[i].bearing) *
+          (info[i].distance / 1000)));
+      print(ScreenSizeConfig.blockSizeVertical *
+          8 *
+          sin(info[i].bearing) *
+          (info[i].distance / 1000));
+
       widgets.add(
         AlignPositioned(
           dx: -(ScreenSizeConfig.blockSizeHorizontal *
@@ -123,8 +132,7 @@ class _NearbySearchState extends State<NearbySearch>
                   backgroundColor: Colors.white,
                   context: context,
                   builder: (builder) {
-                    return Search_BottomSheet(info[i].email, info[i].name);
-
+                    return Search_BottomSheet(info[i]);
                   });
             },
           ),
@@ -166,9 +174,12 @@ class _NearbySearchState extends State<NearbySearch>
   @override
   Widget build(BuildContext context) {
     _controller.repeat();
-    print(widget.userData.interest.toString() + "" +
-        widget.userData.matchPrefs.toString() +"" +
-        widget.userData.name + "" +
+    print(widget.userData.interest.toString() +
+        "" +
+        widget.userData.matchPrefs.toString() +
+        "" +
+        widget.userData.name +
+        "" +
         widget.userData.continent.toString());
     print("000000000000000000000000000");
     return StreamProvider.value(

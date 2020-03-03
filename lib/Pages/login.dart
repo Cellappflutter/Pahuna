@@ -14,7 +14,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-//import 'package:progress_dialog/progress_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginPage extends StatefulWidget {
@@ -46,9 +45,9 @@ class _LoginPageState extends State<LoginPage> {
 
     final PhoneVerificationCompleted verifiedSuccess =
         (AuthCredential credential) {
-          print("Success");
-      pr.dismiss();
-      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPageWrapper()));
+      print("Success");
+      // pr.dismiss();
+      //    Navigator.push(context, MaterialPageRoute(builder: (context) => MainPageWrapper()));
       print("phone verified completed");
     };
 
@@ -118,6 +117,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<bool> smsCodeDialogue(BuildContext context) {
+    print("sms code dialogue");
     return showDialog(
         context: context,
         barrierDismissible: false,
@@ -172,14 +172,19 @@ class _LoginPageState extends State<LoginPage> {
       AuthResult authResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
       await Prefs.setUserUid(authResult.user.uid);
-      await Prefs.setIsFirstTime(authResult.additionalUserInfo.isNewUser);
+      pr.dismiss();
+      print(authResult.user.phoneNumber);
+      print("Signed IN");
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => MainPageWrapper()),
+          (Route<dynamic> route) => false);
+      print("bhalllllllllllllllllllllllll");
     } catch (e) {
       verifyFailed(e);
       print("---------------------------");
     }
   }
 
-// /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
   Widget build(BuildContext context) {
     ScreenSizeConfig().init(context);
     return Scaffold(
@@ -207,7 +212,6 @@ class _LoginPageState extends State<LoginPage> {
                     30,
                     20,
                   ),
-                  // margin: EdgeInsets.symmetric(vertical: 195, horizontal: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Theme.of(context).primaryColor,
@@ -219,7 +223,6 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(height: 25),
@@ -234,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
                               "${country.name}(+${country.phoneCode}) getting selected item");
                           setState(() {
                             holder = int.parse(country.phoneCode);
-                        });
+                          });
                         },
                       ),
                       new TextFormField(
@@ -264,64 +267,6 @@ class _LoginPageState extends State<LoginPage> {
                           print(phoneNo);
                         },
                       ),
-                      // SizedBox(height: 20),
-                      // new TextField(
-                      //   style: TextStyle(color: Theme.of(context).accentColor),
-                      //   keyboardType: TextInputType.text,
-                      //   obscureText: !_showPassword,
-                      //   decoration: new InputDecoration(
-                      //     hintText: 'Password',
-                      //     hintStyle: Theme.of(context).textTheme.body1.merge(
-                      //           TextStyle(color: Theme.of(context).accentColor),
-                      //         ),
-                      //     enabledBorder: UnderlineInputBorder(
-                      //         borderSide: BorderSide(color: Theme.of(context).accentColor.withOpacity(0.2))),
-                      //     focusedBorder:
-                      //         UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
-                      //     prefixIcon: Icon(
-                      //       UiIcons.padlock_1,
-                      //       color: Theme.of(context).accentColor,
-                      //     ),
-                      //     suffixIcon: IconButton(
-                      //       onPressed: () {
-                      //         setState(() {
-                      //           _showPassword = !_showPassword;
-                      //         });
-                      //       },
-                      //       color: Theme.of(context).accentColor.withOpacity(0.4),
-                      //       icon: Icon(_showPassword ? Icons.visibility_off : Icons.visibility),
-                      //     ),
-                      //   ),
-                      // ),
-                      // SizedBox(height: 20),
-                      // new TextField(
-                      //   style: TextStyle(color: Theme.of(context).accentColor),
-                      //   keyboardType: TextInputType.text,
-                      //   obscureText: !_showPassword,
-                      //   decoration: new InputDecoration(
-                      //     hintText: 'Confirm Password',
-                      //     hintStyle: Theme.of(context).textTheme.body1.merge(
-                      //           TextStyle(color: Theme.of(context).accentColor),
-                      //         ),
-                      //     enabledBorder: UnderlineInputBorder(
-                      //         borderSide: BorderSide(color: Theme.of(context).accentColor.withOpacity(0.2))),
-                      //     focusedBorder:
-                      //         UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
-                      //     prefixIcon: Icon(
-                      //       UiIcons.padlock_1,
-                      //       color: Theme.of(context).accentColor,
-                      //     ),
-                      //     suffixIcon: IconButton(
-                      //       onPressed: () {
-                      //         setState(() {
-                      //           _showPassword = !_showPassword;
-                      //         });
-                      //       },
-                      //       color: Theme.of(context).accentColor.withOpacity(0.4),
-                      //       icon: Icon(_showPassword ? Icons.visibility_off : Icons.visibility),
-                      //     ),
-                      //   ),
-                      // ),
                       SizedBox(height: 40),
                       FlatButton(
                         padding:
@@ -350,7 +295,6 @@ class _LoginPageState extends State<LoginPage> {
                               }
                             } else {
                               pr = loadingBar(context, "Signing In");
-                              //  pr.show();
                               verifyPhone();
                             }
                           } else {
@@ -387,14 +331,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         color: Theme.of(context).accentColor,
                         shape: StadiumBorder(),
-                      ),
-                      // SizedBox(height: 50),
-                      // Text(
-                      //   'Or using social media',
-                      //   style: Theme.of(context).textTheme.body1,
-                      // ),
-                      // SizedBox(height: 20),
-                      // new SocialMediaWidget()
+                      )
                     ],
                   ),
                 ),
@@ -439,25 +376,6 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
             ),
-            ////////////////\\\\\\\\\\\\\\\\\\
-            // FlatButton(
-            //   onPressed: () {
-            //     Navigator.of(context).pushNamed('/SignIn');
-            //   },
-            //   child: RichText(
-            //     text: TextSpan(
-            //       style: Theme.of(context).textTheme.title.merge(
-            //             TextStyle(color: Theme.of(context).primaryColor),
-            //           ),
-            //       children: [
-            //         TextSpan(text: 'Already have an account ?'),
-            //         TextSpan(
-            //             text: ' Sign In',
-            //             style: TextStyle(fontWeight: FontWeight.w700)),
-            //       ],
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

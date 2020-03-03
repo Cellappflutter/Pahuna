@@ -1,3 +1,5 @@
+import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+import 'package:ecommerce_app_ui_kit/Model/userdata.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:flutter/material.dart';
@@ -5,8 +7,8 @@ import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
 import 'UiHelper/loading.dart';
 
 class Search_BottomSheet extends StatefulWidget {
-  final String name, email;
-  Search_BottomSheet(this.email, this.name);
+  UserData userInfo;
+  Search_BottomSheet(this.userInfo);
 
   @override
   State<StatefulWidget> createState() {
@@ -16,6 +18,8 @@ class Search_BottomSheet extends StatefulWidget {
 }
 
 class _searchsheet extends State<Search_BottomSheet> {
+  
+  
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -42,7 +46,7 @@ class _searchsheet extends State<Search_BottomSheet> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text(widget.name,
+                        Text(widget.userInfo.name,
                             style: Theme.of(context).textTheme.body2)
                       ],
                     ),
@@ -56,7 +60,7 @@ class _searchsheet extends State<Search_BottomSheet> {
                           style: Theme.of(context).textTheme.body2,
                         ),
                         Text(
-                          widget.email,
+                          widget.userInfo.email.toString(),
                           style: Theme.of(context).textTheme.body1,
                         )
                       ],
@@ -84,8 +88,8 @@ class _searchsheet extends State<Search_BottomSheet> {
                     Align(
                         alignment: Alignment.bottomCenter,
                         child: RaisedButton.icon(
-                            onPressed: (){
-                              DatabaseService().sendReq("uid");
+                            onPressed: ()async {
+                           await   DatabaseService().sendReq(widget.userInfo.uid);
                             },
                             icon: Icon(Icons.check),
                             label: Text("Send Request")))

@@ -1,4 +1,5 @@
 
+import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
@@ -193,7 +194,10 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () async {
-              await authService.signOut().whenComplete(() {
+              final pr = loadingBar(context, "Logging Out");
+                          pr.show();
+               authService.signOut().whenComplete(() {
+                 pr.dismiss();
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => LoginPage()),
                     (Route<dynamic> route) => false);
