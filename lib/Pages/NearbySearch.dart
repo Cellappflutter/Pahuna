@@ -24,7 +24,7 @@ class NearbySearch extends StatefulWidget {
   CurrentUserInfo userData;
   Position position;
 
-  NearbySearch({this.userData,this.position});
+  NearbySearch({this.userData, this.position});
   final double size = 20.0;
 
   final Color color = pulsateColor;
@@ -98,6 +98,7 @@ class _NearbySearchState extends State<NearbySearch>
     print(info);
     for (int i = 0; i < info.length; i++) {
       print("------------------------------");
+      print(info[i].uid);
       print(info.length);
       widgets.add(
         AlignPositioned(
@@ -122,7 +123,7 @@ class _NearbySearchState extends State<NearbySearch>
                   backgroundColor: Colors.white,
                   context: context,
                   builder: (builder) {
-                    return Search_BottomSheet(info[i].email,info[i].name);
+                    return Search_BottomSheet(info[i].email, info[i].name);
                   });
             },
           ),
@@ -145,9 +146,7 @@ class _NearbySearchState extends State<NearbySearch>
         position.latitude != null &&
         position.longitude != null) {
       print(info.length);
-      // newInfo=withInRangeData(info);
       for (int i = 0; i < info.length; i++) {
-        print(";;;;;;;;;;;;;;;;;;;;;;;;;;");
         print(info[i].latitude);
         info[i].bearing = geodesy.bearingBetweenTwoGeoPoints(
             LatLng(position.latitude, position.longitude),
@@ -165,11 +164,6 @@ class _NearbySearchState extends State<NearbySearch>
   DatabaseService _databaseService = DatabaseService();
   @override
   Widget build(BuildContext context) {
-    //final position = Provider.of<Position>(context) ?? Position();
-    //final userInfo= Provider.of< CurrentUserInfo>(context);
-    if (widget.position.latitude != null) {
-      _databaseService.updateLocation(widget.position);
-    }
     _controller.repeat();
     print("000000000000000000000000000");
     return StreamProvider.value(
