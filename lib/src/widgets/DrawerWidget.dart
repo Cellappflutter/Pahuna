@@ -1,5 +1,7 @@
+import 'package:ecommerce_app_ui_kit/Pages/login.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/src/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -74,7 +76,8 @@ class DrawerWidget extends StatelessWidget {
             trailing: Chip(
               padding: EdgeInsets.symmetric(horizontal: 5),
               backgroundColor: Colors.transparent,
-              shape: StadiumBorder(side: BorderSide(color: Theme.of(context).focusColor)),
+              shape: StadiumBorder(
+                  side: BorderSide(color: Theme.of(context).focusColor)),
               label: Text(
                 '8',
                 style: TextStyle(color: Theme.of(context).focusColor),
@@ -183,7 +186,10 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('/Login');
+              FirebaseAuth.instance.signOut();
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginPage()), (Route<dynamic>route) => false);
+              print('Not logedout');
+              // Navigator.of(context).pushNamed('/Login');
             },
             leading: Icon(
               UiIcons.upload,

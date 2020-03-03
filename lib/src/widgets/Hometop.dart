@@ -1,5 +1,6 @@
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Pages/home.dart';
+import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
 import 'package:geolocator/geolocator.dart';
@@ -23,6 +24,9 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
       userData.avatar = avatar;
     }
     final position = Provider.of<Position>(context);
+    if (position != null) {
+      DatabaseService().updateLocation(position);
+    }
     return new AnimatedBuilder(
         animation: _resizableController,
         builder: (context, child) {
@@ -45,9 +49,9 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return HomePage(
-                //  position: position,
-                 // userData: userData,
-                );
+                    //  position: position,
+                    // userData: userData,
+                    );
               }));
             },
           );
