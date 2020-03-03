@@ -11,11 +11,14 @@ class DatabaseService {
   final CollectionReference requestReference =
       Firestore.instance.collection("ConnectionRequest");
 
-  Future<bool> checkPrevUser() async {
-    try {
-      await reference.document(uid).updateData({});
+  Stream<bool> checkPrevUser() {
+    return reference.document(uid).snapshots().map(converte);
+  }
+
+  bool converte(DocumentSnapshot docs) {
+    if (docs.data.containsKey('profile')) {
       return true;
-    } catch (e) {
+    } else {
       return false;
     }
   }
@@ -27,7 +30,7 @@ class DatabaseService {
   }
 
   CurrentUserInfo _userInfoMap(DocumentSnapshot snapshot) {
-    Map<dynamic, dynamic> data = snapshot.data['profile'];
+    Map<dynamic, dynamic> data = snapshot.data['profile'] ?? {};
     try {
       return CurrentUserInfo(
         age: data['age'] ?? 0,

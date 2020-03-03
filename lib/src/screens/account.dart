@@ -39,10 +39,21 @@ class _AccountWidgetState extends State<AccountWidget> {
   Widget build(BuildContext context) {
     if (check == 1) {
       editableInfo = widget.userInfo;
-      _nameController.text = editableInfo.name.toString();
-      _ageController.text = editableInfo.age.toString();
-      _emailController.text = editableInfo.email.toString();
-      _descriptionController.text = editableInfo.description.toString();
+      if (editableInfo.continent == null) {
+        editableInfo.continent = [];
+      }
+
+      if (editableInfo.matchPrefs == null) {
+        editableInfo.matchPrefs = [];
+      }
+
+      if (editableInfo.interest == null) {
+        editableInfo.interest = [];
+      }
+      _nameController.text = editableInfo.name.toString() ?? '';
+      _ageController.text = editableInfo.age.toString() ?? '';
+      _emailController.text = editableInfo.email.toString() ?? '';
+      _descriptionController.text = editableInfo.description.toString() ?? '';
       check = 2;
     }
     print("-------------");
@@ -325,7 +336,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                           trailing: Container(
                             width: ScreenSizeConfig.safeBlockHorizontal * 50,
                             child: Text(
-                              editableInfo.gender,
+                              editableInfo.gender.toString(),
                               // controller: _genderController,
                               // decoration: InputDecoration(
                               //   border: InputBorder.none,
@@ -737,7 +748,7 @@ class _AccountWidgetState extends State<AccountWidget> {
           .child(DatabaseService.uid)
           .child("avatar.jpg");
       StorageUploadTask task = storageReference.putFile(_image);
-      
+
       await task.onComplete;
       return true;
     } catch (e) {
@@ -759,7 +770,9 @@ class _AccountWidgetState extends State<AccountWidget> {
                     color: Colors.white,
                   )),
               backgroundColor: Color(pp.colors[i]),
-              selected: editableInfo.matchPrefs.contains(pp.preferences[i]),
+              selected: (editableInfo.matchPrefs != null)
+                  ? editableInfo.matchPrefs.contains(pp.preferences[i])
+                  : false,
               pressElevation: 5.0,
               // disabledColor: Colors.red,
               selectedColor: Colors.blue,
@@ -796,7 +809,9 @@ class _AccountWidgetState extends State<AccountWidget> {
                     color: Colors.white,
                   )),
               backgroundColor: Color(pp.colors[i]),
-              selected: editableInfo.continent.contains(pp.preferences[i]),
+              selected: (editableInfo.continent != null)
+                  ? editableInfo.continent.contains(pp.preferences[i])
+                  : false,
               pressElevation: 5.0,
               // disabledColor: Colors.red,
               selectedColor: Colors.blue,
@@ -838,7 +853,9 @@ class _AccountWidgetState extends State<AccountWidget> {
                     color: Colors.white,
                   )),
               backgroundColor: Color(pp.colors[i]),
-              selected: editableInfo.interest.contains(pp.preferences[i]),
+              selected: (editableInfo.interest != null)
+                  ? editableInfo.interest.contains(pp.preferences[i])
+                  : false,
               pressElevation: 5.0,
               // disabledColor: Colors.red,
               selectedColor: Colors.blue,

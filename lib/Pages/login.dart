@@ -30,11 +30,13 @@ class _LoginPageState extends State<LoginPage> {
   ProgressDialog pr;
 
   Future<void> verifyPhone() async {
+    print("VerifyPhone");
     final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
       this.verificationID = verId;
     };
 
     final PhoneCodeSent smsCode = (String verId, [int foreceCodeResend]) {
+      print("SMS COde ma");
       this.verificationID = verId;
       smsCodeDialogue(context).then((value) {
         print('Signed in - from smscode');
@@ -43,13 +45,15 @@ class _LoginPageState extends State<LoginPage> {
 
     final PhoneVerificationCompleted verifiedSuccess =
         (AuthCredential credential) {
+          print("Success");
       pr.dismiss();
-      Navigator.of(context).pushNamed('/Categories');
+     // Navigator.of(context).pushNamed('/Categories');
       print("phone verified completed");
     };
 
     final PhoneVerificationFailed verifiedFailed = (AuthException exception) {
       pr.dismiss();
+      print("verify failed");
       switch (exception.code) {
         // case verifyError:
         //   {
@@ -85,6 +89,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   verifyFailed(PlatformException exception) {
+    print("Numver verify failed");
     pr.dismiss();
     switch (exception.code) {
       case verifyError:
