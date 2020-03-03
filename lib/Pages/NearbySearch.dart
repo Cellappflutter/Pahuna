@@ -98,14 +98,17 @@ class _NearbySearchState extends State<NearbySearch>
     print(info);
     for (int i = 0; i < info.length; i++) {
       print("------------------------------");
+      
       print(info.length);
       widgets.add(
         AlignPositioned(
-          dx: -(ScreenSizeConfig.blockSizeHorizontal *
-              8 *
+          dx: 
+          -(ScreenSizeConfig.blockSizeHorizontal *
+             8 *
               cos(info[i].bearing) *
               (info[i].distance / 1000)),
-          dy: ScreenSizeConfig.blockSizeVertical *
+          dy: 
+          ScreenSizeConfig.blockSizeVertical *
               8 *
               sin(info[i].bearing) *
               (info[i].distance / 1000),
