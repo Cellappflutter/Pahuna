@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
                   child: Stack(children: <Widget>[
                     Container(
                       child: NearbySearch(
-                        position: position,
+                        position: Position(latitude: 27.6912767, longitude: 85.3204131),
                         userData: userData,
                       ),
                     ),
