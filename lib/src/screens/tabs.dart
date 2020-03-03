@@ -83,8 +83,8 @@ class _TabsWidgetState extends State<TabsWidget> {
   @override
   Widget build(BuildContext context) {
     final CurrentUserInfo info = Provider.of<CurrentUserInfo>(context);
-   final String avatar = Provider.of<String>(context);
-    if (avatar != null) {
+    final String avatar = Provider.of<String>(context);
+    if (avatar != null && info != null) {
       info.avatar = avatar;
     }
     return Scaffold(

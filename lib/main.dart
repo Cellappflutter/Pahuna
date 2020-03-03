@@ -18,11 +18,12 @@ import 'package:ecommerce_app_ui_kit/src/screens/home.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/test.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(debugShowCheckedModeBanner: false,home: MyApp()));
+  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()));
 }
 
 class InitializePage extends StatelessWidget {
@@ -41,6 +42,7 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   bool isPrevUser;
   bool gotoLogin;
+  bool islocation = false;
   FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   void initState() {
@@ -52,6 +54,8 @@ class _AuthPageState extends State<AuthPage> {
     _auth.currentUser().then((firebaseUser) async {
       print(firebaseUser);
       await Future.delayed(Duration(seconds: 2));
+      WidgetsBinding.instance.addPostFrameCallback((_) => checkPermission());
+
       DatabaseService.uid = "hello";
       if (firebaseUser != null) {
         print(firebaseUser.uid);
@@ -73,9 +77,39 @@ class _AuthPageState extends State<AuthPage> {
     });
   }
 
+  checkPermission() async {
+    await Geolocator().checkGeolocationPermissionStatus().then((onValue) async {
+      print("000000000000000000000000000000000000");
+      print(onValue);
+      if (onValue != GeolocationStatus.granted) {
+        print("dssdsdsdsdsdsd");
+        await showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text(
+                    "Please enable permission for location and Restart the application"),
+                actions: <Widget>[
+                  FlatButton(
+                      onPressed: () async {
+                        await PermissionHandler().openAppSettings();
+                      },
+                      child: Text("OK"))
+                ],
+              );
+            });
+      } else {
+        print("dsdssd");
+        setState(() {
+          islocation = true;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (gotoLogin != null) {
+    if (gotoLogin != null && islocation == true) {
       print("***********************");
       print(DatabaseService.uid);
       gotoLogin = false;
@@ -89,10 +123,13 @@ class _AuthPageState extends State<AuthPage> {
     } else {
       print("object");
       return Container(
+        color: Color(0xffdd2827),
         child: Center(
           child: Image.asset(
             "assets/pahuna_splash.png",
-            fit: BoxFit.fill,
+            fit: BoxFit.scaleDown,
+            height: ScreenSizeConfig.safeBlockVertical * 50,
+            width: ScreenSizeConfig.safeBlockHorizontal * 50,
           ),
         ),
       );
@@ -249,9 +286,6 @@ class MyApp extends StatelessWidget {
               color: config.Colors().secondColor(1)),
           caption: TextStyle(
               fontSize: 12.0, color: config.Colors().secondColor(0.6)),
-          
-          
-          
         ),
       ),
     );
