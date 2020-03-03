@@ -1,11 +1,18 @@
+
+import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/src/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ecommerce_app_ui_kit/database/auth.dart';
 
 class DrawerWidget extends StatelessWidget {
   User _user = new User.init().getCurrentUser();
+  AuthService authService = AuthService();
+  final CurrentUserInfo info;
+  DrawerWidget({this.info});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -22,16 +29,16 @@ class DrawerWidget extends StatelessWidget {
 //              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(35)),
               ),
               accountName: Text(
-                _user.name,
+                info.name,
                 style: Theme.of(context).textTheme.title,
               ),
               accountEmail: Text(
-                _user.email,
+                info.email,
                 style: Theme.of(context).textTheme.caption,
               ),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Theme.of(context).accentColor,
-                backgroundImage: AssetImage(_user.avatar),
+                backgroundImage: NetworkImage(info.avatar),
               ),
             ),
           ),
@@ -185,11 +192,12 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () {
-              FirebaseAuth.instance.signOut();
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginPage()), (Route<dynamic>route) => false);
-              print('Not logedout');
-              // Navigator.of(context).pushNamed('/Login');
+            onTap: () async {
+              await authService.signOut().whenComplete(() {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    (Route<dynamic> route) => false);
+              });
             },
             leading: Icon(
               UiIcons.upload,

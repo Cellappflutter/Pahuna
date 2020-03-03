@@ -1,6 +1,7 @@
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Pages/home.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/account.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
 import 'package:geolocator/geolocator.dart';
@@ -18,9 +19,10 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
   AnimationController _resizableController;
   CurrentUserInfo userData;
   AnimatedBuilder getContainer() {
+    final checkPrevUser = Provider.of<bool>(context);
     final userData = Provider.of<CurrentUserInfo>(context);
     final String avatar = Provider.of<String>(context);
-    if (avatar != null) {
+    if (avatar != null && userData != null) {
       userData.avatar = avatar;
     }
     final position = Provider.of<Position>(context);
@@ -47,12 +49,22 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
               ),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return HomePage(
-                    //  position: position,
-                    // userData: userData,
-                    );
-              }));
+              if (checkPrevUser) {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return HomePage(
+                      //  position: position,
+                      // userData: userData,
+                      );
+                }));
+              } else {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return AccountWidget(
+                    userInfo: CurrentUserInfo(),
+                  );
+                }));
+              }
             },
           );
         });
