@@ -272,8 +272,10 @@ class _AccountWidgetState extends State<AccountWidget> {
                         ListTile(
                           enabled: edit,
                           onTap: () async {
-                            if(edit){await genderDialog();
-                            setState(() {});}
+                            if (edit) {
+                              await genderDialog();
+                              setState(() {});
+                            }
                           },
                           dense: true,
                           title: Text(
@@ -424,6 +426,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                           enabled: edit,
                           validator: (value) {
                             widget.userInfo.description = value;
+                            print("description : $value");
                             return null;
                           },
                           initialValue: widget.userInfo.description,
@@ -465,15 +468,18 @@ class _AccountWidgetState extends State<AccountWidget> {
                       ),
                       ListTile(
                         onTap: () async {
-                          if(edit){await showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return Dialog(
-                                  child: Wrap(children: _matchPrefsChipDesign()),
-                                );
-                              });
-                          setState(() {});}
+                          if (edit) {
+                            await showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) {
+                                  return Dialog(
+                                    child:
+                                        Wrap(children: _matchPrefsChipDesign()),
+                                  );
+                                });
+                            setState(() {});
+                          }
                         },
                         dense: true,
                         title: Text("Match Preferences",
@@ -484,15 +490,18 @@ class _AccountWidgetState extends State<AccountWidget> {
                       ),
                       ListTile(
                         onTap: () async {
-                          if(edit){await showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return Dialog(
-                                  child: Wrap(children: _continentChipDesign()),
-                                );
-                              });
-                          setState(() {});}
+                          if (edit) {
+                            await showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) {
+                                  return Dialog(
+                                    child:
+                                        Wrap(children: _continentChipDesign()),
+                                  );
+                                });
+                            setState(() {});
+                          }
                         },
                         dense: true,
                         title: Text("Continent",
@@ -502,27 +511,28 @@ class _AccountWidgetState extends State<AccountWidget> {
                                 TextStyle(color: Theme.of(context).focusColor)),
                       ),
                       ListTile(
-                          onTap: () async {
-                            if(edit){await showDialog(
+                        onTap: () async {
+                          if (edit) {
+                            await showDialog(
                                 context: context,
                                 barrierDismissible: false,
                                 builder: (context) {
-                                
-                                    return Dialog(
-                                      child:
-                                          Wrap(children: _interestChipDesign()),
-                                    );
-                                  });
-                            setState(() {});}
-                          },
-                          dense: false,
-                          title: Text("Interest",
-                              style: Theme.of(context).textTheme.body1),
-                          trailing: Text(
-                            widget.userInfo.interest.toString(),
-                            style:
-                                TextStyle(color: Theme.of(context).focusColor),
-                          ))
+                                  return Dialog(
+                                    child:
+                                        Wrap(children: _interestChipDesign()),
+                                  );
+                                });
+                            setState(() {});
+                          }
+                        },
+                        dense: false,
+                        title: Text("Interest",
+                            style: Theme.of(context).textTheme.body1),
+                        trailing: Text(
+                          widget.userInfo.interest.toString(),
+                          style: TextStyle(color: Theme.of(context).focusColor),
+                        ),
+                      )
                     ],
                   ),
                 ),
