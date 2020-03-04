@@ -197,7 +197,7 @@ class DrawerWidget extends StatelessWidget {
               final pr = loadingBar(context, "Logging Out");
                           pr.show();
                authService.signOut().whenComplete(() {
-                 pr.dismiss();
+                 pr.hide();
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => LoginPage()),
                     (Route<dynamic> route) => false);

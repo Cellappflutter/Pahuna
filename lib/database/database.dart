@@ -44,6 +44,7 @@ class DatabaseService {
         matchPrefs: _matchPrefsValues(data) ?? [],
       );
     } catch (e) {
+      print("------------------------errooorororor");
       return CurrentUserInfo();
     }
   }
@@ -160,12 +161,14 @@ class DatabaseService {
   }
 
   updateLocation(Position position) async {
-    try {
+    print(uid);
+        try {
       return await reference.document(uid).updateData({
         "latitude": position.latitude,
         "longitude": position.longitude,
       });
     } catch (e) {
+       print(uid);
       return await reference.document(uid).setData({
         "latitude": position.latitude,
         "longitude": position.longitude,

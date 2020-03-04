@@ -26,6 +26,8 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
       userData.avatar = avatar;
     }
     final position = Provider.of<Position>(context);
+    print("''''''''''''''''''''''''''''''''''''''''''''''''''''''");
+    print(position);
     if (position != null) {
       DatabaseService().updateLocation(position);
     }
