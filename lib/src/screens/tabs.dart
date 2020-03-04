@@ -86,6 +86,7 @@ class _TabsWidgetState extends State<TabsWidget> {
     final String avatar = Provider.of<String>(context);
     if (avatar != null && info != null) {
       info.avatar = avatar;
+    //  info.image=Image.network(avatar);
     }
     return Scaffold(
       key: _scaffoldKey,
