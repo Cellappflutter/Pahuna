@@ -1,3 +1,7 @@
+//import 'dart:ui';
+
+import 'package:flutter/widgets.dart';
+
 class CurrentUserInfo {
   String name;
   int age=18;
