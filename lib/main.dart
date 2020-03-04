@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:ecommerce_app_ui_kit/Helper/ErrorHandler.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
@@ -23,9 +24,10 @@ import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(  MaterialApp(
-   //   title: 'Pahuna',
-    //  initialRoute: '/',
+  runApp(
+    MaterialApp(
+      //   title: 'Pahuna',
+      //  initialRoute: '/',
       //onGenerateRoute: RouteGenerator.generateRoute,
       //debugShowCheckedModeBanner: false,
       darkTheme: ThemeData(
@@ -118,10 +120,10 @@ void main() {
           caption: TextStyle(
               fontSize: 12.0, color: config.Colors().secondColor(0.6)),
         ),
-     ),
-     home: InitializePage(),
+      ),
+      home: InitializePage(),
     ),
-    );
+  );
 }
 
 class InitializePage extends StatelessWidget {
@@ -152,12 +154,12 @@ class _AuthPageState extends State<AuthPage> {
     _auth.currentUser().then((firebaseUser) async {
       print(firebaseUser);
       await Future.delayed(Duration(seconds: 2));
-     WidgetsBinding.instance.addPostFrameCallback((_) => checkPermission());
+      WidgetsBinding.instance.addPostFrameCallback((_) => checkPermission());
       if (firebaseUser != null) {
         print(firebaseUser.uid);
         print("=============================================");
 
-         DatabaseService.uid = firebaseUser.uid;
+        DatabaseService.uid = firebaseUser.uid;
 
         // DatabaseService().checkPrevUser().then((onValue) {
         setState(() {
@@ -207,7 +209,6 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
-   
     if (gotoLogin != null && islocation == true) {
       print("***********************");
       print(DatabaseService.uid);
@@ -263,6 +264,13 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
 
   @override
   Widget build(BuildContext context) {
+    print(
+        "&^&^&^&^&^&^&------------------------------------------------------^&^&^&^&^&^");
+    // Apporienta.setPreferredOrientationPortrait();
+    // AppOrientation.setFullScreenApp();
+    ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+      return ErrorHandlePage.getErrorWidget(context, errorDetails);
+    };
     ScreenSizeConfig().init(context);
     return MultiProvider(
       providers: [
@@ -487,6 +495,5 @@ class MyApp extends StatelessWidget {
       ),
       home: InitializePage(),
     );
-
   }
 }

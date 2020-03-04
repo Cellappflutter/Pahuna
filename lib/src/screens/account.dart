@@ -9,7 +9,6 @@ import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/customappbar.dart';
-import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -100,7 +99,37 @@ class _AccountWidgetState extends State<AccountWidget> {
                           child: InkWell(
                               borderRadius: BorderRadius.circular(300),
                               onTap: () async {
-                                await avatarPicker();
+                                if (edit) {
+                                  await avatarPicker();
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      builder: (context) {
+                                        return Dialog(
+                                          child: (_isLocalImage)
+                                              ? ((_image != null)
+                                                  ? Image.file(
+                                                      _image,
+                                                    )
+                                                  : Container(
+                                                      color: Colors.red,
+                                                      height: 100,
+                                                    ))
+                                              : ((editableInfo.avatar != "" &&
+                                                      editableInfo.avatar !=
+                                                          null)
+                                                  ? Container(
+                                                      child: Image.network(
+                                                          editableInfo.avatar),
+                                                    )
+                                                  : Container(
+                                                      color: Colors.red,
+                                                      height: 100,
+                                                    )),
+                                        );
+                                      });
+                                }
                               },
                               child: (_isLocalImage)
                                   ? ((_image != null)
@@ -168,6 +197,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                                                         editableInfo);
                                                 await uploadAvatar(context);
                                                 pr.dismiss();
+                                                ImageCache().clear();
                                                 Navigator.of(context).pop();
                                                 setState(() {
                                                   edit = !edit;
@@ -180,6 +210,8 @@ class _AccountWidgetState extends State<AccountWidget> {
                                               setState(() {
                                                 edit = !edit;
                                                 check = 1;
+                                                _image = null;
+                                                _isLocalImage=false;
                                               });
                                               Navigator.of(context).pop();
                                             },
@@ -667,10 +699,13 @@ class _AccountWidgetState extends State<AccountWidget> {
                         ListTile(
                           dense: true,
                           title: Text("Age Preferences"),
-
-                          trailing: Text(DiscoverySetting.agePrefs.start.round().toString()+"-"+DiscoverySetting.agePrefs.end.round().toString()),
+                          trailing: Text(DiscoverySetting.agePrefs.start
+                                  .round()
+                                  .toString() +
+                              "-" +
+                              DiscoverySetting.agePrefs.end.round().toString()),
                           subtitle: RangeSlider(
-                            onChanged: (value){
+                            onChanged: (value) {
                               setState(() {
                                 DiscoverySetting.agePrefs = value;
                               });
@@ -788,15 +823,6 @@ class _AccountWidgetState extends State<AccountWidget> {
         ),
       ),
     );
-  }
-
-  change() {
-    edit == false;
-    if (edit == false) {
-      Container(child: Icon(Icons.edit));
-    } else {
-      Container(child: Icon(Icons.save_alt));
-    }
   }
 
   avatarPicker() async {

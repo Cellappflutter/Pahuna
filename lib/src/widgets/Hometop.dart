@@ -24,6 +24,7 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
     final String avatar = Provider.of<String>(context);
     if (avatar != null && userData != null) {
       userData.avatar = avatar;
+    //userData.image=Image.network(avatar);
     }
     final position = Provider.of<Position>(context);
     print("''''''''''''''''''''''''''''''''''''''''''''''''''''''");
