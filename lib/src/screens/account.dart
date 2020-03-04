@@ -320,7 +320,8 @@ class _AccountWidgetState extends State<AccountWidget> {
                               Icon(UiIcons.user_1),
                               SizedBox(width: 10),
                               Text("Profile Settings",
-                                  style: Theme.of(context).textTheme.body2)
+                                  // style: Theme.of(context).textTheme.body2
+                                  )
                             ],
                           ),
                         ),
@@ -503,7 +504,8 @@ class _AccountWidgetState extends State<AccountWidget> {
                             Icon(UiIcons.file_2),
                             SizedBox(width: 10),
                             Text("Description",
-                                style: Theme.of(context).textTheme.body2)
+                                // style: Theme.of(context).textTheme.body2
+                                ),
                           ],
                         ),
                       ),
@@ -674,7 +676,8 @@ class _AccountWidgetState extends State<AccountWidget> {
                             ),
                             SizedBox(width: 10),
                             Text("Discovery Settings",
-                                style: Theme.of(context).textTheme.body2),
+                                // style: Theme.of(context).textTheme.body2
+                                ),
                           ],
                         )),
                         ListTile(
@@ -747,7 +750,8 @@ class _AccountWidgetState extends State<AccountWidget> {
                             Icon(UiIcons.settings),
                             SizedBox(width: 10),
                             Text("Accoutn Settings",
-                                style: Theme.of(context).textTheme.body2),
+                                // style: Theme.of(context).textTheme.body2
+                                ),
                           ],
                         ),
                       ),
