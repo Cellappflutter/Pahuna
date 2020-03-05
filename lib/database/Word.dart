@@ -11,7 +11,7 @@ class Wordget{
      print(posts);
      //int i=0;
     for (final post in posts) {
-      Featuredata data1=Featuredata(title: post['title']['rendered'],image:  post['jetpack_featured_media_url'],content: post['content']['rendered'],id: post['id']);
+      Featuredata data1=Featuredata(title: post['title']['rendered'],image:  post['jetpack_featured_media_url'],content: post['content']['rendered'],id: post['id'].toString());
       data.add(data1);
     }
     print (data);

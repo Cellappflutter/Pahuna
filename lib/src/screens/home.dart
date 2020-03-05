@@ -72,17 +72,20 @@ class _HomeWidgetState extends State<HomeWidget>
                 if (snapshot.hasData) {
                   return Center(
                     child: Wrap(
-                      children: <Widget>[
-                        
-                        ListView.builder(
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context,index){
-                            return
-featuresChip(snapshot.data[index].id.toString(), () {Navigator.of(context).push(MaterialPageRoute(builder:(context)=>CategorizedProductsWidget()));});
-                          })
+                      children:featureChipDesign(snapshot.data), 
+                      //<Widget>[
+                        // for(int i=0; i<snapshot.data.length;i++){
+                        //   featuresChip(snapshot.data[i].id.toString(), () {Navigator.of(context).push(MaterialPageRoute(builder:(context)=>CategorizedProductsWidget()));})
+                        // }
+//                         ListView.builder(
+//                           itemCount: snapshot.data.length,
+//                           itemBuilder: (context,index){
+//                             return
+// featuresChip(snapshot.data[index].id.toString(), () {Navigator.of(context).push(MaterialPageRoute(builder:(context)=>CategorizedProductsWidget()));});
+//                           })
                         
                       
-                      ],
+                   //   ],
                     ),
                   );
                 } else {
@@ -164,8 +167,16 @@ featuresChip(snapshot.data[index].id.toString(), () {Navigator.of(context).push(
 //      ],
 //    );
   }
+  List<Widget> featureChipDesign( List<Featuredata> data){
+     List<Widget> widgets = List<Widget>();
+for(int i=0; i< data.length;i++){
+    widgets.add(featuresChip(data[i].id.toString(), data[i]));
 
-  featuresChip(String title, void onTap()) {
+}
+return widgets;
+  } 
+
+  featuresChip(String title, Featuredata data) {
     return Container(
       margin: EdgeInsets.only(left: appColors.App(context).appHeight(3)),
       child: RaisedButton(
@@ -177,7 +188,12 @@ featuresChip(snapshot.data[index].id.toString(), () {Navigator.of(context).push(
           ),
           color: appColors.Colors().mainColor(1),
           // splashColor: appColors.Colors().mainColor(1),
-          onPressed: () {}),
+          onPressed: () {
+            print("datacheck");
+            print(data.content);
+           // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CategorizedProductsWidget()));
+
+          }),
     );
   }
 }
