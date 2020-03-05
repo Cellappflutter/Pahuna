@@ -1,15 +1,13 @@
-import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+import 'package:ecommerce_app_ui_kit/Model/Data.dart';
+import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/src/models/product.dart';
-
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as appColors;
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/src/models/brand.dart';
 import 'package:ecommerce_app_ui_kit/src/models/category.dart';
-import 'package:ecommerce_app_ui_kit/src/models/product.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/Hometop.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/SearchBarWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -20,6 +18,7 @@ class _HomeWidgetState extends State<HomeWidget>
     with SingleTickerProviderStateMixin {
   List<Product> _productsOfCategoryList;
   List<Product> _productsOfBrandList;
+
   CategoriesList _categoriesList = new CategoriesList();
   BrandsList _brandsList = new BrandsList();
   ProductsList _productsList = new ProductsList();
@@ -52,6 +51,7 @@ class _HomeWidgetState extends State<HomeWidget>
   @override
   Widget build(BuildContext context) {
     appColors.App(context);
+    //Wordget().word();
     return ListView(
       children: <Widget>[
         Padding(
@@ -59,32 +59,41 @@ class _HomeWidgetState extends State<HomeWidget>
           child: SearchBarWidget(),
         ),
         Hometop(),
-        Center(
-          child: Wrap(
-            children: <Widget>[
-              featuresChip("Features1", () {}),
-              featuresChip("Features2", () {}),
-              featuresChip("Features3", () {}),
-              featuresChip("Features4", () {}),
-              featuresChip("Features5", () {}),
-              featuresChip("Features6", () {}),
-              featuresChip("Features6", () {}),
-            ],
-          ),
-        ),
-        Center(
-          child: Wrap(
-            children: <Widget>[
-              featuresChip("Features1", () {}),
-              featuresChip("Features2", () {}),
-              featuresChip("Features3", () {}),
-              featuresChip("Features4", () {}),
-              featuresChip("Features5", () {}),
-              featuresChip("Features6", () {}),
-              featuresChip("Features6", () {}),
-            ],
-          ),
-        ),
+
+        FutureBuilder<List<Featuredata>>(
+            future: Wordget().word(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  return Center(
+                    child: Wrap(
+                      children:featureChipDesign(snapshot.data), 
+                      //<Widget>[
+                        // for(int i=0; i<snapshot.data.length;i++){
+                        //   featuresChip(snapshot.data[i].id.toString(), () {Navigator.of(context).push(MaterialPageRoute(builder:(context)=>CategorizedProductsWidget()));})
+                        // }
+//                         ListView.builder(
+//                           itemCount: snapshot.data.length,
+//                           itemBuilder: (context,index){
+//                             return
+// featuresChip(snapshot.data[index].id.toString(), () {Navigator.of(context).push(MaterialPageRoute(builder:(context)=>CategorizedProductsWidget()));});
+//                           })
+                        
+                      
+                   //   ],
+                    ),
+                  );
+                } else {
+                  return Text("no Data");
+                }
+              } else {
+                return CircularProgressIndicator();
+              }
+            }),
+
+        //  FlashSalesHeaderWidget(),
+        //   FlashSalesCarouselWidget(heroTag: 'home_flash_sales', productsList: _productsList.flashSalesList),
+        // Heading (Recommended for you)
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           child: ListTile(
@@ -154,8 +163,16 @@ class _HomeWidgetState extends State<HomeWidget>
 //      ],
 //    );
   }
+  List<Widget> featureChipDesign( List<Featuredata> data){
+     List<Widget> widgets = List<Widget>();
+for(int i=0; i< data.length;i++){
+    widgets.add(featuresChip(data[i].id.toString(), data[i]));
 
-  featuresChip(String title, void onTap()) {
+}
+return widgets;
+  } 
+
+  featuresChip(String title, Featuredata data) {
     return Container(
       margin: EdgeInsets.only(left: appColors.App(context).appHeight(3)),
       child: RaisedButton(
@@ -168,7 +185,10 @@ class _HomeWidgetState extends State<HomeWidget>
           color: appColors.Colors().mainColor(1),
           // splashColor: appColors.Colors().mainColor(1),
           onPressed: () {
-            onTap();
+            print("datacheck");
+            print(data.content);
+           // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CategorizedProductsWidget()));
+
           }),
     );
   }
