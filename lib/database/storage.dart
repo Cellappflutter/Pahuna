@@ -42,7 +42,7 @@ class StorageService {
     try {
       return await storageReference
           .child(userid)
-          .child('avatar.jpeg')
+          .child('avatar.jpg')
           .getDownloadURL();
     } catch (e) {
       return "";

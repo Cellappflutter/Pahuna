@@ -9,7 +9,9 @@ import 'package:ecommerce_app_ui_kit/Helper/search_bottomsheet.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/userdata.dart';
+import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
+import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geodesy/geodesy.dart';
@@ -67,16 +69,10 @@ class _NearbySearchState extends State<NearbySearch>
               curve: const PulsateCurve(),
             ),
           ),
-          child:
-              (widget.userData.avatar != null && widget.userData.avatar != "")
-                  ? Image.network(
-                      widget.userData.avatar,
-                      height: iconSize,
-                    )
-                  : Icon(
-                      Icons.supervised_user_circle,
-                      size: iconSize,
-                    ),
+          child: Icon(
+            Icons.supervised_user_circle,
+            size: iconSize,
+          ),
         ),
       ),
     );
@@ -92,14 +88,26 @@ class _NearbySearchState extends State<NearbySearch>
     );
   }
 
-  List<Widget> userWidgets(List<UserData> info) {
+  Future<List<Widget>> userWidgets(List<UserData> info) async {
     List<Widget> widgets = List<Widget>();
     print("UserWidgets Vitra");
+
     print(info);
     for (int i = 0; i < info.length; i++) {
+      String avatar = await StorageService().getAvatar(info[i].uid);
       print("------------------------------");
+      print(avatar);
       print(info[i].uid);
       print(info.length);
+      print(-(ScreenSizeConfig.blockSizeHorizontal *
+          8 *
+          cos(info[i].bearing) *
+          (info[i].distance / 1000)));
+      print(ScreenSizeConfig.blockSizeVertical *
+          8 *
+          sin(info[i].bearing) *
+          (info[i].distance / 1000));
+
       widgets.add(
         AlignPositioned(
           dx: -(ScreenSizeConfig.blockSizeHorizontal *
@@ -110,10 +118,21 @@ class _NearbySearchState extends State<NearbySearch>
               8 *
               sin(info[i].bearing) *
               (info[i].distance / 1000),
-          child: PixButton(
-            icon: PixIcon.bomb,
-            radius: 12,
-            onPress: () {
+          child: InkWell(
+            child: (avatar != null && avatar != "")
+                ? CircleAvatar(
+                    backgroundImage:
+                        //(avatar != null && avatar != "")
+                        (NetworkImage(avatar)),
+
+                    //    : AssetImage("assets/facebook.png"),
+                    radius: 15,
+                  )
+                : CircleAvatar(
+                    child: Icon(UiIcons.user_3),
+                    radius: 15,
+                  ),
+            onTap: () {
               showModalBottomSheet(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
@@ -123,8 +142,7 @@ class _NearbySearchState extends State<NearbySearch>
                   backgroundColor: Colors.white,
                   context: context,
                   builder: (builder) {
-                    return Search_BottomSheet(info[i].email, info[i].name);
-
+                    return Search_BottomSheet(info[i]);
                   });
             },
           ),
@@ -166,6 +184,13 @@ class _NearbySearchState extends State<NearbySearch>
   @override
   Widget build(BuildContext context) {
     _controller.repeat();
+    print(widget.userData.interest.toString() +
+        "" +
+        widget.userData.matchPrefs.toString() +
+        "" +
+        widget.userData.name +
+        "" +
+        widget.userData.continent.toString());
     print("000000000000000000000000000");
     return StreamProvider.value(
       value: _databaseService.getOnlineUsers(widget.userData),
@@ -190,20 +215,29 @@ class _NearbySearchState extends State<NearbySearch>
             ),
             Consumer<List<UserData>>(builder: (context, data, child) {
               return FutureBuilder(
-                future: getRangedData(data, widget.position),
-                builder: (context, AsyncSnapshot<List<UserData>> snapshot) {
-                  if (snapshot.hasData) {
-                    return Stack(
-                      children: userWidgets(snapshot.data),
-                    );
-                  } else {
-                    print("----------------NODATA_-----------------");
-                    return Container(
-                      height: 0,
-                    );
-                  }
-                },
-              );
+                  future: getRangedData(data, widget.position),
+                  builder: (context, AsyncSnapshot<List<UserData>> snapshot) {
+                    if (snapshot.hasData) {
+                      return FutureBuilder(
+                          future: userWidgets(snapshot.data),
+                          builder: (context, snapshotData) {
+                            if (snapshotData.hasData) {
+                              return Stack(
+                                children: snapshotData.data,
+                              );
+                            } else {
+                              return Container(
+                                height: 0,
+                              );
+                            }
+                          });
+                    } else {
+                      print("----------------NODATA_-----------------");
+                      return Container(
+                        height: 0,
+                      );
+                    }
+                  });
             }),
           ],
         ),

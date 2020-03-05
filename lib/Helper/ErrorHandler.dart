@@ -21,10 +21,10 @@ class ErrorHandlePage {
               alignment: MainAxisAlignment.center,
               children: <Widget>[
                 MaterialButton(
-                  child: Text("Go to Home.."),
+                  child: Text("Report Issue"),
                   onPressed: () {
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => AuthPage()),
+                        MaterialPageRoute(builder: (context) => InitializePage()),
                         (Route<dynamic> route) => false);
                   },
                 )

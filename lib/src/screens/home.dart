@@ -65,6 +65,7 @@ class _HomeWidgetState extends State<HomeWidget>
           child: SearchBarWidget(),
         ),
         Hometop(),
+
         FutureBuilder<List<Featuredata>>(
             future: Wordget().word(),
             builder: (context, snapshot) {
@@ -95,6 +96,7 @@ class _HomeWidgetState extends State<HomeWidget>
                 return CircularProgressIndicator();
               }
             }),
+
         //  FlashSalesHeaderWidget(),
         //   FlashSalesCarouselWidget(heroTag: 'home_flash_sales', productsList: _productsList.flashSalesList),
         // Heading (Recommended for you)

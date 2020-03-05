@@ -330,7 +330,7 @@ class DatabaseService {
 
   Stream<List<String>> getter() {
     return requestReference
-        .document(uid)
+        .document(uid) //current user uid
         .collection("Pending")
         .snapshots()
         .map(convert);
