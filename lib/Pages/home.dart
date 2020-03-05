@@ -1,9 +1,7 @@
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Pages/NearbySearch.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
-import 'package:ecommerce_app_ui_kit/Pages/NearbySearch.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     print(widget.position);
     ScreenSizeConfig().init(context);
     final position = Provider.of<Position>(context);
-    final userData=Provider.of<CurrentUserInfo>(context);
+    final userData = Provider.of<CurrentUserInfo>(context);
     print(position);
     return Scaffold(
       body: Container(
@@ -38,14 +36,21 @@ class _HomePageState extends State<HomePage> {
                   child: Stack(children: <Widget>[
                     Container(
                       child: NearbySearch(
-                        position: Position(latitude: 27.6912767, longitude: 85.3204131),
+                        position: Position(
+                            latitude: 27.6912767, longitude: 85.3204131),
                         userData: userData,
                       ),
                     ),
                   ]),
                 ),
                 sizeBox(),
-                Text("Searching"),
+                RaisedButton(
+                  child: Text("Searching"),
+                  onPressed: () {
+                    Navigator.of(context)
+                        .popUntil((Route<dynamic> route) => false);
+                  },
+                ),
               ],
             ),
           ),
