@@ -2,6 +2,7 @@ import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as appColors;
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 class FeaturePage extends StatefulWidget {
   // Post postData;
@@ -11,46 +12,105 @@ class FeaturePage extends StatefulWidget {
 }
 
 class _FeaturePageState extends State<FeaturePage> {
+  int indexWidget = 1;
+  Widget currentWidget;
+
   @override
   Widget build(BuildContext context) {
     ScreenSizeConfig().init(context);
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         body: SafeArea(
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
-                forceElevated: true,
-                elevation: 10,
-                centerTitle: true,
-                expandedHeight: ScreenSizeConfig.safeBlockVertical * 40,
-                pinned: true,
-                stretch: true,
-                floating: false,
-                leading: Icon(UiIcons.return_icon),
-                flexibleSpace: FlexibleSpaceBar(
-                  background: topImage(context),
-                  collapseMode: CollapseMode.parallax,
-                  title: Text("widget.post.title.rendered"),
+          child: Container(
+            height: 800,
+            child: CustomScrollView(
+              slivers: <Widget>[
+                SliverAppBar(
+                  backgroundColor: Colors.black,
+                  forceElevated: true,
+                  elevation: 10,
+                  centerTitle: true,
+                  expandedHeight: ScreenSizeConfig.safeBlockVertical * 40,
+                  pinned: true,
+                  stretch: true,
+                  floating: false,
+                  leading: Icon(UiIcons.return_icon,color: Colors.white,),
+                  flexibleSpace: Stack(
+                    children: <Widget>[
+                      FlexibleSpaceBar(
+                        background: topImage(context),
+                        collapseMode: CollapseMode.parallax,
+                        title: Text("TITLE", style: TextStyle(color: Colors.white),),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SliverList(delegate: SliverChildListDelegate(widgets())),
-              // SliverChildBuilderDelegate(
-              //   (context, index) {
-              //     return ListTile(
-              //       title: Text("dssd"),
-              //     );
-              //   },childCount: 8,
-              // ),),
-            ],
+                SliverStickyHeader(
+                  header: Container(
+                    //  height: 60.0,
+                      color: Colors.white.withOpacity(0.8),
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        RaisedButton(
+                          color: Color(0xffdd2827),
+                          highlightColor: Colors.yellow,
+                          onPressed: () {
+                            setState(() {
+                              indexWidget = 0;
+                            });
+                          },
+                          child: Text(
+                            "Medias",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        RaisedButton(
+                          color: Color(0xffdd2827),
+                          onPressed: () {
+                            setState(() {
+                              indexWidget = 1;
+                            });
+                          },
+                          child: Text(
+                            "Information",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        RaisedButton(
+                          color: Color(0xffdd2827),
+                          onPressed: () {
+                            setState(() {
+                              indexWidget = 2;
+                            });
+                          },
+                          child: Text(
+                            "Reviews",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, i) => ListTile(
+                        leading: CircleAvatar(
+                          child: Text('0'),
+                        ),
+                        title: Text('List tile #$i'),
+                      ),
+                      childCount: 20,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
+    
     );
-  }
-
-  List<Widget> widgets() {
-    return [Text("ds")];
   }
 
   featuresChip(String title, void onTap()) {
@@ -89,5 +149,26 @@ class _FeaturePageState extends State<FeaturePage> {
         ],
       ),
     );
+  }
+
+  getWidget() {
+    switch (indexWidget) {
+      case 0:
+        {
+          return;
+        }
+      case 1:
+        {
+          return;
+        }
+      case 2:
+        {
+          return;
+        }
+      default:
+        {
+          return;
+        }
+    }
   }
 }

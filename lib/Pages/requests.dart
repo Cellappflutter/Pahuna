@@ -137,7 +137,7 @@ class _MatchRequestState extends State<MatchRequest> {
             ),
           );
         } else {
-          return Text("Loading");
+          return Center(child: CircularProgressIndicator());
         }
       },
     );

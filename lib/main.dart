@@ -4,21 +4,14 @@ import 'package:connectivity/connectivity.dart';
 import 'package:ecommerce_app_ui_kit/Helper/ErrorHandler.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
-import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
-import 'package:ecommerce_app_ui_kit/route_generator.dart';
-import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ecommerce_app_ui_kit/src/screens/cart.dart';
-import 'package:ecommerce_app_ui_kit/src/screens/home.dart';
-import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
-import 'package:ecommerce_app_ui_kit/src/screens/test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -122,7 +115,7 @@ void main() {
               fontSize: 12.0, color: config.Colors().secondColor(0.6)),
         ),
       ),
-      home: FeaturePage(),
+      home: InitializePage(),
     ),
   );
 }

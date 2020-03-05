@@ -72,7 +72,7 @@ class _HomeWidgetState extends State<HomeWidget>
             ],
           ),
         ),
-          Center(
+        Center(
           child: Wrap(
             children: <Widget>[
               featuresChip("Features1", () {}),
@@ -85,9 +85,6 @@ class _HomeWidgetState extends State<HomeWidget>
             ],
           ),
         ),
-        //  FlashSalesHeaderWidget(),
-        //   FlashSalesCarouselWidget(heroTag: 'home_flash_sales', productsList: _productsList.flashSalesList),
-        // Heading (Recommended for you)
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           child: ListTile(

@@ -49,7 +49,9 @@ class _CartWidgetState extends State<CartWidget> {
         child: Consumer<List<RequestedUser>>(
           builder: (context, items, child) {
             if (items == null) {
-              return Container(color: Colors.green);
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             } else {
               print(items);
               pr.dismiss();
