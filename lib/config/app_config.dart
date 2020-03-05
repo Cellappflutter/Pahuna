@@ -41,6 +41,7 @@ class Colors {
   Color _accentColor = Color.fromRGBO(216, 40, 32, 1);//Color(0xFFADC4C8);
   Color _accentDarkColor = Color.fromRGBO(216, 40, 32, 1);//Color(0xFFADC4C8);
   Color _whiteColor = Color(0xFFFFFF);
+  Color _mainAppColor= Color(0xffdd2827);
   Color _yellowColor = Color.fromRGBO(255, 255, 0, 1);
 
   Color mainColor(double opacity) {

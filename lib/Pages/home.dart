@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                   child: Text("Searching"),
                   onPressed: () {
                     Navigator.of(context)
-                        .popUntil((Route<dynamic> route) => false);
+                        .pop();
                   },
                 ),
               ],
