@@ -1,4 +1,6 @@
+import 'package:ecommerce_app_ui_kit/Model/Data.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/src/models/product.dart';
 
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as appColors;
@@ -6,6 +8,8 @@ import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/src/models/brand.dart';
 import 'package:ecommerce_app_ui_kit/src/models/category.dart';
 import 'package:ecommerce_app_ui_kit/src/models/product.dart';
+import 'package:ecommerce_app_ui_kit/src/widgets/CategorizedProductsWidget.dart';
+
 import 'package:ecommerce_app_ui_kit/src/widgets/Hometop.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/SearchBarWidget.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +24,7 @@ class _HomeWidgetState extends State<HomeWidget>
     with SingleTickerProviderStateMixin {
   List<Product> _productsOfCategoryList;
   List<Product> _productsOfBrandList;
+
   CategoriesList _categoriesList = new CategoriesList();
   BrandsList _brandsList = new BrandsList();
   ProductsList _productsList = new ProductsList();
@@ -52,6 +57,7 @@ class _HomeWidgetState extends State<HomeWidget>
   @override
   Widget build(BuildContext context) {
     appColors.App(context);
+    //Wordget().word();
     return ListView(
       children: <Widget>[
         Padding(
@@ -59,19 +65,33 @@ class _HomeWidgetState extends State<HomeWidget>
           child: SearchBarWidget(),
         ),
         Hometop(),
-        Center(
-          child: Wrap(
-            children: <Widget>[
-              featuresChip("Features1", () {}),
-              featuresChip("Features2", () {}),
-              featuresChip("Features3", () {}),
-              featuresChip("Features4", () {}),
-              featuresChip("Features5", () {}),
-              featuresChip("Features6", () {}),
-              featuresChip("Features6", () {}),
-            ],
-          ),
-        ),
+        FutureBuilder<List<Featuredata>>(
+            future: Wordget().word(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  return Center(
+                    child: Wrap(
+                      children: <Widget>[
+                        
+                        ListView.builder(
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context,index){
+                            return
+featuresChip(snapshot.data[index].id.toString(), () {Navigator.of(context).push(MaterialPageRoute(builder:(context)=>CategorizedProductsWidget()));});
+                          })
+                        
+                      
+                      ],
+                    ),
+                  );
+                } else {
+                  return Text("no Data");
+                }
+              } else {
+                return CircularProgressIndicator();
+              }
+            }),
         //  FlashSalesHeaderWidget(),
         //   FlashSalesCarouselWidget(heroTag: 'home_flash_sales', productsList: _productsList.flashSalesList),
         // Heading (Recommended for you)
@@ -157,9 +177,7 @@ class _HomeWidgetState extends State<HomeWidget>
           ),
           color: appColors.Colors().mainColor(1),
           // splashColor: appColors.Colors().mainColor(1),
-          onPressed: () {
-            onTap();
-          }),
+          onPressed: () {}),
     );
   }
 }
