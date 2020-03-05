@@ -4,6 +4,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:ecommerce_app_ui_kit/Helper/ErrorHandler.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
@@ -121,7 +122,7 @@ void main() {
               fontSize: 12.0, color: config.Colors().secondColor(0.6)),
         ),
       ),
-      home: InitializePage(),
+      home: FeaturePage(),
     ),
   );
 }
@@ -379,7 +380,7 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
           ),
         ),
         home: TabsWidget(
-          currentTab: 2,
+          currentTab: 1,
         ),
       ),
     );
@@ -387,7 +388,7 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
 
   Stream<Position> locationStream() {
     Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-    var locationOptions = LocationOptions(accuracy: LocationAccuracy.high);
+    var locationOptions = LocationOptions(accuracy: LocationAccuracy.high,distanceFilter: 50);
     return geolocator.getPositionStream(locationOptions);
   }
 }

@@ -72,6 +72,19 @@ class _HomeWidgetState extends State<HomeWidget>
             ],
           ),
         ),
+          Center(
+          child: Wrap(
+            children: <Widget>[
+              featuresChip("Features1", () {}),
+              featuresChip("Features2", () {}),
+              featuresChip("Features3", () {}),
+              featuresChip("Features4", () {}),
+              featuresChip("Features5", () {}),
+              featuresChip("Features6", () {}),
+              featuresChip("Features6", () {}),
+            ],
+          ),
+        ),
         //  FlashSalesHeaderWidget(),
         //   FlashSalesCarouselWidget(heroTag: 'home_flash_sales', productsList: _productsList.flashSalesList),
         // Heading (Recommended for you)
