@@ -6,7 +6,7 @@ import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 
 class StorageService {
-  String uid;
+  String uid = 'hhhhh';
   StorageService() {
     this.uid = DatabaseService.uid;
   }

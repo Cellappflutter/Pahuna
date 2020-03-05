@@ -33,7 +33,8 @@ dependencies:
   align_positioned: ^1.2.5
   cloud_firestore: ^0.13.4
   permission_handler: ^4.3.0
-  cached_network_image: ^2.0.0
+  flutter_wordpress: ^0.1.4
+  flutter_html: ^0.11.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -48,6 +49,7 @@ dependencies:
   firebase_storage: ^3.1.1
   firebase_storage_image: ^0.4.0
   flutter_offline: ^0.3.0
+  wordpress_api: ^0.1.3+1
 
 dev_dependencies:
   flutter_test:

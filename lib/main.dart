@@ -6,6 +6,7 @@ import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
@@ -494,7 +495,7 @@ class MyApp extends StatelessWidget {
               fontSize: 12.0, color: config.Colors().secondColor(0.6)),
         ),
       ),
-      home: InitializePage(),
+      home:MainPageWrapper() //InitializePage(),
     );
   }
 }

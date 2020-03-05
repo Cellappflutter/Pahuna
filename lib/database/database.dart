@@ -6,7 +6,7 @@ import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/userdata.dart';
 
 class DatabaseService {
-  static String uid;
+  static String uid="hhhhh";
   final CollectionReference reference = Firestore.instance.collection("pahuna");
   final CollectionReference requestReference =
       Firestore.instance.collection("ConnectionRequest");
