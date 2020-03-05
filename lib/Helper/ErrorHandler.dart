@@ -1,3 +1,4 @@
+import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/main.dart';
 
@@ -22,7 +23,8 @@ class ErrorHandlePage {
               children: <Widget>[
                 MaterialButton(
                   child: Text("Report Issue"),
-                  onPressed: () {
+                  onPressed: () async{
+                    await DatabaseService().reportIssue(error);
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(builder: (context) => InitializePage()),
                         (Route<dynamic> route) => false);

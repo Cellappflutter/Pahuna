@@ -52,6 +52,11 @@ class _CartWidgetState extends State<CartWidget> {
               return Center(
                 child: CircularProgressIndicator(),
               );
+            } else if (items.length < 1) {
+              return Center(
+                child:
+                    Text("No Connection Request, Why dont u send some request"),
+              );
             } else {
               print(items);
               pr.dismiss();

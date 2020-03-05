@@ -37,49 +37,9 @@ class _TabsWidgetState extends State<TabsWidget> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   initState() {
-    //   _selectTab(widget.currentTab);
     super.initState();
   }
 
-  // @override
-  // void didUpdateWidget(TabsWidget oldWidget) {
-  //   _selectTab(oldWidget.currentTab);
-  //   super.didUpdateWidget(oldWidget);
-  // }
-
-  // void _selectTab(int tabItem) {
-  //   setState(() {
-  //     widget.currentTab = tabItem;
-  //     widget.selectedTab = tabItem;
-  //     switch (tabItem) {
-  //       case 0:
-  //         widget.currentTitle = 'Notifications';
-  //         widget.currentPage = NotificationsWidget();
-  //         break;
-  //       case 1:
-  //         widget.currentTitle = 'Account';
-  //         widget.currentPage = AccountWidget();
-  //         break;
-  //       case 2:
-  //         widget.currentTitle = 'Home';
-  //         widget.currentPage = HomeWidget();
-  //         break;
-  //       case 3:
-  //         widget.currentTitle = 'Messages';
-  //         widget.currentPage = MessagesWidget();
-  //         break;
-  //       case 4:
-  //         widget.currentTitle = 'Favorites';
-  //         widget.currentPage = FavoritesWidget();
-  //         break;
-  //       case 5:
-  //         widget.selectedTab = 3;
-  //         widget.currentTitle = 'Chat';
-  //         widget.currentPage = ChatWidget();
-  //         break;
-  //     }
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +47,6 @@ class _TabsWidgetState extends State<TabsWidget> {
     final String avatar = Provider.of<String>(context);
     if (avatar != null && info != null) {
       info.avatar = avatar;
-      //  info.image=Image.network(avatar);
     }
     return Scaffold(
       key: _scaffoldKey,

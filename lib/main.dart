@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:ecommerce_app_ui_kit/Helper/ErrorHandler.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
+import 'package:ecommerce_app_ui_kit/Model/Data.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 
 import 'package:flutter/material.dart';
@@ -259,16 +261,13 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        "&^&^&^&^&^&^&------------------------------------------------------^&^&^&^&^&^");
-    // Apporienta.setPreferredOrientationPortrait();
-    // AppOrientation.setFullScreenApp();
     ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
       return ErrorHandlePage.getErrorWidget(context, errorDetails);
     };
     ScreenSizeConfig().init(context);
     return MultiProvider(
       providers: [
+        FutureProvider<List<Featuredata>>.value(value: Wordget().word()),
         StreamProvider.value(value: DatabaseService().checkPrevUser()),
         StreamProvider<CurrentUserInfo>.value(
             value: DatabaseService().getUserData()),

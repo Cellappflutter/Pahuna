@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app_ui_kit/database/storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
@@ -6,8 +8,10 @@ import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/userdata.dart';
 
 class DatabaseService {
-  static String uid="hhhhh";
+  static String uid = "hhhhh";
   final CollectionReference reference = Firestore.instance.collection("pahuna");
+  final CollectionReference reportReference =
+      Firestore.instance.collection("report");
   final CollectionReference requestReference =
       Firestore.instance.collection("ConnectionRequest");
 
@@ -391,5 +395,12 @@ class DatabaseService {
     return snapshot.documents.map((doc) {
       return RequestedUser(uid: doc.documentID, time: doc.data['time']);
     }).toList();
+  }
+
+  reportIssue(FlutterErrorDetails error) {
+    return reportReference.document(uid).setData({
+      "time": DateTime.now().toUtc().toString(),
+      "issue": error.summary.toString(),
+    }, merge: true);
   }
 }

@@ -11,7 +11,6 @@ import 'package:ecommerce_app_ui_kit/Pages/login.dart';
 import 'package:ecommerce_app_ui_kit/Pages/profile.dart';
 import 'package:ecommerce_app_ui_kit/Pages/history.dart';
 import 'package:ecommerce_app_ui_kit/Pages/policies.dart';
-import 'package:ecommerce_app_ui_kit/Pages/requests.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/database/auth.dart';
 
@@ -336,7 +335,7 @@ class _MainPageState extends State<MainPage>
         }
       case 3:
         {
-          return MatchRequest();
+          return ProfilePage();
         }
       case 4:
         {
