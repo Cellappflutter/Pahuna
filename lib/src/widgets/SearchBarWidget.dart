@@ -33,7 +33,6 @@ class SearchBarWidget extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              Scaffold.of(context).openEndDrawer();
             },
             icon: Icon(UiIcons.settings_2, size: 20, color: Theme.of(context).hintColor.withOpacity(0.5)),
           ),
