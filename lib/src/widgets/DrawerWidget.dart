@@ -27,11 +27,11 @@ class DrawerWidget extends StatelessWidget {
 //              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(35)),
               ),
               accountName: Text(
-                info.name,
+                info.name??"Name",
                 style: Theme.of(context).textTheme.title,
               ),
               accountEmail: Text(
-                info.email,
+                info.email??"EmailID",
                 style: Theme.of(context).textTheme.caption,
               ),
               currentAccountPicture: CircleAvatar(

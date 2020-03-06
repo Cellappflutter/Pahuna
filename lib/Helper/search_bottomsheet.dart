@@ -8,7 +8,8 @@ import 'UiHelper/loading.dart';
 
 class Search_BottomSheet extends StatefulWidget {
   UserData userInfo;
-  Search_BottomSheet(this.userInfo);
+  String name;
+  Search_BottomSheet(this.userInfo,this.name);
 
   @override
   State<StatefulWidget> createState() {
@@ -89,7 +90,7 @@ class _searchsheet extends State<Search_BottomSheet> {
                         alignment: Alignment.bottomCenter,
                         child: RaisedButton.icon(
                             onPressed: ()async {
-                           await   DatabaseService().sendReq(widget.userInfo.uid);
+                           await   DatabaseService().sendReq(widget.userInfo.uid,widget.name);
                             },
                             icon: Icon(Icons.check),
                             label: Text("Send Request")))

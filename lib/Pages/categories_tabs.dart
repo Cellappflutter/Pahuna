@@ -32,45 +32,50 @@ class _Detail extends State<Details_Tab> {
 
   _description(String detail) {
     var sth = parse(detail);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Card(
-          color: Colors.white,
-          child: Column(
-            children: <Widget>[
-              Container(
-                
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                    Icon(
-                      UiIcons.file_1,
-                      size: 15,
-                      color: Colors.black,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Container(
-                        margin: EdgeInsets.all(10),
-                        child: Text(
-                          "Description",
-                          style: TextStyle(fontSize: 20, color: Colors.red),
-                        )),
-                  ])),
-              Container(
-                alignment: Alignment.topLeft,
-                // color: Colors.green,
-                child: Text(
-                  sth.body.text,
-                  style: TextStyle(color: Colors.red),
-                ),
-              )
-            ],
+    return Container(
+      margin: EdgeInsets.all(2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Card(
+            color: Colors.white,
+            child: Column(
+              children: <Widget>[
+                Container(
+              
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                      Icon(
+                        UiIcons.file_1,
+                        size: 15,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                          margin: EdgeInsets.all(10),
+                          child: Text(
+                            "Description",
+                            style: TextStyle(fontSize: 20, color: Colors.red),
+                          )),
+                    ])),
+                Container(
+                  alignment: Alignment.topLeft,
+                  margin: EdgeInsets.only(left: 5,right: 1),
+                  // color: Colors.green,
+                  child: Text(
+                    sth.body.text,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                )
+              ],
+            ),
+
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

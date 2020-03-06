@@ -119,6 +119,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           return AlertDialog(
             title: Text("Enter SMS Code"),
             content: TextField(
+              keyboardType: TextInputType.number,
               onChanged: (value) {
                 this.smsCode = value;
               },
