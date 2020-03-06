@@ -52,6 +52,7 @@ dependencies:
   wordpress_api: ^0.1.3+1
   flutter_wordpress: ^0.1.4
   flutter_html: ^0.11.1
+  html: ^0.14.0+3
 
 dev_dependencies:
   flutter_test:
