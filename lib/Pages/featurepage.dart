@@ -7,15 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 class FeaturePage extends StatefulWidget {
-  Featuredata featureData;
+  Featuredata featureData=Featuredata(content: "hellllo",id: "dssdsd",title: "dssdsdsdsdds");
   // Post postData;
-  FeaturePage({this.featureData});
+  //FeaturePage({this.featureData});
   @override
   _FeaturePageState createState() => _FeaturePageState();
 }
 
 class _FeaturePageState extends State<FeaturePage> {
-  int indexWidget = 1;
+  int indexWidget = 0;
   Widget currentWidget;
 
   @override
@@ -28,7 +28,7 @@ class _FeaturePageState extends State<FeaturePage> {
           child: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                backgroundColor: Colors.black,
+                backgroundColor: Color(0xFF2C2C2C),
                 forceElevated: true,
                 elevation: 10,
                 centerTitle: true,
@@ -107,7 +107,7 @@ class _FeaturePageState extends State<FeaturePage> {
                     ],
                   ),
                 ),
-                sliver: getWidget(),
+                sliver: getSliverWidgets(),
               ),
             ],
           ),
@@ -161,7 +161,7 @@ class _FeaturePageState extends State<FeaturePage> {
     );
   }
 
-  Widget getWidget() {
+  getSliverWidgets() {
     switch (indexWidget) {
       case 0:
         {
@@ -181,5 +181,4 @@ class _FeaturePageState extends State<FeaturePage> {
         }
     }
   }
-  
 }

@@ -1,3 +1,4 @@
+import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 
@@ -45,32 +46,50 @@ class _Media extends State<Medias_Tab> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: GridView.builder(
-        physics: new NeverScrollableScrollPhysics(),
-        //  primary: true,
-          itemCount: url.length,
-          gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, crossAxisSpacing: 5, mainAxisSpacing: 5),
-          itemBuilder: (BuildContext context, index) {
-            return ClipRRect(
-              //  borderRadius: BorderRadius.circular(60),
-              child: AspectRatio(
-                aspectRatio: 14 / 16,
-                child: Image.network(
-                  url[index],
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  },
-                  fit: BoxFit.fill,
-                ),
-              ),
-            );
-          }),
+    return SliverGrid(
+      delegate: SliverChildListDelegate([gridImages()]),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisSpacing: 3,
+        mainAxisSpacing: 3,
+        crossAxisCount: 3,
+        childAspectRatio: 1,
+      ),
     );
+  }
+    gridImages(){
+   return SliverChildBuilderDelegate((BuildContext context, int index) {
+        return Hero(
+          tag: "image" + index.toString(),
+          child: InkWell(
+              child: Image.network(
+                url[index],
+                fit: BoxFit.fill,
+              ),
+              onTap: () {
+                showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) {
+                      return Dialog(
+                        backgroundColor: Colors.transparent,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Hero(
+                                tag: "image" + index.toString(),
+                                child: Image.network(
+                                  url[index],
+                                  height:
+                                      ScreenSizeConfig.safeBlockVertical * 50,
+                                  fit: BoxFit.fill,
+                                ))
+                          ],
+                        ),
+                      );
+                    });
+              }),
+        );
+      }, childCount: url.length);
   }
 }

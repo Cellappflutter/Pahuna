@@ -18,12 +18,9 @@ class HomeWidget extends StatefulWidget {
 
 class _HomeWidgetState extends State<HomeWidget>
     with SingleTickerProviderStateMixin {
-  List<Product> _productsOfCategoryList;
-  List<Product> _productsOfBrandList;
 
   CategoriesList _categoriesList = new CategoriesList();
   BrandsList _brandsList = new BrandsList();
-  ProductsList _productsList = new ProductsList();
 
   Animation animationOpacity;
   AnimationController animationController;
@@ -38,15 +35,7 @@ class _HomeWidgetState extends State<HomeWidget>
       ..addListener(() {
         setState(() {});
       });
-
     animationController.forward();
-    _productsOfCategoryList = _categoriesList.list.firstWhere((category) {
-      return category.selected;
-    }).products;
-
-    _productsOfBrandList = _brandsList.list.firstWhere((brand) {
-      return brand.selected;
-    }).products;
     super.initState();
   }
 
@@ -72,25 +61,6 @@ class _HomeWidgetState extends State<HomeWidget>
             return Center(child: CircularProgressIndicator(),);
           }
         }),
-        // FutureBuilder<List<Featuredata>>(
-        //     future: Wordget().word(),
-        //     builder: (context, snapshot) {
-        //       if (snapshot.connectionState == ConnectionState.done) {
-        //         if (snapshot.hasData) {
-        //           return Center(
-        //             child: Wrap(
-        //               children: featureChipDesign(snapshot.data),
-        //             ),
-        //           );
-        //         } else {
-        //           return Container(
-        //             height: 0,
-        //           );
-        //         }
-        //       } else {
-        //         return Center(child: CircularProgressIndicator());
-        //       }
-        //     }),
       ],
     );
   }
@@ -118,8 +88,10 @@ class _HomeWidgetState extends State<HomeWidget>
           onPressed: () {
             print("datacheck");
             print(data.content);
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => FeaturePage(featureData: data)));
+            // Navigator.of(context).push(MaterialPageRoute(
+            //     builder: (context) => FeaturePage(featureData: data)));
+                    Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => FeaturePage()));
           }),
     );
   }
