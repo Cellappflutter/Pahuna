@@ -201,15 +201,9 @@ class DrawerWidget extends StatelessWidget {
           ListTile(
             onTap: () async {
               final pr = loadingBar(context, "Logging Out");
-<<<<<<< HEAD
-                          pr.show();
-               authService.signOut().whenComplete(() {
-                 pr.hide();
-=======
               pr.show();
               authService.signOut().whenComplete(() {
                 pr.dismiss();
->>>>>>> d356833db1ebfab97b4c6709ed9289c5dcb0c06d
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => LoginPage()),
                     (Route<dynamic> route) => false);
