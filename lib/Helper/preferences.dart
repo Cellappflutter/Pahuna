@@ -21,6 +21,36 @@ class Prefs {
     return preferences.setString("uid", value);
   }
 
+  static Future<bool> setStartAgeData(double value) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.setDouble("ageStart", value);
+  }
+
+  static Future<bool> setEndAgeData(double value) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.setDouble("ageStart", value);
+  }
+
+  static Future<bool> setRangeData(double value) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.setDouble("Range", value);
+  }
+
+  static Future<double> getRangeData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getDouble("Range") ?? 8;
+  }
+
+  static Future<double> getStartAgeData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getDouble("ageStart") ?? 18;
+  }
+
+  static Future<double> getEndAgeData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getDouble("ageStart") ?? 24;
+  }
+
   static Future<bool> setLoggedIn(bool value) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.setBool("loggedIn", value);
@@ -30,6 +60,7 @@ class Prefs {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getBool("loggedIn") ?? false;
   }
+
   static Future<bool> removeAll() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.clear();

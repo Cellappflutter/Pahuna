@@ -403,4 +403,10 @@ class DatabaseService {
       "issue": error.summary.toString(),
     }, merge: true);
   }
+
+  setOfflineStatus() async {
+    return await reference
+        .document(uid)
+        .setData({"status": "Offline"}, merge: true);
+  }
 }

@@ -156,9 +156,6 @@ class _FeaturePageState extends State<FeaturePage> {
                   "assets/user3.jpg",
                   fit: BoxFit.fill,
                 ),
-          // Image.network(widget.postData.featuredmedia.sourceUrl),
-          // Align(
-          //     alignment: Alignment.topLeft, child: Icon(UiIcons.return_icon)),
         ],
       ),
     );
