@@ -169,7 +169,7 @@ class _FeaturePageState extends State<FeaturePage> {
         }
       case 1:
         {
-          return Details_Tab();
+          return Details_Tab(details: widget.featureData.content,);
         }
       case 2:
         {

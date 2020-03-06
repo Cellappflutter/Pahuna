@@ -88,8 +88,10 @@ class _HomeWidgetState extends State<HomeWidget>
           onPressed: () {
             print("datacheck");
             print(data.content);
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => FeaturePage(featureData: data)));
+            // Navigator.of(context).push(MaterialPageRoute(
+            //     builder: (context) => FeaturePage(featureData: data)));
+                    Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => FeaturePage()));
           }),
     );
   }
