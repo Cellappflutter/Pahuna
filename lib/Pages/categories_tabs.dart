@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
 
 class Details_Tab extends StatefulWidget {
+  final String details;
+ Details_Tab({this.details});
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -12,10 +15,16 @@ class _Detail extends State<Details_Tab> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Container(
-      child: Text("Description Page"),
-    );
+    return SliverList(delegate:
+    SliverChildListDelegate([
+      _description(widget.details)
+    ]));
   }
+   _description(String detail){
+             var sth = parse(detail);
+             return Text(sth.body.text);
+
+            }
 }
 
 class Medias_Tab extends StatefulWidget {

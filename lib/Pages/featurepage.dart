@@ -107,12 +107,7 @@ class _FeaturePageState extends State<FeaturePage> {
                     ],
                   ),
                 ),
-                sliver: SliverList(
-                  delegate:
-                      SliverChildListDelegate([Container(height: 500,
-                      color: Colors.red,
-                        child: getWidget())]),
-                ),
+                sliver: getWidget(),
               ),
             ],
           ),
@@ -174,7 +169,7 @@ class _FeaturePageState extends State<FeaturePage> {
         }
       case 1:
         {
-          return Details_Tab();
+          return Details_Tab(details: widget.featureData.content,);
         }
       case 2:
         {
