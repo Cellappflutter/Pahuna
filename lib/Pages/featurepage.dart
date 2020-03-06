@@ -6,6 +6,9 @@ import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
+import '../src/models/review.dart';
+import 'categories_tabs.dart';
+
 class FeaturePage extends StatefulWidget {
   Featuredata featureData=Featuredata(content: "hellllo",id: "dssdsd",title: "dssdsdsdsdds");
   // Post postData;
@@ -15,7 +18,7 @@ class FeaturePage extends StatefulWidget {
 }
 
 class _FeaturePageState extends State<FeaturePage> {
-  int indexWidget = 0;
+  int indexWidget = 2;
   Widget currentWidget;
 
   @override
@@ -170,7 +173,7 @@ class _FeaturePageState extends State<FeaturePage> {
         }
       case 2:
         {
-          return (Medias_Tab());
+          return (Review_tab());
         }
       default:
         {
