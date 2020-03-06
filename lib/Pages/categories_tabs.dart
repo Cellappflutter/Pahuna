@@ -36,10 +36,11 @@ class _Detail extends State<Details_Tab> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Card(
-          color: Color(0xFF2C2C2C),
+          color: Colors.white,
           child: Column(
             children: <Widget>[
               Container(
+                
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
