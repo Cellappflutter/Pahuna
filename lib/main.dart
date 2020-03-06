@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:ecommerce_app_ui_kit/Helper/ErrorHandler.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
+import 'package:ecommerce_app_ui_kit/Model/Data.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/wp.dart';
 import 'package:flutter/material.dart';
@@ -11,14 +13,8 @@ import 'package:ecommerce_app_ui_kit/Pages/login.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
-import 'package:ecommerce_app_ui_kit/route_generator.dart';
-import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ecommerce_app_ui_kit/src/screens/cart.dart';
-import 'package:ecommerce_app_ui_kit/src/screens/home.dart';
-import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
-import 'package:ecommerce_app_ui_kit/src/screens/test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -265,16 +261,13 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        "&^&^&^&^&^&^&------------------------------------------------------^&^&^&^&^&^");
-    // Apporienta.setPreferredOrientationPortrait();
-    // AppOrientation.setFullScreenApp();
     ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
       return ErrorHandlePage.getErrorWidget(context, errorDetails);
     };
     ScreenSizeConfig().init(context);
     return MultiProvider(
       providers: [
+        FutureProvider<List<Featuredata>>.value(value: Wordget().word()),
         StreamProvider.value(value: DatabaseService().checkPrevUser()),
         StreamProvider<CurrentUserInfo>.value(
             value: DatabaseService().getUserData()),
@@ -380,7 +373,7 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
           ),
         ),
         home: TabsWidget(
-          currentTab: 2,
+          currentTab: 1,
         ),
       ),
     );
@@ -388,7 +381,7 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
 
   Stream<Position> locationStream() {
     Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-    var locationOptions = LocationOptions(accuracy: LocationAccuracy.high);
+    var locationOptions = LocationOptions(accuracy: LocationAccuracy.high,distanceFilter: 50);
     return geolocator.getPositionStream(locationOptions);
   }
 }
@@ -494,7 +487,7 @@ class MyApp extends StatelessWidget {
               fontSize: 12.0, color: config.Colors().secondColor(0.6)),
         ),
       ),
-      home: InitializePage(),
+      home:MainPageWrapper() //InitializePage(),
     );
   }
 }
