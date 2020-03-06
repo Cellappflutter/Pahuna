@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:ecommerce_app_ui_kit/Helper/ErrorHandler.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
+import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/Data.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+import 'package:ecommerce_app_ui_kit/Model/settings.dart';
+import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';
 import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/wp.dart';
@@ -18,6 +21,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+
+import 'Pages/featurepage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -118,7 +123,7 @@ void main() {
               fontSize: 12.0, color: config.Colors().secondColor(0.6)),
         ),
       ),
-      home: InitializePage(),
+      home:FeaturePage(),// InitializePage(),
     ),
   );
 }
@@ -155,9 +160,13 @@ class _AuthPageState extends State<AuthPage> {
       if (firebaseUser != null) {
         print(firebaseUser.uid);
         print("=============================================");
-
+        double range= await Prefs.getRangeData();
+        double start= await Prefs.getStartAgeData();
+        double end= await Prefs.getEndAgeData();
+        DiscoverySetting.agePrefs=RangeValues(start, end);
+        DiscoverySetting.range=range;
         DatabaseService.uid = firebaseUser.uid;
-
+        
         // DatabaseService().checkPrevUser().then((onValue) {
         setState(() {
           gotoLogin = false;
@@ -487,7 +496,7 @@ class MyApp extends StatelessWidget {
               fontSize: 12.0, color: config.Colors().secondColor(0.6)),
         ),
       ),
-      home:MainPageWrapper() //InitializePage(),
+      home:InitializePage(),
     );
   }
 }

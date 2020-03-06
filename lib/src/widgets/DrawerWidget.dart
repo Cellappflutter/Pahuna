@@ -21,11 +21,7 @@ class DrawerWidget extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamed('/Tabs', arguments: 1);
-            },
-            child: UserAccountsDrawerHeader(
+             UserAccountsDrawerHeader(
               decoration: BoxDecoration(
                 color: Theme.of(context).hintColor.withOpacity(0.1),
 //              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(35)),
@@ -39,11 +35,10 @@ class DrawerWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.caption,
               ),
               currentAccountPicture: CircleAvatar(
-                backgroundColor: Theme.of(context).accentColor,
+                backgroundColor: Colors.blue,
                 backgroundImage: NetworkImage(info.avatar),
               ),
             ),
-          ),
           ListTile(
             onTap: () {
               Navigator.of(context).pop();
@@ -153,10 +148,6 @@ class DrawerWidget extends StatelessWidget {
             title: Text(
               "Application Preferences",
               style: Theme.of(context).textTheme.body1,
-            ),
-            trailing: Icon(
-              Icons.remove,
-              color: Theme.of(context).focusColor.withOpacity(0.3),
             ),
           ),
           ListTile(
