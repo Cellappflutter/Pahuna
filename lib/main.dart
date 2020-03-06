@@ -123,7 +123,9 @@ void main() {
               fontSize: 12.0, color: config.Colors().secondColor(0.6)),
         ),
       ),
+
       home: InitializePage(),
+
     ),
   );
 }
