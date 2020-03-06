@@ -98,6 +98,8 @@ class _Media extends State<Medias_Tab> {
   @override
   Widget build(BuildContext context) {
     return SliverGrid(
+
+
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
         return Hero(
           tag: "image" + index.toString(),
@@ -148,6 +150,44 @@ class _Media extends State<Medias_Tab> {
         childAspectRatio: 1,
       ),
     );
+
+  }
+
+  gridImages() {
+    return SliverChildBuilderDelegate((BuildContext context, int index) {
+      return Hero(
+        tag: "image" + index.toString(),
+        child: InkWell(
+            child: Image.network(
+              url[index],
+              fit: BoxFit.fill,
+            ),
+            onTap: () {
+              showDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (context) {
+                    return Dialog(
+                      backgroundColor: Colors.transparent,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Hero(
+                              tag: "image" + index.toString(),
+                              child: Image.network(
+                                url[index],
+                                height: ScreenSizeConfig.safeBlockVertical * 50,
+                                fit: BoxFit.fill,
+                              ))
+                        ],
+                      ),
+                    );
+                  });
+            }),
+      );
+    }, childCount: url.length);
+
   }
 }
 
