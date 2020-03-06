@@ -51,7 +51,7 @@ class _TabsWidgetState extends State<TabsWidget> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: DrawerWidget(info: info),
-      endDrawer: FilterWidget(),
+      //endDrawer: FilterWidget(),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: new IconButton(

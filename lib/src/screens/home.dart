@@ -18,7 +18,6 @@ class HomeWidget extends StatefulWidget {
 
 class _HomeWidgetState extends State<HomeWidget>
     with SingleTickerProviderStateMixin {
-
   CategoriesList _categoriesList = new CategoriesList();
   BrandsList _brandsList = new BrandsList();
 
@@ -49,6 +48,25 @@ class _HomeWidgetState extends State<HomeWidget>
           child: SearchBarWidget(),
         ),
         Hometop(),
+        SizedBox(
+          height: 5,
+        ),
+        Row(
+          children: <Widget>[
+            SizedBox(
+              width: 10,
+            ),
+            Icon(
+              UiIcons.favorites,
+              color: appColors.Colors().accentColor(1),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text("Categories", style: Theme.of(context).textTheme.display1),
+          ],
+        ),
+        SizedBox(height: 10),
         Consumer<List<Featuredata>>(builder: (context, snapshot, child) {
           if (snapshot != null) {
             return Center(
@@ -56,9 +74,10 @@ class _HomeWidgetState extends State<HomeWidget>
                 children: featureChipDesign(snapshot),
               ),
             );
-          }
-          else {
-            return Center(child: CircularProgressIndicator(),);
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
         }),
       ],
@@ -88,10 +107,10 @@ class _HomeWidgetState extends State<HomeWidget>
           onPressed: () {
             print("datacheck");
             print(data.content);
-            // Navigator.of(context).push(MaterialPageRoute(
-            //     builder: (context) => FeaturePage(featureData: data)));
-                    Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => FeaturePage()));
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => FeaturePage(featureData: data)));
+            // Navigator.of(context)
+            //     .push(MaterialPageRoute(builder: (context) => FeaturePage()));
           }),
     );
   }

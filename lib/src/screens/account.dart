@@ -439,7 +439,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                                 border: InputBorder.none,
                                 hintText: 'Email',
                               ),
-                              keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.emailAddress,
                               textDirection: TextDirection.rtl,
                               textAlign: TextAlign.right,
                               enabled: edit,
