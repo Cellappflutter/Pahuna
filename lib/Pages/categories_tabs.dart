@@ -2,6 +2,15 @@ import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 
+import '../Model/Data.dart';
+import '../Model/Data.dart';
+import '../Model/Data.dart';
+import '../src/models/review.dart';
+import '../src/models/review.dart';
+import '../src/models/review.dart';
+import '../src/widgets/ReviewItemWidget.dart';
+import '../src/widgets/ReviewItemWidget.dart';
+
 class Details_Tab extends StatefulWidget {
   final String details;
  Details_Tab({this.details});
@@ -92,4 +101,40 @@ class _Media extends State<Medias_Tab> {
         );
       }, childCount: url.length);
   }
+}
+
+
+class Review_tab extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _review();
+  }
+}
+    
+    class _review extends State<Review_tab>{
+     
+
+      @override
+  Widget build(BuildContext context) {
+    List<Reviewdata> reviewdata=[ Reviewdata(username: 'Pratik',review: 'Not bad',date_time: '10:00',rating: '4',url_image: 'img/user1.jpg'),
+    Reviewdata(username: 'Pratik',review: 'Not bad',date_time: '11:00',rating: '4',url_image: 'img/user1.jpg'),
+    Reviewdata(username: 'Pratik',review: 'Not bad',date_time: '12:00',rating: '4',url_image: 'img/user1.jpg'),
+    Reviewdata(username: 'Pratik',review: 'Not bad',date_time: '13:00',rating: '4',url_image: 'img/user1.jpg'),
+     Reviewdata(username: 'Pratik',review: 'Not bad',date_time: '11:00',rating: '4',url_image: 'img/user1.jpg'),
+    Reviewdata(username: 'Pratik',review: 'Not bad',date_time: '12:00',rating: '4',url_image: 'img/user1.jpg'),
+    Reviewdata(username: 'Pratik',review: 'Not bad',date_time: '13:00',rating: '4',url_image: 'img/user1.jpg')
+    
+    ];
+    // TODO: implement build
+    return SliverList(delegate: SliverChildBuilderDelegate((context,index){
+      return _listreview(reviewdata[index]);
+    },childCount: reviewdata.length));
+  }
+  _listreview(Reviewdata data){
+    
+    
+return ReviewItemWidget(url: data.url_image,username: data.username,rating: data.rating,review: data.review,date_time: data.date_time);
+  }
+      
 }
