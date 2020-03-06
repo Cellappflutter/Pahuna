@@ -15,7 +15,7 @@ class ReviewsListWidget extends StatelessWidget {
     return ListView.separated(
       padding: EdgeInsets.symmetric(horizontal: 20),
       itemBuilder: (context, index) {
-        return ReviewItemWidget(review: _reviewsList.reviewsList.elementAt(index));
+        return null;//ReviewItemWidget(review: _reviewsList.reviewsList.elementAt(index));
       },
       separatorBuilder: (context, index) {
         return Divider(
