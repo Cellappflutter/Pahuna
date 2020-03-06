@@ -184,12 +184,12 @@ class _CartWidgetState extends State<CartWidget> {
                                       SizedBox(height: 10),
                                       Row(
                                         children: <Widget>[
-                                          Text(
-                                            "Name :",
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                            ),
-                                          ),
+                                          // Text(
+                                          //   "Name :",
+                                          //   style: TextStyle(
+                                          //     fontSize: 20,
+                                          //   ),
+                                          // ),
                                           Text(
                                               item.name
                                                   .toString()
