@@ -9,7 +9,10 @@ import 'package:ecommerce_app_ui_kit/src/models/product.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/Hometop.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/SearchBarWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_wordpress/flutter_wordpress.dart' as wp;
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -52,12 +55,15 @@ class _HomeWidgetState extends State<HomeWidget>
   @override
   Widget build(BuildContext context) {
     appColors.App(context);
+    
+
     return ListView(
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SearchBarWidget(),
         ),
+        
         Hometop(),
         Center(
           child: Wrap(
