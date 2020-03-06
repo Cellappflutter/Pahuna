@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
@@ -18,11 +20,19 @@ class _CartWidgetState extends State<CartWidget> {
   Color pressed = Colors.white;
   Key dismissableKey = Key("Dismiss");
   bool isdismiss = false;
+  StreamSubscription _streamer;
 
   @override
   void initState() {
     _productsList = new ProductsList();
     super.initState();
+  }
+  getData(){
+    _streamer=DatabaseService().getMatchRequest().listen((onData){
+      for(var user in onData){
+
+      }
+    });
   }
 
   @override
@@ -59,7 +69,7 @@ class _CartWidgetState extends State<CartWidget> {
               );
             } else {
               print(items);
-              pr.dismiss();
+            //  pr.dismiss();
               return Container(
                 color: Colors.transparent,
                 child: ListView.builder(
@@ -71,7 +81,7 @@ class _CartWidgetState extends State<CartWidget> {
                       confirmDismiss: (direction) {
                         // RangeSlider(values: null, onChanged: null)
                         if (direction == DismissDirection.startToEnd) {
-                          DatabaseService().acceptReq(item.uid).then((onValue) {
+                          DatabaseService().acceptReq(item.uid,item.name).then((onValue) {
                             if (onValue) {
                               return Future.value(true);
                             } else {

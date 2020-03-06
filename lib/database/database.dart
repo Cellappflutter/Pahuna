@@ -352,28 +352,30 @@ class DatabaseService {
     }, merge: true);
   }
 
-  Future<void> sendReq(String user_id) async {
+  Future<void> sendReq(String user_id, String name) async {
     return await requestReference
         .document(user_id) //end_user UID
         .collection("Pending")
         .document(uid) //currentUser UID
-        .setData({"time": "timerrr"});
+        .setData({"time": DateTime.now().toUtc().toString(), "name": name});
   }
 
-  Future<bool> acceptReq(String user_id) async {
+  Future<bool> acceptReq(String user_id, String name) async {
     try {
       await requestReference
           .document(user_id) //end_user UID
           .collection("Accepted")
           .document(uid) //currentUser UID
-          .setData({"time": "timerrr"});
+          .setData({"time": DateTime.now().toUtc().toString(), "name": name});
       await requestReference
           .document(uid) //end_user UID
           .collection("Accepted")
           .document(user_id) //currentUser UID
-          .setData({"time": "timerrr"});
+          .setData(
+        {"time": DateTime.now().toUtc().toString(), "name": name},
+      );
       await requestReference
-          .document("TqYPZHH36e2T9GFiz8cp") //end_user UID
+          .document(user_id) //end_user UID
           .collection("Pending")
           .document(uid)
           .delete();
@@ -393,7 +395,8 @@ class DatabaseService {
 
   List<RequestedUser> requestMapper(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
-      return RequestedUser(uid: doc.documentID, time: doc.data['time']);
+      return RequestedUser(
+          uid: doc.documentID, time: doc.data['time'], name: doc.data['name']);
     }).toList();
   }
 

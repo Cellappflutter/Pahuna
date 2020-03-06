@@ -10,9 +10,9 @@ import '../src/models/review.dart';
 import 'categories_tabs.dart';
 
 class FeaturePage extends StatefulWidget {
-  Featuredata featureData=Featuredata(content: "hellllo",id: "dssdsd",title: "dssdsdsdsdds");
+  Featuredata featureData;
   // Post postData;
-  //FeaturePage({this.featureData});
+  FeaturePage({this.featureData});
   @override
   _FeaturePageState createState() => _FeaturePageState();
 }
