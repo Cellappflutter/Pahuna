@@ -8,6 +8,7 @@ import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Helper/search_bottomsheet.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
+import 'package:ecommerce_app_ui_kit/Model/settings.dart';
 import 'package:ecommerce_app_ui_kit/Model/userdata.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
@@ -172,9 +173,11 @@ class _NearbySearchState extends State<NearbySearch>
             LatLng(info[i].latitude, info[i].longitude));
         info[i].distance = await Geolocator().distanceBetween(position.latitude,
             position.longitude, info[i].latitude, info[i].longitude);
-        //if (info[i].distance > -widget.searchData.range) {
-        newInfo.add(info[i]);
-        // }
+        if ((info[i].distance > DiscoverySetting.range) &&
+            (info[i].age > DiscoverySetting.agePrefs.start) &&
+            (info[i].age < DiscoverySetting.agePrefs.end)) {
+          newInfo.add(info[i]);
+        }
       }
     }
     return newInfo;

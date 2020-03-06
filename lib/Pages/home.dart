@@ -45,10 +45,9 @@ class _HomePageState extends State<HomePage> {
                 ),
                 sizeBox(),
                 RaisedButton(
-                  child: Text("Searching"),
+                  child: Text("Go Back"),
                   onPressed: () {
-                    Navigator.of(context)
-                        .pop();
+                    Navigator.of(context).pop();
                   },
                 ),
               ],

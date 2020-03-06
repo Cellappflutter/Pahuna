@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
+import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
@@ -196,6 +197,14 @@ class _AccountWidgetState extends State<AccountWidget> {
                                                     .updateUserProfile(
                                                         editableInfo);
                                                 await uploadAvatar(context);
+                                                await Prefs.setRangeData(
+                                                    DiscoverySetting.range);
+                                                await Prefs.setEndAgeData(
+                                                    DiscoverySetting
+                                                        .agePrefs.end);
+                                                await Prefs.setStartAgeData(
+                                                    DiscoverySetting
+                                                        .agePrefs.start);
                                                 pr.dismiss();
                                                 ImageCache().clear();
                                                 Navigator.of(context).pop();
@@ -211,7 +220,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                                                 edit = !edit;
                                                 check = 1;
                                                 _image = null;
-                                                _isLocalImage=false;
+                                                _isLocalImage = false;
                                               });
                                               Navigator.of(context).pop();
                                             },
@@ -685,7 +694,9 @@ class _AccountWidgetState extends State<AccountWidget> {
                             value: DiscoverySetting.range,
                             onChanged: (value) {
                               setState(() {
-                                DiscoverySetting.range = value;
+                                if (edit) {
+                                  DiscoverySetting.range = value;
+                                }
                               });
                             },
                             activeColor: Colors.red,
@@ -697,6 +708,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                           ),
                         ),
                         ListTile(
+                          enabled: edit,
                           dense: true,
                           title: Text("Age Preferences"),
                           trailing: Text(DiscoverySetting.agePrefs.start
@@ -706,9 +718,11 @@ class _AccountWidgetState extends State<AccountWidget> {
                               DiscoverySetting.agePrefs.end.round().toString()),
                           subtitle: RangeSlider(
                             onChanged: (value) {
-                              setState(() {
-                                DiscoverySetting.agePrefs = value;
-                              });
+                              if (edit) {
+                                setState(() {
+                                  DiscoverySetting.agePrefs = value;
+                                });
+                              }
                             },
                             values: DiscoverySetting.agePrefs,
                             activeColor: Colors.red,
@@ -748,24 +762,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                             SizedBox(width: 10),
                             Text("Accoutn Settings",
                                 style: Theme.of(context).textTheme.body2),
-                          ],
-                        ),
-                      ),
-                      ListTile(
-                        onTap: () {},
-                        dense: true,
-                        title: Row(
-                          children: <Widget>[
-                            Icon(
-                              UiIcons.placeholder,
-                              size: 22,
-                              color: Theme.of(context).focusColor,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              'Shipping Adresses',
-                              style: Theme.of(context).textTheme.body1,
-                            ),
                           ],
                         ),
                       ),
