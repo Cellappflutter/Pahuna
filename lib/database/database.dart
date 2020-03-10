@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
+
 import 'package:ecommerce_app_ui_kit/Model/message.dart';
+
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
@@ -88,9 +92,10 @@ class DatabaseService {
     return reference.document(uid).snapshots().map(_userInfoMap);
   }
 
-Stream<CurrentUserInfo> getOtherUserData(String userid) {
+  Stream<CurrentUserInfo> getOtherUserData(String userid) {
     return reference.document(userid).snapshots().map(_userInfoMap);
   }
+
   CurrentUserInfo _userInfoMap(DocumentSnapshot snapshot) {
     Map<dynamic, dynamic> data = snapshot.data['profile'];
     try {
@@ -107,15 +112,19 @@ Stream<CurrentUserInfo> getOtherUserData(String userid) {
       );
     } catch (e) {
       return CurrentUserInfo(
-          age: 0,
-        gender: '',
-        name:  '',
-        email: '',
+
+        age: 0,
+        avatar: '',
         description: '',
-        uid: '',
-        interest:  [],
+        email:'',
+        gender: '',
+        name: '',
+        phoneno: '',
+        uid: snapshot.documentID,
+        interest: [],
+        matchPrefs: [],
         continent: [],
-        matchPrefs:  [],
+
       );
     }
   }
@@ -428,21 +437,23 @@ Stream<CurrentUserInfo> getOtherUserData(String userid) {
         .setData({"time": DateTime.now().toUtc().toString(), "name": name});
   }
 
-  Future<bool> acceptReq(String user_id, String name) async {
+  Future<bool> acceptReq(String user_id, String receiverName, String senderName) async {
     try {
       print("dssssssssssssssssssss");
       await requestReference
           .document(user_id) //end_user UID
           .collection("Accepted")
           .document(uid) //currentUser UID
-          .setData({"time": DateTime.now().toUtc().toString(), "name": name},merge: true);
+          .setData({"time": DateTime.now().toUtc().toString(), "name": senderName},
+              merge: true);
       await requestReference
           .document(uid) //end_user UID
           .collection("Accepted")
           .document(user_id) //currentUser UID
-          .setData(
-        {"time": DateTime.now().toUtc().toString(), "name": name,},merge: true
-      );
+          .setData({
+        "time": DateTime.now().toUtc().toString(),
+        "name": receiverName
+      }, merge: true);
       await requestReference
           .document(uid) //end_user UID
           .collection("Pending")
@@ -453,10 +464,15 @@ Stream<CurrentUserInfo> getOtherUserData(String userid) {
       return false;
     }
   }
-  Stream<List<RequestedUser>> getAllMatched(){
+
+  Stream<List<RequestedUser>> getAllMatched() {
     print(uid);
     print("----------------");
-    return requestReference.document(uid).collection("Accepted").snapshots().map(requestMapper);
+    return requestReference
+        .document(uid)
+        .collection("Accepted")
+        .snapshots()
+        .map(requestMapper);
   }
 
   Stream<List<RequestedUser>> getMatchRequest() {

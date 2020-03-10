@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/database/auth.dart';
 
 class DrawerWidget extends StatelessWidget {
-  User _user = new User.init().getCurrentUser();
+ // User _user = new User.init().getCurrentUser();
   AuthService authService = AuthService();
   final CurrentUserInfo info;
   DrawerWidget({this.info});

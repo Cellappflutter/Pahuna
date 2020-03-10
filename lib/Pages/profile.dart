@@ -73,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
               "Location",
               style: TextStyle(
                 color: Colors.black45,
-                fontSize: NavBar.fontSize,
+                fontSize: AppColors.fontSize,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -106,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
               }
               return Container(
                 //  color: Colors.red,
-                height: NavBar.pageheight,
+                height: AppColors.pageheight,
                 // height: 200,
                 // appBar: AppBar(
                 //   // elevation: 10.0,

@@ -1,5 +1,6 @@
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
+import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
@@ -27,6 +28,7 @@ class _CartWidgetState extends State<CartWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final info = Provider.of<CurrentUserInfo>(context);
     final pr = loadingBar(context, "Fetching data");
     // TODO: implement build
     return Scaffold(
@@ -120,7 +122,7 @@ class _CartWidgetState extends State<CartWidget> {
 
                           if (direction == DismissDirection.startToEnd) {
                             DatabaseService()
-                                .acceptReq(item.uid, item.name)
+                                .acceptReq(item.uid, item.name, info.name)
                                 .then((onValue) {
                               setState(() {
                                 items.removeAt(index);
