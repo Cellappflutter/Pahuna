@@ -2,6 +2,7 @@ import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
+import 'package:ecommerce_app_ui_kit/database/auth.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/Helper/error_helper.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -55,22 +57,6 @@ class _LoginPageState extends State<LoginPage> {
       pr.dismiss();
       print("verify failed");
       switch (exception.code) {
-        // case verifyError:
-        //   {
-        //     errorDialog(context, "Verification Phone Number Error");
-        //     break;
-        //   }
-        // case invalidCredential:
-        //   {
-        //     errorDialog(
-        //         context, "Invalid Credentials, Please Enter your number again");
-        //     break;
-        //   }
-        // case invalidCode:
-        //   {
-        //     errorDialog(context, "Invalid Verification Code, Please retry");
-        //     break;
-        //   }
         default:
           {
             errorDialog(context, exception.message);
@@ -172,17 +158,15 @@ class _LoginPageState extends State<LoginPage> {
       AuthResult authResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
       await Prefs.setUserUid(authResult.user.uid);
-      DatabaseService.uid=authResult.user.uid;
+      DatabaseService.uid = authResult.user.uid;
       pr.dismiss();
       print(authResult.user.phoneNumber);
       print("Signed IN");
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => MainPageWrapper()),
           (Route<dynamic> route) => false);
-      print("bhalllllllllllllllllllllllll");
     } catch (e) {
       verifyFailed(e);
-      print("---------------------------");
     }
   }
 
@@ -376,6 +360,21 @@ class _LoginPageState extends State<LoginPage> {
                               ]))),
                 ],
               ),
+            ),
+            RaisedButton(
+              onPressed: () {},
+              child: Text("Twitter Login"),
+            ),
+            RaisedButton(
+              onPressed: () async {
+                await AuthService().signInGoogle().then((onValue) {
+                  if (onValue) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MainPageWrapper()));
+                  }
+                });
+              },
+              child: Text("Google Login"),
             ),
           ],
         ),

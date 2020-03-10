@@ -26,11 +26,8 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
-      //   title: 'Pahuna',
-      //  initialRoute: '/',
-      //onGenerateRoute: RouteGenerator.generateRoute,
-      //debugShowCheckedModeBanner: false,
-      darkTheme: ThemeData(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
         fontFamily: 'Poppins',
         primaryColor: config.Colors().whiteColor(1),
         brightness: Brightness.light,
@@ -76,54 +73,7 @@ void main() {
               fontSize: 12.0, color: config.Colors().secondDarkColor(0.7)),
         ),
       ),
-      theme: ThemeData(
-        fontFamily: 'Poppins',
-        primaryColor: config.Colors().whiteColor(1),
-        brightness: Brightness.dark,
-        accentColor: config.Colors().mainColor(1),
-        focusColor: config.Colors().accentColor(1),
-        hintColor: config.Colors().secondColor(1),
-        textTheme: TextTheme(
-          button: TextStyle(color: Colors.white),
-          headline:
-              TextStyle(fontSize: 20.0, color: config.Colors().secondColor(1)),
-          display1: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.w600,
-              color: config.Colors().secondColor(1)),
-          display2: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.w600,
-              color: config.Colors().secondColor(1)),
-          display3: TextStyle(
-              fontSize: 22.0,
-              fontWeight: FontWeight.w700,
-              color: config.Colors().mainColor(1)),
-          display4: TextStyle(
-              fontSize: 22.0,
-              fontWeight: FontWeight.w300,
-              color: config.Colors().secondColor(1)),
-          subhead: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w500,
-              color: config.Colors().secondColor(1)),
-          title: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.w600,
-              color: config.Colors().mainColor(1)),
-          body1:
-              TextStyle(fontSize: 12.0, color: config.Colors().secondColor(1)),
-          body2: TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.w600,
-              color: config.Colors().secondColor(1)),
-          caption: TextStyle(
-              fontSize: 12.0, color: config.Colors().secondColor(0.6)),
-        ),
-      ),
-
       home: InitializePage(),
-
     ),
   );
 }
@@ -154,19 +104,20 @@ class _AuthPageState extends State<AuthPage> {
 
   initInfo() async {
     _auth.currentUser().then((firebaseUser) async {
-      print(firebaseUser);
+      //  print(firebaseUser.providerData[0]);
       await Future.delayed(Duration(seconds: 2));
       WidgetsBinding.instance.addPostFrameCallback((_) => checkPermission());
       if (firebaseUser != null) {
+        print(firebaseUser.providerData[1].providerId);
         print(firebaseUser.uid);
         print("=============================================");
-        double range= await Prefs.getRangeData();
-        double start= await Prefs.getStartAgeData();
-        double end= await Prefs.getEndAgeData();
-        DiscoverySetting.agePrefs=RangeValues(start, end);
-        DiscoverySetting.range=range;
+        double range = await Prefs.getRangeData();
+        double start = await Prefs.getStartAgeData();
+        double end = await Prefs.getEndAgeData();
+        DiscoverySetting.agePrefs = RangeValues(start, end);
+        DiscoverySetting.range = range;
         DatabaseService.uid = firebaseUser.uid;
-        
+
         // DatabaseService().checkPrevUser().then((onValue) {
         setState(() {
           gotoLogin = false;
@@ -253,19 +204,30 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
   @override
   void initState() {
     super.initState();
+    Timer.periodic(Duration(seconds: 1), (_) {
+      Geolocator().isLocationServiceEnabled().then((onValue) {
+        if (!onValue) {
+          WidgetsBinding.instance.addPostFrameCallback(
+              (_) => showConnection(context, "Searching GPS"));
+        } else {
+          loadingBar(context, "Searching GPS").dismiss();
+        }
+      });
+    });
+
     Connectivity().onConnectivityChanged.listen((onData) {
       if (onData == ConnectivityResult.none) {
         isConnected = false;
-        WidgetsBinding.instance
-            .addPostFrameCallback((_) => showConnection(context));
+        WidgetsBinding.instance.addPostFrameCallback(
+            (_) => showConnection(context, "Searching Connection"));
       } else {
         loadingBar(context, "Searching Connection").dismiss();
       }
     });
   }
 
-  showConnection(BuildContext context) {
-    loadingBar(context, "Searching Connection").show();
+  showConnection(BuildContext context, String text) {
+    loadingBar(context, text).show();
   }
 
   @override
@@ -287,55 +249,7 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
       ],
       child: MaterialApp(
         title: 'Pahuna',
-        //    initialRoute: '/',
-        //  onGenerateRoute: RouteGenerator.generateRoute,
         debugShowCheckedModeBanner: false,
-        darkTheme: ThemeData(
-          fontFamily: 'Poppins',
-          primaryColor: config.Colors().whiteColor(1),
-          brightness: Brightness.light,
-          scaffoldBackgroundColor: Color(0xFF2C2C2C),
-          accentColor: config.Colors().mainDarkColor(1),
-          hintColor: config.Colors().secondDarkColor(1),
-          focusColor: config.Colors().accentDarkColor(1),
-          textTheme: TextTheme(
-            button: TextStyle(color: Color(0xFF252525)),
-            headline: TextStyle(
-                fontSize: 20.0, color: config.Colors().secondDarkColor(1)),
-            display1: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w600,
-                color: config.Colors().secondDarkColor(1)),
-            display2: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w600,
-                color: config.Colors().secondDarkColor(1)),
-            display3: TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.w700,
-                color: config.Colors().mainDarkColor(1)),
-            display4: TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.w300,
-                color: config.Colors().secondDarkColor(1)),
-            subhead: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w500,
-                color: config.Colors().secondDarkColor(1)),
-            title: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w600,
-                color: config.Colors().mainDarkColor(1)),
-            body1: TextStyle(
-                fontSize: 12.0, color: config.Colors().secondDarkColor(1)),
-            body2: TextStyle(
-                fontSize: 14.0,
-                fontWeight: FontWeight.w600,
-                color: config.Colors().secondDarkColor(1)),
-            caption: TextStyle(
-                fontSize: 12.0, color: config.Colors().secondDarkColor(0.7)),
-          ),
-        ),
         theme: ThemeData(
           fontFamily: 'Poppins',
           primaryColor: config.Colors().whiteColor(1),
@@ -390,7 +304,8 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
 
   Stream<Position> locationStream() {
     Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-    var locationOptions = LocationOptions(accuracy: LocationAccuracy.high,distanceFilter: 50);
+    var locationOptions =
+        LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 50);
     return geolocator.getPositionStream(locationOptions);
   }
 }
@@ -496,7 +411,8 @@ class MyApp extends StatelessWidget {
               fontSize: 12.0, color: config.Colors().secondColor(0.6)),
         ),
       ),
-      home:InitializePage(),
+      home: InitializePage(),
     );
   }
 }
+

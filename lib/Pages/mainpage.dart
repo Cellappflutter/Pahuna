@@ -51,13 +51,13 @@ class _MainPageState extends State<MainPage>
   @override
   Widget build(BuildContext context) {
     ScreenSizeConfig().init(context);
-    if (NavBar.connection == ConnectivityResult.none) {
+    if (AppColors.connection == ConnectivityResult.none) {
       showDialog(context: context);
     }
     screenHeight = ScreenSizeConfig.safeBlockVertical * 100;
     screenWidth = ScreenSizeConfig.safeBlockHorizontal * 100;
     return Scaffold(
-      backgroundColor: NavBar.backgroundColor,
+      backgroundColor: AppColors.backgroundColor,
       body: WillPopScope(
         onWillPop: _onWillPop,
         child: SafeArea(
@@ -140,7 +140,7 @@ class _MainPageState extends State<MainPage>
                             child: Text('Home',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: NavBar.fontSize)),
+                                    fontSize: AppColors.fontSize)),
                             onPressed: () {
                               setState(() {
                                 if (isCollapsed)
@@ -156,7 +156,7 @@ class _MainPageState extends State<MainPage>
                             child: Text("Profile",
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: NavBar.fontSize)),
+                                    fontSize: AppColors.fontSize)),
                             onPressed: () {
                               setState(() {
                                 if (isCollapsed)
@@ -172,7 +172,7 @@ class _MainPageState extends State<MainPage>
                             child: Text("Settings",
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: NavBar.fontSize)),
+                                    fontSize: AppColors.fontSize)),
                             onPressed: () {
                               setState(() {
                                 if (isCollapsed)
@@ -188,7 +188,7 @@ class _MainPageState extends State<MainPage>
                             child: Text("History",
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: NavBar.fontSize)),
+                                    fontSize: AppColors.fontSize)),
                             onPressed: () {
                               setState(() {
                                 if (isCollapsed)
@@ -204,7 +204,7 @@ class _MainPageState extends State<MainPage>
                             child: Text("Policies",
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: NavBar.fontSize)),
+                                    fontSize: AppColors.fontSize)),
                             onPressed: () {
                               Navigator.of(context).pop();
                               setState(() {
@@ -249,7 +249,7 @@ class _MainPageState extends State<MainPage>
           animationDuration: duration,
           borderRadius: BorderRadius.all(Radius.circular(40)),
           elevation: 8,
-          color: NavBar.backgroundColor,
+          color: AppColors.backgroundColor,
           // child: SingleChildScrollView(
           //   scrollDirection: Axis.vertical,
           //   physics: ClampingScrollPhysics(),
