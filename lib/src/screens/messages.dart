@@ -1,68 +1,97 @@
-import 'package:ecommerce_app_ui_kit/src/models/conversation.dart' as model;
+import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
+import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
+import 'package:ecommerce_app_ui_kit/Pages/matchprofile.dart';
+import 'package:ecommerce_app_ui_kit/database/database.dart';
+import 'package:ecommerce_app_ui_kit/database/storage.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/chat.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/customappbar.dart';
-import 'package:ecommerce_app_ui_kit/src/widgets/EmptyMessagesWidget.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/MessageItemWidget.dart';
-import 'package:ecommerce_app_ui_kit/src/widgets/SearchBarWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MessagesWidget extends StatefulWidget {
   @override
-  _MessagesWidgetState createState() => _MessagesWidgetState();
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _StartChat();
+  }
 }
 
-class _MessagesWidgetState extends State<MessagesWidget> {
-  model.ConversationsList _conversationList;
-  @override
-  void initState() {
-    this._conversationList = new model.ConversationsList();
-    super.initState();
-  }
-
+class _StartChat extends State<MessagesWidget> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return MaterialApp(
-      home: SafeArea(
-              child: Scaffold(
-          appBar: customAppBar(context, "Messages"),
-          body:  SingleChildScrollView(
-            padding: EdgeInsets.symmetric(vertical: 7),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: SearchBarWidget(),
+    return Scaffold(
+      appBar: customAppBar(context, "Select to Chat"),
+      body: StreamProvider.value(value: DatabaseService().getAllMatched(),
+      child: Consumer<List<RequestedUser>>(
+          builder: (context, items, child) {
+            print(items);
+            if (items == null) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (items.length < 1) {
+              return Center(
+                child:
+                    Text("No Connection Request, Why dont u send some request"),
+              );
+            } else {
+              print(items);
+              //  pr.dismiss();
+              return Container(
+                color: Colors.transparent,
+                child: ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    final item = items[index];
+                    return FutureProvider<String>.value(
+                      value: StorageService().getAvatar(item.uid),
+                      child:
+                          Consumer<String>(builder: (context, avatar, child) {
+                        return InkWell(
+                          child: Container(
+                            padding: EdgeInsets.all(10.0),
+                            height: ScreenSizeConfig.blockSizeVertical * 15,
+                            child: Row(
+                              children: <Widget>[
+                                (avatar != "" && avatar != null)
+                                    ? CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage(avatar),
+                                        radius:
+                                            ScreenSizeConfig.safeBlockVertical *
+                                                6,
+                                      )
+                                    : CircleAvatar(
+                                        backgroundColor: Colors.blue,
+                                        radius:
+                                            ScreenSizeConfig.safeBlockVertical *
+                                                6,
+                                      ),
+                                Column(
+                                  children: <Widget>[
+                                    Text(item.name.toString().toUpperCase()),
+                                    Text(item.time.toString()),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          onTap: () {
+                            print("uid = ${item.uid}");
+                            print("name = ${item.name}");
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ChatWidget(name: item.name,avatar: avatar,fid:item.uid)));
+                           
+                          },
+                        );
+                      }),
+                    );
+                  },
                 ),
-                Offstage(
-                  offstage: _conversationList.conversations.isEmpty,
-                  child: ListView.separated(
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    shrinkWrap: true,
-                    primary: false,
-                    itemCount: _conversationList.conversations.length,
-                    separatorBuilder: (context, index) {
-                      return SizedBox(height: 7);
-                    },
-                    itemBuilder: (context, index) {
-                      return MessageItemWidget(
-                        message: _conversationList.conversations.elementAt(index),
-                        context1: context,
-                        onDismissed: (conversation) {
-                          setState(() {
-                            _conversationList.conversations.removeAt(index);
-                          });
-                        },
-                      );
-                    },
-                  ),
-                ),
-                Offstage(
-                  offstage: _conversationList.conversations.isNotEmpty,
-                  child: EmptyMessagesWidget(),
-                )
-              ],
-            ),
-          ),
+              );
+            }
+          },
         ),
       ),
     );

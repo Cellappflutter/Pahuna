@@ -2,6 +2,7 @@ import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
+import 'package:ecommerce_app_ui_kit/Model/settings.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/Helper/error_helper.dart';
@@ -172,6 +173,11 @@ class _LoginPageState extends State<LoginPage> {
       AuthResult authResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
       await Prefs.setUserUid(authResult.user.uid);
+        double range= await Prefs.getRangeData();
+        double start= await Prefs.getStartAgeData();
+        double end= await Prefs.getEndAgeData();
+        DiscoverySetting.agePrefs=RangeValues(start, end);
+        DiscoverySetting.range=range;
       DatabaseService.uid=authResult.user.uid;
       pr.dismiss();
       print(authResult.user.phoneNumber);

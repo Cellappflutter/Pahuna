@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app_ui_kit/Model/message.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,12 +9,66 @@ import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/userdata.dart';
 
 class DatabaseService {
-  static String uid = "hhhhh";
+  static String uid ;
+  static String fid ;
   final CollectionReference reference = Firestore.instance.collection("pahuna");
   final CollectionReference reportReference =
       Firestore.instance.collection("report");
   final CollectionReference requestReference =
       Firestore.instance.collection("ConnectionRequest");
+  final CollectionReference chatReference = Firestore.instance.collection("Chat");
+
+
+  Future sendMessage(String message, String friendid) async {
+    print('send:::::::::::::');
+    print(uid);
+    print(fid);
+    print(uid.hashCode);
+    print(fid.hashCode);
+    int chatid = uid.hashCode + fid.hashCode;
+    String cid = chatid.toString();
+    print(cid);
+    print(chatid);
+    return await chatReference.document(cid).collection(cid).document().setData({
+      'uid': uid,
+      'message': message,
+      'date_time': Timestamp.now(),
+    });
+  }
+  Stream<List<Message>> get tomessages{
+    int chatid = uid.hashCode + fid.hashCode;
+    String cid = chatid.toString();
+    print("-------------------------cid-------------------------------");
+    print(cid);
+    print(chatid);
+   return chatReference.document(cid).collection(cid).orderBy('date_time').snapshots().map(_messagesnapshot);
+  }
+
+  Stream<List<Message>> get message {
+    print("get:::::::::::::");
+    print(uid);
+    print(fid);
+
+    int chatid = uid.hashCode + fid.hashCode;
+    String cid = chatid.toString();
+    print(cid);
+    print(chatid);
+    return chatReference
+        .document(cid)
+        .collection(cid)
+        .snapshots()
+        .map(_messagesnapshot);
+  }
+
+  List<Message> _messagesnapshot(QuerySnapshot docs) {
+    return docs.documents.map((f) {
+      return Message(
+        uid: f.data['uid'] ?? '',
+        message: f.data['message'] ?? '',
+        timestamp: f.data['date_time'] ?? '',
+      );
+    }).toList();
+  }
 
   Stream<bool> checkPrevUser() {
     return reference.document(uid).snapshots().map(converte);
@@ -37,7 +92,7 @@ Stream<CurrentUserInfo> getOtherUserData(String userid) {
     return reference.document(userid).snapshots().map(_userInfoMap);
   }
   CurrentUserInfo _userInfoMap(DocumentSnapshot snapshot) {
-    Map<dynamic, dynamic> data = snapshot.data['profile'] ?? {};
+    Map<dynamic, dynamic> data = snapshot.data['profile'];
     try {
       return CurrentUserInfo(
         age: data['age'] ?? 0,
@@ -51,7 +106,17 @@ Stream<CurrentUserInfo> getOtherUserData(String userid) {
         matchPrefs: _matchPrefsValues(data) ?? [],
       );
     } catch (e) {
-      return CurrentUserInfo();
+      return CurrentUserInfo(
+          age: 0,
+        gender: '',
+        name:  '',
+        email: '',
+        description: '',
+        uid: '',
+        interest:  [],
+        continent: [],
+        matchPrefs:  [],
+      );
     }
   }
 
