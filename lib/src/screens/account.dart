@@ -24,15 +24,20 @@ class AccountWidget extends StatefulWidget {
 
 class _AccountWidgetState extends State<AccountWidget> {
   // User _user = new User.init().getCurrentUser();
+  bool prefgender = false;
+  int prefcount = 0;
   TextEditingController _genderController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _ageController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
+  bool prefcontinent = false;
+  bool prefinterest = false;
   File _image;
   bool _isLocalImage = false;
   bool edit = false;
+
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   CurrentUserInfo editableInfo;
   int check = 1;
@@ -84,9 +89,9 @@ class _AccountWidgetState extends State<AccountWidget> {
                               style: Theme.of(context).textTheme.display2,
                             ),
                             Text(
-                              (editableInfo.phoneno != null)
-                                  ? (editableInfo.phoneno)
-                                  : ("98XXXXXXXX"),
+                              (editableInfo.email != null)
+                                  ? (editableInfo.email)
+                                  : ("your@email"),
                               // editableInfo.email,
                               style: Theme.of(context).textTheme.caption,
                             )
@@ -183,19 +188,30 @@ class _AccountWidgetState extends State<AccountWidget> {
                                               ProgressDialog pr = loadingBar(
                                                   context,
                                                   "Updating Information");
-                                              if (_formKey.currentState
-                                                      .validate() &&
+                                              if (_formKey.currentState.validate() &&
                                                   _descriptionController.text !=
                                                       null &&
                                                   _descriptionController.text
                                                           .trim() !=
-                                                      '') {
+                                                      '' &&
+                                                  editableInfo
+                                                          .matchPrefs.length >
+                                                      0 &&
+                                                  editableInfo
+                                                          .continent.length >
+                                                      0 &&
+                                                  editableInfo.interest.length >
+                                                      0) {
                                                 pr.show();
                                                 editableInfo.description =
                                                     _descriptionController.text;
                                                 await DatabaseService()
                                                     .updateUserProfile(
                                                         editableInfo);
+
+                                                PaintingBinding
+                                                    .instance.imageCache
+                                                    .clear();
                                                 await uploadAvatar(context);
                                                 await Prefs.setRangeData(
                                                     DiscoverySetting.range);
@@ -206,11 +222,24 @@ class _AccountWidgetState extends State<AccountWidget> {
                                                     DiscoverySetting
                                                         .agePrefs.start);
                                                 pr.dismiss();
-                                                ImageCache().clear();
+
                                                 Navigator.of(context).pop();
                                                 setState(() {
                                                   edit = !edit;
                                                 });
+                                              } else {
+                                                Navigator.of(context).pop();
+                                                showDialog(
+                                                    context: (context),
+                                                    builder: (context) {
+                                                      return Dialog(
+                                                        child: Text(
+                                                          'Invalid form, please enter all field ',
+                                                          style: TextStyle(
+                                                              fontSize: 20),
+                                                        ),
+                                                      );
+                                                    });
                                               }
                                             },
                                             child: Text("Yes")),
@@ -351,8 +380,14 @@ class _AccountWidgetState extends State<AccountWidget> {
                               textAlign: TextAlign.right,
                               enabled: edit,
                               validator: (value) {
-                                editableInfo.name = value;
-                                return null;
+                                if (value != null &&
+                                    value != "" &&
+                                    value != "null") {
+                                  editableInfo.name = value;
+                                  return null;
+                                } else {
+                                  return "Name cannot be empty";
+                                }
                               },
                               // enabled: edit,
                               // initialValue: editableInfo.name,
@@ -412,7 +447,9 @@ class _AccountWidgetState extends State<AccountWidget> {
                               textAlign: TextAlign.right,
                               enabled: edit,
                               validator: (value) {
-                                if (int.parse(value) >= 18) {
+                                if (int.parse(value) >= 18 &&
+                                    int.parse(value) != null &&
+                                    value != "null") {
                                   editableInfo.age = int.parse(value);
                                   return null;
                                 }
@@ -444,10 +481,14 @@ class _AccountWidgetState extends State<AccountWidget> {
                               textAlign: TextAlign.right,
                               enabled: edit,
                               validator: (value) {
-                                //    if (int.parse(value) >= 18) {
-                                editableInfo.email = value;
-                                //    return null;
-                                // }
+                                if (value != null &&
+                                    value != "" &&
+                                    value != "null") {
+                                  editableInfo.email = value;
+                                  return null;
+                                } else {
+                                  return "Email cannot be empty";
+                                }
                               },
                               //  initialValue: editableInfo.email.toString(),
                               controller: _emailController,
@@ -527,7 +568,8 @@ class _AccountWidgetState extends State<AccountWidget> {
                               hintText: "About yourself..."),
                           enabled: edit,
                           validator: (value) {
-                            editableInfo.description = value;
+                            if (value != null && value != '' && value != "null")
+                              editableInfo.description = value;
                             return null;
                           },
                           //  initialValue: editableInfo.description,
@@ -870,10 +912,14 @@ class _AccountWidgetState extends State<AccountWidget> {
               selectedColor: Colors.blue,
               onSelected: (bool selected) {
                 if (selected) {
+                  prefcount++;
+                  prefgender = true;
                   editableInfo.matchPrefs.add(pp.preferences[i]);
                 } else {
+                  prefcount--;
                   editableInfo.matchPrefs.remove(pp.preferences[i]);
                 }
+
                 setState(() {});
               },
               shadowColor: Colors.grey[50],
@@ -885,10 +931,12 @@ class _AccountWidgetState extends State<AccountWidget> {
       );
       widgets.add(widget1);
     }
+    //if(count>0){return widgets;}
     return widgets;
   }
 
   List<Widget> _continentChipDesign() {
+    int count = 0;
     ProfileContinentPreferences pp = ProfileContinentPreferences();
     List<Widget> widgets = List<Widget>();
     for (int i = 0; i < pp.preferences.length; i++) {
@@ -909,9 +957,16 @@ class _AccountWidgetState extends State<AccountWidget> {
               selectedColor: Colors.blue,
               onSelected: (bool selected) {
                 if (selected) {
+                  count++;
                   editableInfo.continent.add(pp.preferences[i]);
                 } else {
+                  count--;
                   editableInfo.continent.remove(pp.preferences[i]);
+                }
+                if (count > 0) {
+                  prefcontinent = true;
+                } else {
+                  prefcontinent = false;
                 }
                 setState(() {});
               },
@@ -928,6 +983,7 @@ class _AccountWidgetState extends State<AccountWidget> {
   }
 
   List<Widget> _interestChipDesign() {
+    int count = 0;
     ProfileInterestPreferences pp = ProfileInterestPreferences();
     List<Widget> widgets = List<Widget>();
     //print(editableInfo.matchPrefs);
@@ -953,14 +1009,18 @@ class _AccountWidgetState extends State<AccountWidget> {
               selectedColor: Colors.blue,
               onSelected: (bool selected) {
                 if (selected) {
+                  count++;
                   editableInfo.interest.add(pp.preferences[i]);
                 } else {
+                  count--;
                   editableInfo.interest.remove(pp.preferences[i]);
                 }
-                setState(() {
-                  // check = 2;
-                  // pp.isSelected[i] = !pp.isSelected[i];
-                });
+                if (count > 0) {
+                  prefinterest = true;
+                } else {
+                  prefinterest = false;
+                }
+                setState(() {});
               },
               shadowColor: Colors.grey[50],
               padding: EdgeInsets.all(4.0),

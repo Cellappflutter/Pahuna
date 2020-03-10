@@ -45,7 +45,9 @@ class _TabsWidgetState extends State<TabsWidget> {
   Widget build(BuildContext context) {
     final CurrentUserInfo info = Provider.of<CurrentUserInfo>(context);
     final String avatar = Provider.of<String>(context);
+
     if (avatar != null && info != null) {
+    //  ImageProvider<dynamic>v=NetworkImage("url");
       info.avatar = avatar;
     }
     return Scaffold(
