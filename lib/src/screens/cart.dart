@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
@@ -20,19 +18,11 @@ class _CartWidgetState extends State<CartWidget> {
   Color pressed = Colors.white;
   Key dismissableKey = Key("Dismiss");
   bool isdismiss = false;
-  StreamSubscription _streamer;
 
   @override
   void initState() {
     _productsList = new ProductsList();
     super.initState();
-  }
-  getData(){
-    _streamer=DatabaseService().getMatchRequest().listen((onData){
-      for(var user in onData){
-
-      }
-    });
   }
 
   @override
@@ -69,117 +59,166 @@ class _CartWidgetState extends State<CartWidget> {
               );
             } else {
               print(items);
-            //  pr.dismiss();
+              pr.dismiss();
               return Container(
+                margin: EdgeInsetsDirectional.only(top: 2),
                 color: Colors.transparent,
                 child: ListView.builder(
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     final item = items[index];
-                    return Dismissible(
-                      key: dismissableKey,
-                      confirmDismiss: (direction) {
-                        // RangeSlider(values: null, onChanged: null)
-                        if (direction == DismissDirection.startToEnd) {
-                          DatabaseService().acceptReq(item.uid,item.name).then((onValue) {
-                            if (onValue) {
-                              return Future.value(true);
-                            } else {
-                              return Future.value(false);
-                            }
-                          });
-                        }
-                        return Future.value(false);
-                      },
-                      background: Container(
-                        color: Colors.green,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Icon(
-                              Icons.check,
-                              color: Colors.white,
+                    return Container(
+                      margin: EdgeInsets.only(bottom: 15),
+                      // margin: EdgeInsets.only(top:6,left:6,right:6,bottom:25),
+                      // padding: EdgeInsets.all(10.0),
+                      height: ScreenSizeConfig.safeBlockVertical * 20,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        border: Border.all(
+                            // color: Colors.blue,
+                            width: 2),
+                        boxShadow: [
+                          BoxShadow(
+                              // color: Colors.white70,
+                              blurRadius: 10.0,
+                              spreadRadius: 3.0,
+                              offset: Offset(5, 5))
+                        ],
+                      ),
+                      child: Dismissible(
+                        key: dismissableKey,
+                        background: Container(
+                          color: Colors.green,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Icon(
+                                Icons.check,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      secondaryBackground: Container(
-                        color: Color(0xFFE15244),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Icon(
-                              UiIcons.trash,
-                              color: Colors.white,
+                        secondaryBackground: Container(
+                          color: Color(0xFFE15244),
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Icon(
+                                UiIcons.trash,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      onDismissed: (direction) {
-                        print(direction.index);
-                        if (direction == DismissDirection.startToEnd) {
-                          print("CONFIRM");
-                          items.removeAt(index);
-                        } else {
-                          //  items.removeAt(index);
-                          print("REJECT");
-                        }
-                      },
-                      child: Container(
-                          padding: EdgeInsets.all(10.0),
-                          height: ScreenSizeConfig.blockSizeVertical * 15,
-                          child: Row(
-                            children: <Widget>[
-                              (item.avatar != "" && item.avatar != null)
-                                  ? CircleAvatar(
-                                      backgroundImage:
-                                          NetworkImage(item.avatar),
-                                      radius:
-                                          ScreenSizeConfig.safeBlockVertical *
-                                              6,
-                                    )
-                                  : CircleAvatar(
-                                      // backgroundImage: NetworkImage(item.avatar),
-                                      radius:
-                                          ScreenSizeConfig.safeBlockVertical *
-                                              6,
-                                    ),
-                              Column(
+                        onDismissed: (direction) {
+                          print(direction.index);
+
+                          if (direction == DismissDirection.startToEnd) {
+                            DatabaseService()
+                                .acceptReq(item.uid, item.name)
+                                .then((onValue) {
+                              setState(() {
+                                items.removeAt(index);
+                              });
+                            });
+                          } else {
+                            setState(() {
+                              items.removeAt(index);
+                            });
+                          }
+                        },
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              // margin: EdgeInsets.all(8),
+                              // padding: EdgeInsets.all(9.0),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                border:
+                                    Border.all(color: Colors.blue, width: 2),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.white70,
+                                      blurRadius: 10.0,
+                                      spreadRadius: 3.0,
+                                      offset: Offset(5, 5))
+                                ],
+                              ),
+                              height: ScreenSizeConfig.blockSizeVertical * 18,
+                              child: Center(
+                                  child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: <Widget>[
-                                  Text(item.name.toString().toUpperCase()),
-                                  Row(
+                                  (item.avatar != "" && item.avatar != null)
+                                      ? CircleAvatar(
+                                          backgroundImage:
+                                              NetworkImage(item.avatar),
+                                          radius: ScreenSizeConfig
+                                                  .safeBlockVertical *
+                                              6,
+                                        )
+                                      : CircleAvatar(
+                                          // backgroundImage: NetworkImage(item.avatar),
+                                          radius: ScreenSizeConfig
+                                                  .safeBlockVertical *
+                                              6,
+                                        ),
+                                  Column(
                                     children: <Widget>[
-                                      FlatButton.icon(
-                                          onPressed: () {
-                                            setState(() {
-                                              items.removeAt(index);
-                                            });
-                                          },
-                                          icon: Icon(
-                                            Icons.arrow_right,
-                                            color: Colors.green,
-                                          ),
-                                          label: Text("ACCEPT",
+                                      SizedBox(height: 10),
+                                      Row(
+                                        children: <Widget>[
+                                          Text(
+                                              item.name
+                                                  .toString()
+                                                  .toUpperCase(),
                                               style: TextStyle(
-                                                  color: Colors.green))),
-                                      FlatButton.icon(
-                                          onPressed: null,
-                                          icon: Icon(
-                                            Icons.arrow_left,
-                                            color: config.Colors().mainColor(1),
-                                          ),
-                                          label: Text("REJECT",
-                                              style: TextStyle(
-                                                  color: config.Colors()
-                                                      .mainColor(1))))
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w700))
+                                        ],
+                                      ),
+                                      SizedBox(height: 15),
+                                      Text("Time : ${item.time}"),
+                                      SizedBox(width: 10),
+                                      Text("uid : ${item.uid}")
+                                      // FlatButton.icon(
+                                      //     onPressed: () {
+                                      //       setState(() {
+                                      //         items.removeAt(index);
+                                      //       });
+                                      //     },
+                                      //     icon: Icon(
+                                      //       Icons.arrow_right,
+                                      //       color: Colors.green,
+                                      //     ),
+                                      //     label: Text("ACCEPT",
+                                      //         style: TextStyle(
+                                      //             color: Colors.green))),
+                                      // FlatButton.icon(
+                                      //     onPressed: null,
+                                      //     icon: Icon(
+                                      //       Icons.arrow_left,
+                                      //       color: config.Colors().mainColor(1),
+                                      //     ),
+                                      //     label: Text("REJECT",
+                                      //         style: TextStyle(
+                                      //             color: config.Colors()
+                                      //                 .mainColor(1))))
                                     ],
                                   )
                                 ],
-                              )
-                            ],
-                          )),
+                              )),
+                            )
+                          ],
+                        ),
+                      ),
                     );
                   },
                 ),

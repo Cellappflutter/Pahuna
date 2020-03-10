@@ -1,7 +1,9 @@
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+import 'package:ecommerce_app_ui_kit/Pages/friends.dart';
 
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
+import 'package:ecommerce_app_ui_kit/Pages/matchprofile.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/src/models/user.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/account.dart';
@@ -21,24 +23,28 @@ class DrawerWidget extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: <Widget>[
-             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).hintColor.withOpacity(0.1),
+          UserAccountsDrawerHeader(
+            decoration: BoxDecoration(
+              color: Theme.of(context).hintColor.withOpacity(0.1),
 //              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(35)),
-              ),
-              accountName: Text(
-                info.name??"Name",
-                style: Theme.of(context).textTheme.title,
-              ),
-              accountEmail: Text(
-                info.email??"EmailID",
-                style: Theme.of(context).textTheme.caption,
-              ),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.blue,
-                backgroundImage: NetworkImage(info.avatar),
-              ),
             ),
+            accountName: Text(
+              info.name ?? "Name",
+              style: Theme.of(context).textTheme.title,
+            ),
+            accountEmail: Text(
+              info.email ?? "EmailID",
+              style: Theme.of(context).textTheme.caption,
+            ),
+            currentAccountPicture: (info.avatar != null && info.avatar != "")
+                ? CircleAvatar(
+                    backgroundColor: Colors.blue,
+                    backgroundImage: NetworkImage(info.avatar),
+                  )
+                : CircleAvatar(
+                    backgroundColor: Colors.blue,
+                  ),
+          ),
           ListTile(
             onTap: () {
               Navigator.of(context).pop();
@@ -54,7 +60,7 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-            //  Navigator.of(context).pop();
+              //  Navigator.of(context).pop();
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => AccountWidget(
                         userInfo: info,
@@ -72,7 +78,8 @@ class DrawerWidget extends StatelessWidget {
           ListTile(
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CartWidget()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => CartWidget()));
             },
             leading: Icon(
               UiIcons.user,
@@ -93,6 +100,33 @@ class DrawerWidget extends StatelessWidget {
             //   ),
             // ),
           ),
+
+          ListTile(
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => FriendsWidget()));
+            },
+            leading: Icon(
+              UiIcons.users,
+              color: Theme.of(context).focusColor.withOpacity(1),
+            ),
+            title: Text(
+              "Friends",
+              style: Theme.of(context).textTheme.subhead,
+            ),
+            // trailing: Chip(
+            //   padding: EdgeInsets.symmetric(horizontal: 5),
+            //   backgroundColor: Colors.transparent,
+            //   shape: StadiumBorder(
+            //       side: BorderSide(color: Theme.of(context).focusColor)),
+            //   label: Text(
+            //     '8',
+            //     style: TextStyle(color: Theme.of(context).focusColor),
+            //   ),
+            // ),
+          ),
+
           // ListTile(
           //   onTap: () {
           //     Navigator.of(context).pushNamed('/Tabs', arguments: 4);
@@ -165,7 +199,7 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-             // Navigator.of(context).pushNamed('/Tabs', arguments: 1);
+              // Navigator.of(context).pushNamed('/Tabs', arguments: 1);
             },
             leading: Icon(
               UiIcons.settings_1,
@@ -178,7 +212,7 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-           //   Navigator.of(context).pushNamed('/Languages');
+              //   Navigator.of(context).pushNamed('/Languages');
             },
             leading: Icon(
               UiIcons.planet_earth,
