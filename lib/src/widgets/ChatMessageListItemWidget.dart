@@ -1,5 +1,6 @@
 import 'package:ecommerce_app_ui_kit/src/models/chat.dart';
 import 'package:ecommerce_app_ui_kit/src/models/user.dart';
+import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
 import 'package:flutter/material.dart';
 
 class ChatMessageListItem extends StatelessWidget {
@@ -64,7 +65,7 @@ class ChatMessageListItem extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Container(
         decoration: BoxDecoration(
-            color: Theme.of(context).accentColor,
+            color: config.Colors().mainColor(1),
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(15), bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
         padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
@@ -87,12 +88,12 @@ class ChatMessageListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Text(this.chat.user.name,
-                      style: Theme.of(context).textTheme.body2.merge(TextStyle(color: Theme.of(context).primaryColor))),
+                      style: Theme.of(context).textTheme.body2.merge(TextStyle(color:config.Colors().yellowColor(1))),),
                   new Container(
                     margin: const EdgeInsets.only(top: 5.0),
                     child: new Text(
                       chat.text,
-                      style: TextStyle(color: Theme.of(context).primaryColor),
+                      style: TextStyle(color: config.Colors().yellowColor(1)),
                     ),
                   ),
                 ],

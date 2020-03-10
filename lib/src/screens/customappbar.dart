@@ -26,7 +26,7 @@ PreferredSizeWidget customAppBar(BuildContext context, String title) {
             ),
             Center(
               child: Text(
-                'Profile',
+                title,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.display1,
               ),

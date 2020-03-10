@@ -148,7 +148,6 @@ class _Media extends State<Medias_Tab> {
               }),
         );
       }, childCount: url.length),
-
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisSpacing: 3,
         mainAxisSpacing: 3,
