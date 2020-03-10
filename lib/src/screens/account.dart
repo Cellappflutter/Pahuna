@@ -8,7 +8,6 @@ import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/settings.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
-import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/customappbar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +44,7 @@ class _AccountWidgetState extends State<AccountWidget> {
   @override
   Widget build(BuildContext context) {
     if (check == 1) {
-      editableInfo = widget.userInfo;
+      editableInfo = widget.userInfo ?? CurrentUserInfo();
       if (editableInfo.continent == null) {
         editableInfo.continent = [];
       }
@@ -82,14 +81,16 @@ class _AccountWidgetState extends State<AccountWidget> {
                         child: Column(
                           children: <Widget>[
                             Text(
-                              (editableInfo.name != null)
+                              (editableInfo.name != null &&
+                                      editableInfo.name != '')
                                   ? (editableInfo.name)
                                   : ("Your Name"),
                               textAlign: TextAlign.left,
                               style: Theme.of(context).textTheme.display2,
                             ),
                             Text(
-                              (editableInfo.email != null)
+                              (editableInfo.email != null &&
+                                      editableInfo.email != '')
                                   ? (editableInfo.email)
                                   : ("your@email"),
                               // editableInfo.email,
@@ -348,11 +349,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                       primary: false,
                       children: <Widget>[
                         ListTile(
-                          // leading: Icon(UiIcons.user_1),
-                          // title: Text(
-                          //   'Profile Settings',
-                          //   style: Theme.of(context).textTheme.body2,
-                          // ),
                           title: Row(
                             children: <Widget>[
                               Icon(UiIcons.user_1),
@@ -381,7 +377,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                               enabled: edit,
                               validator: (value) {
                                 if (value != null &&
-                                    value != "" &&
+                                    value.trim() != "" &&
                                     value != "null") {
                                   editableInfo.name = value;
                                   return null;
@@ -389,10 +385,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                                   return "Name cannot be empty";
                                 }
                               },
-                              // enabled: edit,
-                              // initialValue: editableInfo.name,
                               controller: _nameController,
-                              //1 editableInfo.name,
                               style: TextStyle(
                                   color: Theme.of(context).focusColor),
                             ),
@@ -482,7 +475,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                               enabled: edit,
                               validator: (value) {
                                 if (value != null &&
-                                    value != "" &&
+                                    value.trim() != "" &&
                                     value != "null") {
                                   editableInfo.email = value;
                                   return null;
@@ -568,7 +561,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                               hintText: "About yourself..."),
                           enabled: edit,
                           validator: (value) {
-                            if (value != null && value != '' && value != "null")
+                            if (value != null && value.trim() != '' && value != "null")
                               editableInfo.description = value;
                             return null;
                           },

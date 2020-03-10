@@ -33,9 +33,10 @@ class DatabaseService {
     return reference.document(uid).snapshots().map(_userInfoMap);
   }
 
-Stream<CurrentUserInfo> getOtherUserData(String userid) {
+  Stream<CurrentUserInfo> getOtherUserData(String userid) {
     return reference.document(userid).snapshots().map(_userInfoMap);
   }
+
   CurrentUserInfo _userInfoMap(DocumentSnapshot snapshot) {
     Map<dynamic, dynamic> data = snapshot.data['profile'] ?? {};
     try {
@@ -51,7 +52,19 @@ Stream<CurrentUserInfo> getOtherUserData(String userid) {
         matchPrefs: _matchPrefsValues(data) ?? [],
       );
     } catch (e) {
-      return CurrentUserInfo();
+      return CurrentUserInfo(
+        age: 0,
+        avatar: '',
+        description: '',
+        email: '',
+        gender: '',
+        name: '',
+        phoneno: '',
+        uid: snapshot.documentID,
+        interest: [],
+        matchPrefs: [],
+        continent: [],
+      );
     }
   }
 
@@ -370,14 +383,16 @@ Stream<CurrentUserInfo> getOtherUserData(String userid) {
           .document(user_id) //end_user UID
           .collection("Accepted")
           .document(uid) //currentUser UID
-          .setData({"time": DateTime.now().toUtc().toString(), "name": name},merge: true);
+          .setData({"time": DateTime.now().toUtc().toString(), "name": name},
+              merge: true);
       await requestReference
           .document(uid) //end_user UID
           .collection("Accepted")
           .document(user_id) //currentUser UID
-          .setData(
-        {"time": DateTime.now().toUtc().toString(), "name": name,},merge: true
-      );
+          .setData({
+        "time": DateTime.now().toUtc().toString(),
+        "name": name,
+      }, merge: true);
       await requestReference
           .document(uid) //end_user UID
           .collection("Pending")
@@ -388,10 +403,15 @@ Stream<CurrentUserInfo> getOtherUserData(String userid) {
       return false;
     }
   }
-  Stream<List<RequestedUser>> getAllMatched(){
+
+  Stream<List<RequestedUser>> getAllMatched() {
     print(uid);
     print("----------------");
-    return requestReference.document(uid).collection("Accepted").snapshots().map(requestMapper);
+    return requestReference
+        .document(uid)
+        .collection("Accepted")
+        .snapshots()
+        .map(requestMapper);
   }
 
   Stream<List<RequestedUser>> getMatchRequest() {

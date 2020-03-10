@@ -7,8 +7,6 @@ class ReviewItemWidget extends StatelessWidget {
   String url,username,rating,review,date_time;
   ReviewItemWidget({this.date_time,this.rating,this.review,this.url,this.username});
 
-// ReviewItemWidget({Key key, this.review}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Padding(
