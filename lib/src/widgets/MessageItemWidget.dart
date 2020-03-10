@@ -1,10 +1,14 @@
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
+import 'package:ecommerce_app_ui_kit/src/models/chat.dart';
 import 'package:ecommerce_app_ui_kit/src/models/conversation.dart' as model;
 import 'package:ecommerce_app_ui_kit/src/models/user.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/chat.dart';
 import 'package:flutter/material.dart';
 
 class MessageItemWidget extends StatefulWidget {
-  MessageItemWidget({Key key, this.message, this.onDismissed}) : super(key: key);
+  BuildContext context1;
+  MessageItemWidget({Key key, this.message, this.onDismissed,this.context1}) : super(key: key);
+
   model.Conversation message;
   ValueChanged<model.Conversation> onDismissed;
 
@@ -42,7 +46,7 @@ class _MessageItemWidgetState extends State<MessageItemWidget> {
       },
       child: InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed('/Tabs', arguments: 5);
+          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ChatWidget( context2: widget.context1,)));
         },
         child: Container(
           color: this.widget.message.read ? Colors.transparent : Theme.of(context).focusColor.withOpacity(0.15),

@@ -28,7 +28,7 @@ class Prefs {
 
   static Future<bool> setEndAgeData(double value) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.setDouble("ageStart", value);
+    return preferences.setDouble("ageEnd", value);
   }
 
   static Future<bool> setRangeData(double value) async {
@@ -48,7 +48,7 @@ class Prefs {
 
   static Future<double> getEndAgeData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getDouble("ageStart") ?? 24;
+    return preferences.getDouble("ageEnd") ?? 24;
   }
 
   static Future<bool> setLoggedIn(bool value) async {

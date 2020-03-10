@@ -45,9 +45,7 @@ class _TabsWidgetState extends State<TabsWidget> {
   Widget build(BuildContext context) {
     final CurrentUserInfo info = Provider.of<CurrentUserInfo>(context);
     final String avatar = Provider.of<String>(context);
-
     if (avatar != null && info != null) {
-    //  ImageProvider<dynamic>v=NetworkImage("url");
       info.avatar = avatar;
     }
     return Scaffold(
@@ -82,6 +80,21 @@ class _TabsWidgetState extends State<TabsWidget> {
                   },
                   child: Icon(
                     UiIcons.user_1,
+                    color: appColors.Colors().accentColor(1),
+                  ))),
+                  Container(
+              width: 30,
+              height: 30,
+              margin: EdgeInsets.only(top: 12.5, bottom: 12.5, right: 20),
+              child: InkWell(
+                  borderRadius: BorderRadius.circular(300),
+                   onTap: () {
+                     Navigator.of(context).push(MaterialPageRoute(
+                         builder: (context) => MessagesWidget()));
+                   },
+                  child: Icon(
+                    UiIcons.chat
+                    ,
                     color: appColors.Colors().accentColor(1),
                   ))),
         ],
