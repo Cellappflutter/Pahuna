@@ -60,6 +60,15 @@ class Prefs {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getBool("loggedIn") ?? false;
   }
+    static Future<bool> setEmailID(String value) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.setString("emailid", value);
+  }
+
+  static Future<String> getEmailID() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getString("emailid") ?? '';
+  }
 
   static Future<bool> removeAll() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();

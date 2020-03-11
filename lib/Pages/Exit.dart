@@ -16,7 +16,7 @@ class _ExitPageState extends State<ExitPage> {
   Widget build(BuildContext context) {
     ScreenSizeConfig().init(context);
     return Container(
-      height: NavBar.pageheight,
+      height: AppColors.pageheight,
       // width: homePagewidth,
       color: Colors.yellow,
       child: Stack(
