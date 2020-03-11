@@ -22,6 +22,31 @@ class DatabaseService {
       Firestore.instance.collection("ConnectionRequest");
   final CollectionReference chatReference =
       Firestore.instance.collection("Chat");
+  final CollectionReference friendsforchatReference= Firestore.instance.collection("ChatFriends");
+
+  Future chatFriend(String fid, String name,String avatar) async{
+    return await friendsforchatReference .document(uid).collection("chatfriends").document(fid).setData({
+      'name': name,
+      'id': fid,
+      'avatar': avatar,
+    });
+
+  }
+
+  Stream<List<Friendinfo>> chatlist(){
+    return friendsforchatReference.document(uid).collection("chatfriends").snapshots().map(_friendsnapshot);
+
+  }
+
+   List<Friendinfo> _friendsnapshot(QuerySnapshot docs) {
+    return docs.documents.map((f) {
+      return Friendinfo(
+        uid: f.data['id'] ?? '',
+        avatar: f.data['avatar'] ?? '',
+        name: f.data['name'] ?? '',
+      );
+    }).toList();
+  }
 
   Future sendMessage(String message, String fid) async {
     print('send:::::::::::::');
@@ -129,7 +154,7 @@ class DatabaseService {
         gender: '',
         name: '',
         phoneno: '',
-        uid: snapshot.documentID,
+        uid: '',
         interest: [],
         matchPrefs: [],
         continent: [],
@@ -446,7 +471,7 @@ class DatabaseService {
   }
 
   Future<bool> acceptReq(
-      String user_id, String receiverName, String senderName) async {
+      String user_id, String senderName, String receiverName) async {
     try {
       print("dssssssssssssssssssss");
       await requestReference
@@ -454,14 +479,14 @@ class DatabaseService {
           .collection("Accepted")
           .document(uid) //currentUser UID
           .setData(
-              {"time": DateTime.now().toUtc().toString(), "name": senderName},
+              {"time": DateTime.now().toUtc().toString(), "name": receiverName},
               merge: true);
       await requestReference
           .document(uid) //end_user UID
           .collection("Accepted")
           .document(user_id) //currentUser UID
           .setData(
-              {"time": DateTime.now().toUtc().toString(), "name": receiverName},
+              {"time": DateTime.now().toUtc().toString(), "name": senderName},
               merge: true);
       await requestReference
           .document(uid) //end_user UID

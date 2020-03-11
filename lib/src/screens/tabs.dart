@@ -7,6 +7,7 @@ import 'package:ecommerce_app_ui_kit/src/screens/chat.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/favorites.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/home.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/messages.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/messages_select.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/notifications.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/DrawerWidget.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/FilterWidget.dart';
@@ -90,7 +91,7 @@ class _TabsWidgetState extends State<TabsWidget> {
                   borderRadius: BorderRadius.circular(300),
                    onTap: () {
                      Navigator.of(context).push(MaterialPageRoute(
-                         builder: (context) => MessagesWidget()));
+                         builder: (context) => Messagelist()));
                    },
                   child: Icon(
                     UiIcons.chat
