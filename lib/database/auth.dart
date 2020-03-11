@@ -21,7 +21,7 @@ class AuthService {
     return user;
   }
 
-  Future<FirebaseUser> signInGoogle() async {
+  Future<AuthResult> signInGoogle() async {
     try {
       GoogleSignIn googleSignIn = GoogleSignIn();
       GoogleSignInAccount account = await googleSignIn.signIn();
@@ -32,7 +32,7 @@ class AuthService {
               idToken: authentication.idToken,
               accessToken: authentication.accessToken));
       await dataInit(result);
-      return result.user;
+      return result;
     } catch (e) {
       return null;
     }
@@ -45,9 +45,10 @@ class AuthService {
     DiscoverySetting.agePrefs = RangeValues(start, end);
     DiscoverySetting.range = range;
     DatabaseService.uid = result.user.uid;
+    await DatabaseService().initUserDB();
   }
 
-  Future<FirebaseUser> signInTwitter() async {
+  Future<AuthResult> signInTwitter() async {
     var twitterLogin = new TwitterLogin(
       consumerKey: 'Dg20SCK8gwBI7k02m2RzW4VTL ',
       consumerSecret: 'GJh8NYa7D2XnCsdNBpZ4mCmR1TWP0kGJ6u3bxr4Kts3nSBiuHs',
@@ -60,9 +61,8 @@ class AuthService {
           AuthResult fresult = await _auth.signInWithCredential(
               TwitterAuthProvider.getCredential(
                   authToken: session.token, authTokenSecret: session.secret));
-          print(fresult.user);
           await dataInit(fresult);
-          return fresult.user;
+          return fresult;
           //  break;
         }
       case TwitterLoginStatus.cancelledByUser:
@@ -89,7 +89,7 @@ class AuthService {
     return await _auth.signOut();
   }
 
-  Future<FirebaseUser> signInFacebook() async {
+  Future<AuthResult> signInFacebook() async {
     FacebookLogin fbLogin = FacebookLogin();
     FacebookLoginResult result =
         await fbLogin.logInWithReadPermissions(['email', 'public_profile']);
@@ -100,7 +100,8 @@ class AuthService {
             FacebookAuthProvider.getCredential(
                 accessToken: result.accessToken.token));
         await dataInit(signedInUser);
-        return signedInUser.user;
+
+        return signedInUser;
 
       default:
         return null;

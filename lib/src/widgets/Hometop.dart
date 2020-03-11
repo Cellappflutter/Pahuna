@@ -104,8 +104,9 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
   @override
   void dispose() {
     // TODO: implement dispose
-    super.dispose();
     _resizableController.dispose();
+    super.dispose();
+    
   }
 
   @override

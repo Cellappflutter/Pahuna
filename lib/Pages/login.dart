@@ -169,6 +169,7 @@ class _LoginPageState extends State<LoginPage> {
       DiscoverySetting.agePrefs = RangeValues(start, end);
       DiscoverySetting.range = range;
       DatabaseService.uid = authResult.user.uid;
+      await DatabaseService().initUserDB();
 
       pr.dismiss();
       DatabaseService.uid = authResult.user.uid;
@@ -394,7 +395,20 @@ class _LoginPageState extends State<LoginPage> {
             if (i) {
               await AuthService().signInGoogle().then((user) {
                 if (user != null) {
-                  saveSocialPhoto(user);
+                  if (user.additionalUserInfo.isNewUser) {
+                    saveSocialPhoto(user.user);
+                  } else {
+                    print("nooo new user");
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => MainPageWrapper()),
+                        (Route<dynamic> route) => false);
+                  }
+                } else {
+                  errorDialog(
+                    context,
+                    "There seems to be problem with either Google authentication or your Google application is not responsive, Please try reinstalling/updating Google application",
+                  );
                 }
               });
             } else {
@@ -422,7 +436,19 @@ class _LoginPageState extends State<LoginPage> {
             if (i) {
               AuthService().signInFacebook().then((user) {
                 if (user != null) {
-                  saveSocialPhoto(user);
+                  if (user.additionalUserInfo.isNewUser) {
+                    print(user.additionalUserInfo.profile);
+                    saveSocialPhoto(user.user);
+                  }
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => MainPageWrapper()),
+                      (Route<dynamic> route) => false);
+                } else {
+                  errorDialog(
+                    context,
+                    "There seems to be problem with either Facebook authentication or your Facebook application is not responsive, Please try reinstalling/updating Facebook application",
+                  );
                 }
               });
             } else {
@@ -435,9 +461,20 @@ class _LoginPageState extends State<LoginPage> {
             if (i) {
               await AuthService().signInTwitter().then((user) {
                 if (user != null) {
-                  print("Signed");
+                  if (user.additionalUserInfo.isNewUser) {
+                    print(user.additionalUserInfo.profile);
+                    saveSocialPhoto(user.user);
+                  } else {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => MainPageWrapper()),
+                        (Route<dynamic> route) => false);
+                  }
                 } else {
-                  print("Signed out");
+                  errorDialog(
+                    context,
+                    "There seems to be problem with either Twitter authentication or your Twitter application is not responsive, Please try reinstalling/updating Twitter application",
+                  );
                 }
               });
             } else {
@@ -469,6 +506,20 @@ class _LoginPageState extends State<LoginPage> {
       return "Entered Number must be of 10 digit";
     else
       return null;
+  }
+
+  showErrorSocialMediaAuthenticate(String provider) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return Dialog(
+            child: Text(
+              "There seems to be problem with either $provider authentication or your $provider application is not responsive",
+              style: Theme.of(context).textTheme.display1,
+            ),
+          );
+        });
   }
 
   checkBoxDialog() {

@@ -22,16 +22,15 @@ class DatabaseService {
       Firestore.instance.collection("ConnectionRequest");
   final CollectionReference chatReference =
       Firestore.instance.collection("Chat");
-  final CollectionReference friendsforchatReference= Firestore.instance.collection("ChatFriends");
+  final CollectionReference friendsforchatReference =
+      Firestore.instance.collection("ChatFriends");
 
   Future chatFriend(String fid, String name,String avatar,String ownname, String selfavatar) async{
-  // await  Future.wait(futures)
      await friendsforchatReference .document(uid).collection("chatfriends").document(fid).setData({
       'name': name,
       'id': fid,
       'avatar': avatar,
     });
-
      await friendsforchatReference .document(fid).collection("chatfriends").document(uid).setData({
       'name': ownname,
       'id': uid,
@@ -41,12 +40,15 @@ class DatabaseService {
 
   }
 
-  Stream<List<Friendinfo>> chatlist(){
-    return friendsforchatReference.document(uid).collection("chatfriends").snapshots().map(_friendsnapshot);
-
+  Stream<List<Friendinfo>> chatlist() {
+    return friendsforchatReference
+        .document(uid)
+        .collection("chatfriends")
+        .snapshots()
+        .map(_friendsnapshot);
   }
 
-   List<Friendinfo> _friendsnapshot(QuerySnapshot docs) {
+  List<Friendinfo> _friendsnapshot(QuerySnapshot docs) {
     return docs.documents.map((f) {
       return Friendinfo(
         uid: f.data['id'] ?? '',
@@ -80,9 +82,6 @@ class DatabaseService {
   Stream<List<Message>> tomessages(String fid) {
     int chatid = uid.hashCode + fid.hashCode;
     String cid = chatid.toString();
-    print("-------------------------cid-------------------------------");
-    print(cid);
-    print(chatid);
     return chatReference
         .document(cid)
         .collection(cid)
@@ -92,14 +91,8 @@ class DatabaseService {
   }
 
   Stream<List<Message>> message(String fid) {
-    print("get:::::::::::::");
-    print(uid);
-    print(fid);
-
     int chatid = uid.hashCode + fid.hashCode;
     String cid = chatid.toString();
-    print(cid);
-    print(chatid);
     return chatReference
         .document(cid)
         .collection(cid)
@@ -130,8 +123,6 @@ class DatabaseService {
   }
 
   Stream<CurrentUserInfo> getUserData() {
-    print(uid);
-    print("------");
     return reference.document(uid).snapshots().map(_userInfoMap);
   }
 
@@ -140,7 +131,7 @@ class DatabaseService {
   }
 
   CurrentUserInfo _userInfoMap(DocumentSnapshot snapshot) {
-    Map<dynamic, dynamic> data = snapshot.data['profile']??{};
+    Map<dynamic, dynamic> data = snapshot.data['profile'] ?? {};
     try {
       return CurrentUserInfo(
         age: data['age'] ?? 0,
@@ -167,7 +158,6 @@ class DatabaseService {
         matchPrefs: [],
         continent: [],
       );
-
     }
   }
 
@@ -284,13 +274,13 @@ class DatabaseService {
 
   updateLocation(Position position) async {
     print(uid);
-        try {
+    try {
       return await reference.document(uid).updateData({
         "latitude": position.latitude,
         "longitude": position.longitude,
       });
     } catch (e) {
-       print(uid);
+      print(uid);
       return await reference.document(uid).setData({
         "latitude": position.latitude,
         "longitude": position.longitude,
@@ -547,5 +537,9 @@ class DatabaseService {
     return await reference
         .document(uid)
         .setData({"status": "Offline"}, merge: true);
+  }
+
+  initUserDB() async {
+    await reference.document(uid).setData({"status": "online"},merge: true);
   }
 }
