@@ -51,7 +51,7 @@ class _TabsWidgetState extends State<TabsWidget> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: DrawerWidget(info: info),
-      endDrawer: FilterWidget(),
+      //endDrawer: FilterWidget(),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: new IconButton(
@@ -80,6 +80,21 @@ class _TabsWidgetState extends State<TabsWidget> {
                   },
                   child: Icon(
                     UiIcons.user_1,
+                    color: appColors.Colors().accentColor(1),
+                  ))),
+                  Container(
+              width: 30,
+              height: 30,
+              margin: EdgeInsets.only(top: 12.5, bottom: 12.5, right: 20),
+              child: InkWell(
+                  borderRadius: BorderRadius.circular(300),
+                   onTap: () {
+                     Navigator.of(context).push(MaterialPageRoute(
+                         builder: (context) => MessagesWidget()));
+                   },
+                  child: Icon(
+                    UiIcons.chat
+                    ,
                     color: appColors.Colors().accentColor(1),
                   ))),
         ],

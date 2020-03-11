@@ -75,8 +75,8 @@ class _CartWidgetState extends State<CartWidget> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         border: Border.all(
-                        // color: Colors.blue,
-                        width: 2),
+                            // color: Colors.blue,
+                            width: 2),
                         boxShadow: [
                           BoxShadow(
                               // color: Colors.white70,
@@ -87,21 +87,6 @@ class _CartWidgetState extends State<CartWidget> {
                       ),
                       child: Dismissible(
                         key: dismissableKey,
-                        confirmDismiss: (direction) {
-                          // RangeSlider(values: null, onChanged: null)
-                          if (direction == DismissDirection.startToEnd) {
-                            DatabaseService()
-                                .acceptReq(item.uid)
-                                .then((onValue) {
-                              if (onValue) {
-                                return Future.value(true);
-                              } else {
-                                return Future.value(false);
-                              }
-                            });
-                          }
-                          return Future.value(false);
-                        },
                         background: Container(
                           color: Colors.green,
                           child: Align(
@@ -132,12 +117,19 @@ class _CartWidgetState extends State<CartWidget> {
                         ),
                         onDismissed: (direction) {
                           print(direction.index);
+
                           if (direction == DismissDirection.startToEnd) {
-                            print("CONFIRM");
-                            items.removeAt(index);
+                            DatabaseService()
+                                .acceptReq(item.uid, item.name)
+                                .then((onValue) {
+                              setState(() {
+                                items.removeAt(index);
+                              });
+                            });
                           } else {
-                            //  items.removeAt(index);
-                            print("REJECT");
+                            setState(() {
+                              items.removeAt(index);
+                            });
                           }
                         },
                         child: Column(
@@ -148,9 +140,8 @@ class _CartWidgetState extends State<CartWidget> {
                               decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20)),
-                                border: Border.all(
-                                    color: Colors.blue,
-                                    width: 2),
+                                border:
+                                    Border.all(color: Colors.blue, width: 2),
                                 boxShadow: [
                                   BoxShadow(
                                       color: Colors.white70,
@@ -188,7 +179,9 @@ class _CartWidgetState extends State<CartWidget> {
                                               item.name
                                                   .toString()
                                                   .toUpperCase(),
-                                              style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700))
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w700))
                                         ],
                                       ),
                                       SizedBox(height: 15),

@@ -32,44 +32,50 @@ class _Detail extends State<Details_Tab> {
 
   _description(String detail) {
     var sth = parse(detail);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Card(
-          color: Color(0xFF2C2C2C),
-          child: Column(
-            children: <Widget>[
-              Container(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                    Icon(
-                      UiIcons.file_1,
-                      size: 15,
-                      color: Colors.black,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Container(
-                        margin: EdgeInsets.all(10),
-                        child: Text(
-                          "Description",
-                          style: TextStyle(fontSize: 20, color: Colors.red),
-                        )),
-                  ])),
-              Container(
-                alignment: Alignment.topLeft,
-                // color: Colors.green,
-                child: Text(
-                  sth.body.text,
-                  style: TextStyle(color: Colors.red),
-                ),
-              )
-            ],
+    return Container(
+      margin: EdgeInsets.all(2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Card(
+            color: Colors.white,
+            child: Column(
+              children: <Widget>[
+                Container(
+              
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                      Icon(
+                        UiIcons.file_1,
+                        size: 15,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                          margin: EdgeInsets.all(10),
+                          child: Text(
+                            "Description",
+                            style: TextStyle(fontSize: 20, color: Colors.red),
+                          )),
+                    ])),
+                Container(
+                  alignment: Alignment.topLeft,
+                  margin: EdgeInsets.only(left: 5,right: 1),
+                  // color: Colors.green,
+                  child: Text(
+                    sth.body.text,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                )
+              ],
+            ),
+
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -97,6 +103,8 @@ class _Media extends State<Medias_Tab> {
   @override
   Widget build(BuildContext context) {
     return SliverGrid(
+
+
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
         return Hero(
           tag: "image" + index.toString(),
@@ -147,41 +155,115 @@ class _Media extends State<Medias_Tab> {
         childAspectRatio: 1,
       ),
     );
+
+  }
+
+  gridImages() {
+    return SliverChildBuilderDelegate((BuildContext context, int index) {
+      return Hero(
+        tag: "image" + index.toString(),
+        child: InkWell(
+            child: Image.network(
+              url[index],
+              fit: BoxFit.fill,
+            ),
+            onTap: () {
+              showDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (context) {
+                    return Dialog(
+                      backgroundColor: Colors.transparent,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Hero(
+                              tag: "image" + index.toString(),
+                              child: Image.network(
+                                url[index],
+                                height: ScreenSizeConfig.safeBlockVertical * 50,
+                                fit: BoxFit.fill,
+                              ))
+                        ],
+                      ),
+                    );
+                  });
+            }),
+      );
+    }, childCount: url.length);
+
   }
 }
 
-
-class Review_tab extends StatefulWidget{
+class Review_tab extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
     return _review();
   }
 }
-    
-    class _review extends State<Review_tab>{
-     
 
-      @override
+class _review extends State<Review_tab> {
+  @override
   Widget build(BuildContext context) {
-    List<Reviewdata> reviewdata=[ Reviewdata(username: 'Pratik',review: 'Not bad',date_time: '10:00',rating: '4',url_image: 'img/user1.jpg'),
-    Reviewdata(username: 'Pratik',review: 'Not bad',date_time: '11:00',rating: '4',url_image: 'img/user1.jpg'),
-    Reviewdata(username: 'Pratik',review: 'Not bad',date_time: '12:00',rating: '4',url_image: 'img/user1.jpg'),
-    Reviewdata(username: 'Pratik',review: 'Not bad',date_time: '13:00',rating: '4',url_image: 'img/user1.jpg'),
-     Reviewdata(username: 'Pratik',review: 'Not bad',date_time: '11:00',rating: '4',url_image: 'img/user1.jpg'),
-    Reviewdata(username: 'Pratik',review: 'Not bad',date_time: '12:00',rating: '4',url_image: 'img/user1.jpg'),
-    Reviewdata(username: 'Pratik',review: 'Not bad',date_time: '13:00',rating: '4',url_image: 'img/user1.jpg')
-    
+    List<Reviewdata> reviewdata = [
+      Reviewdata(
+          username: 'Pratik',
+          review: 'Not bad',
+          date_time: '10:00',
+          rating: '4',
+          url_image: 'img/user1.jpg'),
+      Reviewdata(
+          username: 'Pratik',
+          review: 'Not bad',
+          date_time: '11:00',
+          rating: '4',
+          url_image: 'img/user1.jpg'),
+      Reviewdata(
+          username: 'Pratik',
+          review: 'Not bad',
+          date_time: '12:00',
+          rating: '4',
+          url_image: 'img/user1.jpg'),
+      Reviewdata(
+          username: 'Pratik',
+          review: 'Not bad',
+          date_time: '13:00',
+          rating: '4',
+          url_image: 'img/user1.jpg'),
+      Reviewdata(
+          username: 'Pratik',
+          review: 'Not bad',
+          date_time: '11:00',
+          rating: '4',
+          url_image: 'img/user1.jpg'),
+      Reviewdata(
+          username: 'Pratik',
+          review: 'Not bad',
+          date_time: '12:00',
+          rating: '4',
+          url_image: 'img/user1.jpg'),
+      Reviewdata(
+          username: 'Pratik',
+          review: 'Not bad',
+          date_time: '13:00',
+          rating: '4',
+          url_image: 'img/user1.jpg')
     ];
     // TODO: implement build
-    return SliverList(delegate: SliverChildBuilderDelegate((context,index){
+    return SliverList(
+        delegate: SliverChildBuilderDelegate((context, index) {
       return _listreview(reviewdata[index]);
-    },childCount: reviewdata.length));
+    }, childCount: reviewdata.length));
   }
-  _listreview(Reviewdata data){
-    
-    
-return ReviewItemWidget(url: data.url_image,username: data.username,rating: data.rating,review: data.review,date_time: data.date_time);
+
+  _listreview(Reviewdata data) {
+    return ReviewItemWidget(
+        url: data.url_image,
+        username: data.username,
+        rating: data.rating,
+        review: data.review,
+        date_time: data.date_time);
   }
-      
 }

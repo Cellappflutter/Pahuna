@@ -33,6 +33,9 @@ class DatabaseService {
     return reference.document(uid).snapshots().map(_userInfoMap);
   }
 
+Stream<CurrentUserInfo> getOtherUserData(String userid) {
+    return reference.document(userid).snapshots().map(_userInfoMap);
+  }
   CurrentUserInfo _userInfoMap(DocumentSnapshot snapshot) {
     Map<dynamic, dynamic> data = snapshot.data['profile'] ?? {};
     try {
@@ -355,35 +358,43 @@ class DatabaseService {
     }, merge: true);
   }
 
-  Future<void> sendReq(String user_id) async {
+  Future<void> sendReq(String user_id, String name) async {
     return await requestReference
         .document(user_id) //end_user UID
         .collection("Pending")
         .document(uid) //currentUser UID
-        .setData({"time": "timerrr"});
+        .setData({"time": DateTime.now().toUtc().toString(), "name": name});
   }
 
-  Future<bool> acceptReq(String user_id) async {
+  Future<bool> acceptReq(String user_id, String name) async {
     try {
+      print("dssssssssssssssssssss");
       await requestReference
           .document(user_id) //end_user UID
           .collection("Accepted")
           .document(uid) //currentUser UID
-          .setData({"time": "timerrr"});
+          .setData({"time": DateTime.now().toUtc().toString(), "name": name},merge: true);
       await requestReference
           .document(uid) //end_user UID
           .collection("Accepted")
           .document(user_id) //currentUser UID
-          .setData({"time": "timerrr"});
+          .setData(
+        {"time": DateTime.now().toUtc().toString(), "name": name,},merge: true
+      );
       await requestReference
-          .document("TqYPZHH36e2T9GFiz8cp") //end_user UID
+          .document(uid) //end_user UID
           .collection("Pending")
-          .document(uid)
+          .document(user_id)
           .delete();
       return true;
     } catch (e) {
       return false;
     }
+  }
+  Stream<List<RequestedUser>> getAllMatched(){
+    print(uid);
+    print("----------------");
+    return requestReference.document(uid).collection("Accepted").snapshots().map(requestMapper);
   }
 
   Stream<List<RequestedUser>> getMatchRequest() {
@@ -397,7 +408,8 @@ class DatabaseService {
 
   List<RequestedUser> requestMapper(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
-      return RequestedUser(uid: doc.documentID, time: doc.data['time']);
+      return RequestedUser(
+          uid: doc.documentID, time: doc.data['time'], name: doc.data['name']);
     }).toList();
   }
 
@@ -406,5 +418,11 @@ class DatabaseService {
       "time": DateTime.now().toUtc().toString(),
       "issue": error.summary.toString(),
     }, merge: true);
+  }
+
+  setOfflineStatus() async {
+    return await reference
+        .document(uid)
+        .setData({"status": "Offline"}, merge: true);
   }
 }

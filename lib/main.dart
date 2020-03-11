@@ -22,8 +22,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
-import 'Pages/featurepage.dart';
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
@@ -123,9 +121,9 @@ void main() {
               fontSize: 12.0, color: config.Colors().secondColor(0.6)),
         ),
       ),
-      home:
-      //FeaturePage(), 
-      InitializePage(),
+
+      home: InitializePage(),
+
     ),
   );
 }
