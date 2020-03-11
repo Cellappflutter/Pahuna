@@ -1,4 +1,5 @@
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
+import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
 import 'package:ecommerce_app_ui_kit/Pages/matchprofile.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
@@ -19,9 +20,11 @@ class MessagesWidget extends StatefulWidget {
 
 class _StartChat extends State<MessagesWidget> {
   final DatabaseService databaseService = DatabaseService();
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+      final info = Provider.of<CurrentUserInfo>(context);
     return Scaffold(
       appBar: customAppBar(context, "Select to Chat"),
       body: StreamProvider.value(value: DatabaseService().getAllMatched(),
@@ -82,7 +85,7 @@ class _StartChat extends State<MessagesWidget> {
                           onTap: () {
                             print("uid = ${item.uid}");
                             print("name = ${avatar}");
-                            databaseService.chatFriend(item.uid,item.name,avatar);
+                            databaseService.chatFriend(item.uid,item.name,avatar,info.name,info.avatar);
                             Navigator.pop(context);
                             //Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ChatWidget(name: item.name,avatar: avatar,fid:item.uid)));
                            
