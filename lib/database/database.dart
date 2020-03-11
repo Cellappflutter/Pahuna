@@ -24,12 +24,20 @@ class DatabaseService {
       Firestore.instance.collection("Chat");
   final CollectionReference friendsforchatReference= Firestore.instance.collection("ChatFriends");
 
-  Future chatFriend(String fid, String name,String avatar) async{
-    return await friendsforchatReference .document(uid).collection("chatfriends").document(fid).setData({
+  Future chatFriend(String fid, String name,String avatar,String ownname, String selfavatar) async{
+  // await  Future.wait(futures)
+     await friendsforchatReference .document(uid).collection("chatfriends").document(fid).setData({
       'name': name,
       'id': fid,
       'avatar': avatar,
     });
+
+     await friendsforchatReference .document(fid).collection("chatfriends").document(uid).setData({
+      'name': ownname,
+      'id': uid,
+      'avatar': selfavatar,
+    });
+
 
   }
 
@@ -132,7 +140,7 @@ class DatabaseService {
   }
 
   CurrentUserInfo _userInfoMap(DocumentSnapshot snapshot) {
-    Map<dynamic, dynamic> data = snapshot.data['profile'];
+    Map<dynamic, dynamic> data = snapshot.data['profile']??{};
     try {
       return CurrentUserInfo(
         age: data['age'] ?? 0,
