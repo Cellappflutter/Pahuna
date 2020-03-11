@@ -117,13 +117,10 @@ class _AuthPageState extends State<AuthPage> {
         DiscoverySetting.agePrefs = RangeValues(start, end);
         DiscoverySetting.range = range;
         DatabaseService.uid = firebaseUser.uid;
-
-        // DatabaseService().checkPrevUser().then((onValue) {
+        await DatabaseService().initUserDB();
         setState(() {
           gotoLogin = false;
-          //    isPrevUser = onValue;
         });
-        //   });
       } else {
         setState(() {
           gotoLogin = true;
