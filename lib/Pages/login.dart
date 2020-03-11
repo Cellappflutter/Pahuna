@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/country_pickers.dart';
@@ -12,12 +15,15 @@ import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/Helper/error_helper.dart';
 import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
+import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -162,12 +168,12 @@ class _LoginPageState extends State<LoginPage> {
       AuthResult authResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
       await Prefs.setUserUid(authResult.user.uid);
-        double range= await Prefs.getRangeData();
-        double start= await Prefs.getStartAgeData();
-        double end= await Prefs.getEndAgeData();
-        DiscoverySetting.agePrefs=RangeValues(start, end);
-        DiscoverySetting.range=range;
-      DatabaseService.uid=authResult.user.uid;
+      double range = await Prefs.getRangeData();
+      double start = await Prefs.getStartAgeData();
+      double end = await Prefs.getEndAgeData();
+      DiscoverySetting.agePrefs = RangeValues(start, end);
+      DiscoverySetting.range = range;
+      DatabaseService.uid = authResult.user.uid;
       pr.dismiss();
       print(authResult.user.phoneNumber);
       print("Signed IN");
@@ -184,210 +190,263 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).accentColor,
       body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Stack(
-              children: <Widget>[
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                  margin: EdgeInsets.symmetric(vertical: 205, horizontal: 50),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Theme.of(context).primaryColor.withOpacity(0.6),
+        child: Center(
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Stack(
+                // alignment: Alignment.center,
+                children: <Widget>[
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(
+                        vertical: ScreenSizeConfig.safeBlockVertical * 5,
+                        horizontal: ScreenSizeConfig.safeBlockHorizontal * 8),
+                    margin: EdgeInsets.symmetric(
+                        vertical: ScreenSizeConfig.safeBlockVertical * 20,
+                        horizontal: ScreenSizeConfig.safeBlockHorizontal * 14),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Theme.of(context).primaryColor.withOpacity(0.6),
+                    ),
                   ),
-                ),
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
-                  margin: EdgeInsets.fromLTRB(
-                    30,
-                    230,
-                    30,
-                    20,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Theme.of(context).primaryColor,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Theme.of(context).hintColor.withOpacity(0.2),
-                          offset: Offset(0, 10),
-                          blurRadius: 20)
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(height: 25),
-                      Text('Sign Up',
-                          style: Theme.of(context).textTheme.display3),
-                      SizedBox(height: 20),
-                      CountryPickerDropdown(
-                        initialValue: 'np',
-                        itemBuilder: _builderDropdownItem,
-                        onValuePicked: (Country country) {
-                          print(
-                              "${country.name}(+${country.phoneCode}) getting selected item");
-                          setState(() {
-                            holder = int.parse(country.phoneCode);
-                          });
-                        },
-                      ),
-                      new TextFormField(
-                        style: TextStyle(color: Theme.of(context).accentColor),
-                        keyboardType: TextInputType.phone,
-                        validator: validateMobile,
-                        decoration: new InputDecoration(
-                          hintText: 'Phone No.',
-                          hintStyle: Theme.of(context).textTheme.body1.merge(
-                                TextStyle(color: Theme.of(context).accentColor),
-                              ),
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context)
-                                      .accentColor
-                                      .withOpacity(0.2))),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).accentColor)),
-                          prefixIcon: Icon(
-                            UiIcons.smartphone,
-                            color: Theme.of(context).accentColor,
-                          ),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+                    margin: EdgeInsets.fromLTRB(
+                      ScreenSizeConfig.blockSizeVertical * 5,
+                      ScreenSizeConfig.blockSizeVertical * 23,
+                      ScreenSizeConfig.blockSizeVertical * 5,
+                      ScreenSizeConfig.blockSizeVertical * 3,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Theme.of(context).primaryColor,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Theme.of(context).hintColor.withOpacity(0.5),
+                            offset: Offset(0, 10),
+                            blurRadius: 20)
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text('Sign Up',
+                            style: Theme.of(context).textTheme.display3),
+                        SizedBox(
+                            height: ScreenSizeConfig.safeBlockVertical * 5),
+                        CountryPickerDropdown(
+                          initialValue: 'np',
+                          itemBuilder: _builderDropdownItem,
+                          onValuePicked: (Country country) {
+                            print(
+                                "${country.name}(+${country.phoneCode}) getting selected item");
+                            setState(() {
+                              holder = int.parse(country.phoneCode);
+                            });
+                          },
                         ),
-                        onChanged: (value) {
-                          this.phoneNo = "+" + holder.toString() + value;
-                          print(phoneNo);
-                        },
-                      ),
-                      SizedBox(height: 40),
-                      FlatButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 70),
-                        onPressed: () {
-                          if (i) {
-                            if (this.phoneNo.isEmpty) {
-                              try {
-                                showDialog(
-                                    context: context,
-                                    child: AlertDialog(
-                                      title: Text('Alert !!'),
-                                      content: Text(
-                                          'Please Enter Your Mobile Number'),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text('Ok'),
-                                        )
-                                      ],
-                                    ));
-                              } catch (e) {
-                                print(e);
+                        new TextFormField(
+                          style:
+                              TextStyle(color: Theme.of(context).accentColor),
+                          keyboardType: TextInputType.phone,
+                          validator: validateMobile,
+                          decoration: new InputDecoration(
+                            hintText: 'Phone No.',
+                            hintStyle: Theme.of(context).textTheme.body1.merge(
+                                  TextStyle(
+                                      color: Theme.of(context).accentColor),
+                                ),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Theme.of(context)
+                                        .accentColor
+                                        .withOpacity(0.2))),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).accentColor)),
+                            prefixIcon: Icon(
+                              UiIcons.smartphone,
+                              color: Theme.of(context).accentColor,
+                            ),
+                          ),
+                          onChanged: (value) {
+                            this.phoneNo = "+" + holder.toString() + value;
+                            print(phoneNo);
+                          },
+                        ),
+                        SizedBox(
+                            height: ScreenSizeConfig.safeBlockVertical * 5),
+                        FlatButton(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 70),
+                          onPressed: () {
+                            if (i) {
+                              if (this.phoneNo.isEmpty) {
+                                try {
+                                  showDialog(
+                                      context: context,
+                                      child: AlertDialog(
+                                        title: Text('Alert !!'),
+                                        content: Text(
+                                            'Please Enter Your Mobile Number'),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text('Ok'),
+                                          )
+                                        ],
+                                      ));
+                                } catch (e) {
+                                  print(e);
+                                }
+                              } else {
+                                pr = loadingBar(context, "Signing In");
+                                verifyPhone();
                               }
                             } else {
-                              pr = loadingBar(context, "Signing In");
-                              verifyPhone();
+                              checkBoxDialog();
                             }
-                          } else {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text('Alert !!!'),
-                                  content: Text(
-                                      'Please check the terms and conditions'),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Column(
-                                        children: <Widget>[
-                                          Text('Ok'),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                        },
-                        child: Text(
-                          'Get Code',
-                          style: Theme.of(context).textTheme.title.merge(
-                                TextStyle(
-                                    color: Theme.of(context).primaryColor),
-                              ),
+                          },
+                          child: Text(
+                            'Get Code',
+                            style: Theme.of(context).textTheme.title.merge(
+                                  TextStyle(
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                          ),
+                          color: Theme.of(context).accentColor,
+                          shape: StadiumBorder(),
                         ),
-                        color: Theme.of(context).accentColor,
-                        shape: StadiumBorder(),
-                      )
-                    ],
+                        SizedBox(
+                            height: ScreenSizeConfig.safeBlockVertical * 2),
+                        Text(
+                          "OR",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.display3,
+                        ),
+                        SizedBox(
+                          height: ScreenSizeConfig.safeBlockVertical * 2,
+                        ),
+                        socialMediaAuthentication(),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                  left: ScreenSizeConfig.safeBlockHorizontal * 8),
-              child: Row(
-                children: <Widget>[
-                  Checkbox(
-                      value: i,
-                      onChanged: (bool value) {
-                        setState(() {
-                          i = value;
-                          print(value);
-                        });
-                      }),
-                  Container(
-                      width: ScreenSizeConfig.safeBlockHorizontal * 72,
-                      child: RichText(
-                          maxLines: 5,
-                          overflow: TextOverflow.ellipsis,
-                          text: TextSpan(
-                              text:
-                                  "By using this application, you agree to Pahuna's ",
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: 'Terms of Service and Privacy Notice.',
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    // color: Color.fromRGBO(41, 128, 185, 1),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () => launch(tos),
-                                )
-                              ]))),
                 ],
               ),
-            ),
-            RaisedButton(
-              onPressed: () {},
-              child: Text("Twitter Login"),
-            ),
-            RaisedButton(
-              onPressed: () async {
-                await AuthService().signInGoogle().then((onValue) {
-                  if (onValue) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => MainPageWrapper()));
-                  }
-                });
-              },
-              child: Text("Google Login"),
-            ),
-          ],
+              Container(
+                margin: EdgeInsets.only(
+                    left: ScreenSizeConfig.safeBlockHorizontal * 8),
+                child: Row(
+                  children: <Widget>[
+                    Checkbox(
+                        activeColor: Colors.white,
+                        checkColor: Theme.of(context).accentColor,
+                        value: i,
+                        onChanged: (bool value) {
+                          setState(() {
+                            i = value;
+                            print(value);
+                          });
+                        }),
+                    Container(
+                        width: ScreenSizeConfig.safeBlockHorizontal * 72,
+                        child: RichText(
+                            maxLines: 5,
+                            overflow: TextOverflow.ellipsis,
+                            text: TextSpan(
+                                text:
+                                    "By using this application, you agree to Pahuna's ",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text:
+                                        'Terms of Service and Privacy Notice.',
+                                    style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      // color: Color.fromRGBO(41, 128, 185, 1),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () => launch(tos),
+                                  )
+                                ]))),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  socialMediaAuthentication() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        InkWell(
+          onTap: () async {
+            if (i) {
+              await AuthService().signInGoogle().then((user) {
+                if (user != null) {
+                  saveSocialPhoto(user);
+                }
+              });
+            } else {
+              checkBoxDialog();
+            }
+          },
+          child: Container(
+            decoration: BoxDecoration(shape: BoxShape.circle),
+            child: Image.asset(
+              "assets/icons/google.png",
+              alignment: Alignment.center,
+              height: 40,
+              width: 40,
+              fit: BoxFit.fill,
+            ),
+          ),
+        ),
+        InkWell(
+          child: Container(
+            decoration: BoxDecoration(shape: BoxShape.circle),
+            child: Icon(UiIcons.facebook_circled,
+                size: 40, color: Color(0xff3b5998)),
+          ),
+          onTap: () async {
+            if (i) {
+            } else {
+              checkBoxDialog();
+            }
+          },
+        ),
+        InkWell(
+          onTap: () async {
+            if (i) {
+              await AuthService().signInTwitter().then((user) {
+                if (user != null) {
+                  print("Signed");
+                } else {
+                  print("Signed out");
+                }
+              });
+            } else {
+              checkBoxDialog();
+            }
+          },
+          child: Container(
+            decoration: BoxDecoration(shape: BoxShape.circle),
+            child: Icon(UiIcons.twitter_circled,
+                size: 40, color: Color(0xff1b98e4)),
+          ),
+        ),
+      ],
     );
   }
 
@@ -406,5 +465,94 @@ class _LoginPageState extends State<LoginPage> {
       return "Entered Number must be of 10 digit";
     else
       return null;
+  }
+
+  checkBoxDialog() {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Alert !!!'),
+          content: Text('Please check the terms and conditions'),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Column(
+                children: <Widget>[
+                  Text('Ok'),
+                ],
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  saveSocialPhoto(FirebaseUser user) async {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return Dialog(
+            child: Center(
+              child: Container(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    CircleAvatar(
+                      child: Image.network(
+                        user.photoUrl,
+                        fit: BoxFit.fill,
+                        alignment: Alignment.center,
+                        loadingBuilder: (context, child, data) {
+                          if (data == null) {
+                            return child;
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        },
+                      ),
+                    ),
+                    RaisedButton(
+                      onPressed: () async {
+                        print(DatabaseService.uid);
+                        StorageReference storageReference = FirebaseStorage
+                            .instance
+                            .ref()
+                            .child(DatabaseService.uid)
+                            .child("avatar.jpg");
+                        NetworkImage(user.photoUrl);
+                        Uint8List image =
+                            await StorageService().imageToByte(user.photoUrl);
+                        print(user.photoUrl);
+                        StorageUploadTask task =
+                            storageReference.putData(image);
+                        await task.onComplete;
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => MainPageWrapper()),
+                            (Route<dynamic> route) => false);
+                      },
+                      child:
+                          Text("Yes, I want to use this picture as my avatar"),
+                    ),
+                    RaisedButton(
+                      onPressed: () async {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => MainPageWrapper()),
+                            (Route<dynamic> route) => false);
+                      },
+                      child: Text("No, I dont want to set my avatar myself"),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 }

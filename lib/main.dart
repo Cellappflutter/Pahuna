@@ -254,7 +254,7 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
           fontFamily: 'Poppins',
           primaryColor: config.Colors().whiteColor(1),
           brightness: Brightness.dark,
-          accentColor: config.Colors().mainColor(1),
+          accentColor: config.Colors().mainDarkColor(1),
           focusColor: config.Colors().accentColor(1),
           hintColor: config.Colors().secondColor(1),
           textTheme: TextTheme(
@@ -415,4 +415,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
