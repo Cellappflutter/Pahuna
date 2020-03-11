@@ -2,8 +2,11 @@ import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
-import 'package:ecommerce_app_ui_kit/Model/settings.dart';
+
 import 'package:ecommerce_app_ui_kit/database/auth.dart';
+
+import 'package:ecommerce_app_ui_kit/Model/settings.dart';
+
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/Helper/error_helper.dart';
