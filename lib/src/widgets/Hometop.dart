@@ -18,13 +18,14 @@ class Hometop extends StatefulWidget {
 class _hometop extends State<Hometop> with TickerProviderStateMixin {
   AnimationController _resizableController;
   CurrentUserInfo userData;
+
   AnimatedBuilder getContainer() {
     final checkPrevUser = Provider.of<bool>(context);
     final userData = Provider.of<CurrentUserInfo>(context);
     final String avatar = Provider.of<String>(context);
     if (avatar != null && userData != null) {
       userData.avatar = avatar;
-    //userData.image=Image.network(avatar);
+      //userData.image=Image.network(avatar);
     }
     final position = Provider.of<Position>(context);
     print("''''''''''''''''''''''''''''''''''''''''''''''''''''''");
@@ -32,6 +33,7 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
     if (position != null) {
       DatabaseService().updateLocation(position);
     }
+
     return new AnimatedBuilder(
         animation: _resizableController,
         builder: (context, child) {
@@ -97,6 +99,13 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
     });
     _resizableController.forward();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _resizableController.dispose();
   }
 
   @override

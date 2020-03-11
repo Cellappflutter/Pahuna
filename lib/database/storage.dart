@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
+import 'package:flutter/foundation.dart';
 
 class StorageService {
   String uid = 'hhhhh';
@@ -56,5 +58,13 @@ class StorageService {
       // print(data[i].avatar);
     }
     return data;
+  }
+
+  Future<Uint8List> imageToByte(String path) async {
+    HttpClient httpClient = HttpClient();
+    var request = await httpClient.getUrl(Uri.parse(path));
+    var response = await request.close();
+    Uint8List bytes = await consolidateHttpClientResponseBytes(response);
+    return bytes;
   }
 }
