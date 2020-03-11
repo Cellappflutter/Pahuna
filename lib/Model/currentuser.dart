@@ -27,3 +27,7 @@ class CurrentUserInfo {
       this.phoneno,
       this.matchPrefs});
 }
+class Friendinfo{
+  String name, uid, avatar;
+  Friendinfo({this.name,this.uid,this.avatar});
+}

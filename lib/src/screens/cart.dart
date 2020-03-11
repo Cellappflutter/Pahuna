@@ -126,6 +126,10 @@ class _CartWidgetState extends State<CartWidget> {
                                 .then((onValue) {
                               setState(() {
                                 items.removeAt(index);
+                                print("-------------------------requesteduser----------------");
+                                print(item.name);
+                                print("------------------------currentuser-----------------------");
+                                print(info.name);
                               });
                             });
                           } else {

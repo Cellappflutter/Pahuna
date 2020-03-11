@@ -1,15 +1,18 @@
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
+import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
 import 'package:ecommerce_app_ui_kit/Pages/matchprofile.dart';
+
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/chat.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/customappbar.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/messages_select.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/MessageItemWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MessagesWidget extends StatefulWidget {
+class Messagelist extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -17,14 +20,16 @@ class MessagesWidget extends StatefulWidget {
   }
 }
 
-class _StartChat extends State<MessagesWidget> {
+class _StartChat extends State<Messagelist> {
+  final DatabaseService databaseService = DatabaseService();
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: customAppBar(context, "Select to Chat"),
-      body: StreamProvider.value(value: DatabaseService().getAllMatched(),
-      child: Consumer<List<RequestedUser>>(
+      appBar: customAppBar(context, "Chats"),
+      body: StreamProvider.value(
+        value: DatabaseService().chatlist(),
+        child: Consumer<List<Friendinfo>>(
           builder: (context, items, child) {
             print(items);
             if (items == null) {
@@ -33,8 +38,7 @@ class _StartChat extends State<MessagesWidget> {
               );
             } else if (items.length < 1) {
               return Center(
-                child:
-                    Text("No Connection Request, Why dont u send some request"),
+                child: Text("Start Chatting press on the +"),
               );
             } else {
               print(items);
@@ -45,54 +49,81 @@ class _StartChat extends State<MessagesWidget> {
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     final item = items[index];
-                    return FutureProvider<String>.value(
-                      value: StorageService().getAvatar(item.uid),
-                      child:
-                          Consumer<String>(builder: (context, avatar, child) {
-                        return InkWell(
-                          child: Container(
-                            padding: EdgeInsets.all(10.0),
-                            height: ScreenSizeConfig.blockSizeVertical * 15,
-                            child: Row(
-                              children: <Widget>[
-                                (avatar != "" && avatar != null)
-                                    ? CircleAvatar(
-                                        backgroundImage:
-                                            NetworkImage(avatar),
-                                        radius:
-                                            ScreenSizeConfig.safeBlockVertical *
-                                                6,
-                                      )
-                                    : CircleAvatar(
-                                        backgroundColor: Colors.blue,
-                                        radius:
-                                            ScreenSizeConfig.safeBlockVertical *
-                                                6,
-                                      ),
-                                Column(
-                                  children: <Widget>[
-                                    Text(item.name.toString().toUpperCase()),
-                                    Text(item.time.toString()),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          onTap: () {
-                            print("uid = ${item.uid}");
-                            print("name = ${item.name}");
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ChatWidget(name: item.name,avatar: avatar,fid:item.uid)));
-                           
-                          },
-                        );
-                      }),
+                    return Container(
+                      padding: EdgeInsets.all(6.0),
+                      height: ScreenSizeConfig.blockSizeVertical * 10,
+                      child: ListTile(
+                        leading: (item.avatar != "" && item.avatar != null)
+                            ? CircleAvatar(
+                                backgroundImage: NetworkImage(item.avatar),
+                                radius: ScreenSizeConfig.safeBlockVertical * 3.5,
+                              )
+                            : CircleAvatar(
+                                backgroundColor: Colors.blue,
+                                radius: ScreenSizeConfig.safeBlockVertical * 3.5,
+                              ),
+                        title: Text(item.name.toString().toUpperCase(),
+                            style: Theme.of(context).textTheme.body2),
+                        onTap: (){
+                           Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ChatWidget(name: item.name,avatar: item.avatar,fid:item.uid)));
+                        },
+                      ),
                     );
+                    // return InkWell(
+                    //       child: Container(
+                    //         padding: EdgeInsets.all(10.0),
+                    //         height: ScreenSizeConfig.blockSizeVertical * 15,
+                    //         child: Row(
+                    //           children: <Widget>[
+                    //             (item.avatar != "" && item.avatar != null)
+                    //                 ? CircleAvatar(
+                    //                     backgroundImage:
+                    //                         NetworkImage(item.avatar),
+                    //                     radius:
+                    //                         ScreenSizeConfig.safeBlockVertical *
+                    //                             6,
+                    //                   )
+                    //                 : CircleAvatar(
+                    //                     backgroundColor: Colors.blue,
+                    //                     radius:
+                    //                         ScreenSizeConfig.safeBlockVertical *
+                    //                             6,
+                    //                   ),
+                    //                   SizedBox(width: 7,),
+                    //             // Column(mainAxisAlignment: MainAxisAlignment.center,
+                    //             //   children: <Widget>[
+                    //             //     Text(item.name.toString().toUpperCase(),style: Theme.of(context).textTheme.body2),
+                    //             //     //Text(item.time.toString()),
+                    //             //   ],
+                    //             // )
+                    //             ListTile()
+                    //           ],
+                    //         ),
+                    //       ),
+                    //       onTap: () {
+                    //         print("___________________uid___________________________________");
+                    //         print("uid = ${item.uid}");
+                    //         print("name = ${item.name}");
+                    //         //databaseService.chatFriend(item.uid,item.name);
+                    //        // Navigator.pop(context);
+                    //         Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ChatWidget(name: item.name,avatar: item.avatar,fid:item.uid)));
+
+                    //       }
+                    //       ,
+                    //     );
                   },
                 ),
               );
             }
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => MessagesWidget()));
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

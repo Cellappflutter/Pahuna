@@ -74,10 +74,20 @@ class _chat extends State<ChatWidget> {
                                         print(widget.fid.hashCode);
 
                       if(value[index].uid== widget.fid){
-                        return Bubble(
-                        style: styleSomebody,
-                        child: Text(value[index].message),
-                      ) ;
+                        return Container(
+                          child: Row(
+                            
+                            children: <Widget>[
+                              SizedBox(width: ScreenSizeConfig.safeBlockVertical*1,),
+                              CircleAvatar(backgroundImage: NetworkImage(widget.avatar),radius: 15,),
+                            SizedBox(width: 3,),
+                              Bubble(
+                              style: styleSomebody,
+                              child: Text(value[index].message),
+                      ),
+                            ],
+                          ),
+                        ) ;
 
                       }
                       else{
