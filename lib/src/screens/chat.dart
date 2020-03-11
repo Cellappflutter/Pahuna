@@ -48,10 +48,10 @@ class _chat extends State<ChatWidget> {
     );
   @override
   Widget build(BuildContext context) {
-    DatabaseService.fid = widget.fid;
+  //  DatabaseService.fid = widget.fid;
     // TODO: implement build
     return StreamProvider<List<Message>>.value(
-      value: DatabaseService().tomessages,
+      value: DatabaseService().tomessages(widget.fid),
       child: Scaffold(
         appBar: customAppBar(context, widget.name),
           
@@ -111,7 +111,6 @@ class _chat extends State<ChatWidget> {
                     contentPadding: EdgeInsets.all(20),
                     hintText: 'Chat text here',
                     hintStyle: TextStyle(color: config.Colors().mainColor(1).withOpacity(0.5)),
-                    
                     suffixIcon: IconButton(
                       padding: EdgeInsets.only(right: 30),
                       onPressed: () {

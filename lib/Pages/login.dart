@@ -162,14 +162,12 @@ class _LoginPageState extends State<LoginPage> {
       AuthResult authResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
       await Prefs.setUserUid(authResult.user.uid);
-
         double range= await Prefs.getRangeData();
         double start= await Prefs.getStartAgeData();
         double end= await Prefs.getEndAgeData();
         DiscoverySetting.agePrefs=RangeValues(start, end);
         DiscoverySetting.range=range;
       DatabaseService.uid=authResult.user.uid;
-
       pr.dismiss();
       print(authResult.user.phoneNumber);
       print("Signed IN");
