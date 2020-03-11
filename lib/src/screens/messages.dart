@@ -56,61 +56,25 @@ class _StartChat extends State<Messagelist> {
                         leading: (item.avatar != "" && item.avatar != null)
                             ? CircleAvatar(
                                 backgroundImage: NetworkImage(item.avatar),
-                                radius: ScreenSizeConfig.safeBlockVertical * 3.5,
+                                radius:
+                                    ScreenSizeConfig.safeBlockVertical * 3.5,
                               )
                             : CircleAvatar(
                                 backgroundColor: Colors.blue,
-                                radius: ScreenSizeConfig.safeBlockVertical * 3.5,
+                                radius:
+                                    ScreenSizeConfig.safeBlockVertical * 3.5,
                               ),
                         title: Text(item.name.toString().toUpperCase(),
                             style: Theme.of(context).textTheme.body2),
-                        onTap: (){
-                           Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ChatWidget(name: item.name,avatar: item.avatar,fid:item.uid)));
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ChatWidget(
+                                  name: item.name,
+                                  avatar: item.avatar,
+                                  fid: item.uid)));
                         },
                       ),
                     );
-                    // return InkWell(
-                    //       child: Container(
-                    //         padding: EdgeInsets.all(10.0),
-                    //         height: ScreenSizeConfig.blockSizeVertical * 15,
-                    //         child: Row(
-                    //           children: <Widget>[
-                    //             (item.avatar != "" && item.avatar != null)
-                    //                 ? CircleAvatar(
-                    //                     backgroundImage:
-                    //                         NetworkImage(item.avatar),
-                    //                     radius:
-                    //                         ScreenSizeConfig.safeBlockVertical *
-                    //                             6,
-                    //                   )
-                    //                 : CircleAvatar(
-                    //                     backgroundColor: Colors.blue,
-                    //                     radius:
-                    //                         ScreenSizeConfig.safeBlockVertical *
-                    //                             6,
-                    //                   ),
-                    //                   SizedBox(width: 7,),
-                    //             // Column(mainAxisAlignment: MainAxisAlignment.center,
-                    //             //   children: <Widget>[
-                    //             //     Text(item.name.toString().toUpperCase(),style: Theme.of(context).textTheme.body2),
-                    //             //     //Text(item.time.toString()),
-                    //             //   ],
-                    //             // )
-                    //             ListTile()
-                    //           ],
-                    //         ),
-                    //       ),
-                    //       onTap: () {
-                    //         print("___________________uid___________________________________");
-                    //         print("uid = ${item.uid}");
-                    //         print("name = ${item.name}");
-                    //         //databaseService.chatFriend(item.uid,item.name);
-                    //        // Navigator.pop(context);
-                    //         Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ChatWidget(name: item.name,avatar: item.avatar,fid:item.uid)));
-
-                    //       }
-                    //       ,
-                    //     );
                   },
                 ),
               );
