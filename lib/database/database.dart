@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
+import 'package:ecommerce_app_ui_kit/Model/message.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
@@ -9,12 +9,76 @@ import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/userdata.dart';
 
 class DatabaseService {
-  static String uid = "hhhhh";
+  static String uid;
+  // static String fid ;
   final CollectionReference reference = Firestore.instance.collection("pahuna");
   final CollectionReference reportReference =
       Firestore.instance.collection("report");
   final CollectionReference requestReference =
       Firestore.instance.collection("ConnectionRequest");
+  final CollectionReference chatReference =
+      Firestore.instance.collection("Chat");
+
+  Future sendMessage(String message, String fid) async {
+    print('send:::::::::::::');
+    print(uid);
+    print(fid);
+    print(uid.hashCode);
+    print(fid.hashCode);
+    int chatid = uid.hashCode + fid.hashCode;
+    String cid = chatid.toString();
+    print(cid);
+    print(chatid);
+    return await chatReference
+        .document(cid)
+        .collection(cid)
+        .document()
+        .setData({
+      'uid': uid,
+      'message': message,
+      'date_time': Timestamp.now(),
+    });
+  }
+
+  Stream<List<Message>> tomessages(String fid) {
+    int chatid = uid.hashCode + fid.hashCode;
+    String cid = chatid.toString();
+    print("-------------------------cid-------------------------------");
+    print(cid);
+    print(chatid);
+    return chatReference
+        .document(cid)
+        .collection(cid)
+        .orderBy('date_time')
+        .snapshots()
+        .map(_messagesnapshot);
+  }
+
+  Stream<List<Message>> message(String fid) {
+    print("get:::::::::::::");
+    print(uid);
+    print(fid);
+
+    int chatid = uid.hashCode + fid.hashCode;
+    String cid = chatid.toString();
+    print(cid);
+    print(chatid);
+    return chatReference
+        .document(cid)
+        .collection(cid)
+        .snapshots()
+        .map(_messagesnapshot);
+  }
+
+  List<Message> _messagesnapshot(QuerySnapshot docs) {
+    return docs.documents.map((f) {
+      return Message(
+        uid: f.data['uid'] ?? '',
+        message: f.data['message'] ?? '',
+        timestamp: f.data['date_time'] ?? '',
+      );
+    }).toList();
+  }
 
   Stream<bool> checkPrevUser() {
     return reference.document(uid).snapshots().map(converte);
@@ -57,7 +121,7 @@ class DatabaseService {
         age: 0,
         avatar: '',
         description: '',
-        email:'',
+        email: '',
         gender: '',
         name: '',
         phoneno: '',
@@ -377,23 +441,24 @@ class DatabaseService {
         .setData({"time": DateTime.now().toUtc().toString(), "name": name});
   }
 
-  Future<bool> acceptReq(String user_id, String receiverName, String senderName) async {
+  Future<bool> acceptReq(
+      String user_id, String receiverName, String senderName) async {
     try {
       print("dssssssssssssssssssss");
       await requestReference
           .document(user_id) //end_user UID
           .collection("Accepted")
           .document(uid) //currentUser UID
-          .setData({"time": DateTime.now().toUtc().toString(), "name": senderName},
+          .setData(
+              {"time": DateTime.now().toUtc().toString(), "name": senderName},
               merge: true);
       await requestReference
           .document(uid) //end_user UID
           .collection("Accepted")
           .document(user_id) //currentUser UID
-          .setData({
-        "time": DateTime.now().toUtc().toString(),
-        "name": receiverName
-      }, merge: true);
+          .setData(
+              {"time": DateTime.now().toUtc().toString(), "name": receiverName},
+              merge: true);
       await requestReference
           .document(uid) //end_user UID
           .collection("Pending")
