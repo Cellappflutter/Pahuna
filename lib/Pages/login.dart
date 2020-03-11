@@ -1,15 +1,10 @@
-import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
-
-import 'package:ecommerce_app_ui_kit/database/auth.dart';
-
 import 'package:ecommerce_app_ui_kit/Model/settings.dart';
-
+import 'package:ecommerce_app_ui_kit/database/auth.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/Helper/error_helper.dart';
@@ -23,8 +18,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -168,13 +162,16 @@ class _LoginPageState extends State<LoginPage> {
       AuthResult authResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
       await Prefs.setUserUid(authResult.user.uid);
+
       double range = await Prefs.getRangeData();
       double start = await Prefs.getStartAgeData();
       double end = await Prefs.getEndAgeData();
       DiscoverySetting.agePrefs = RangeValues(start, end);
       DiscoverySetting.range = range;
       DatabaseService.uid = authResult.user.uid;
+
       pr.dismiss();
+      DatabaseService.uid = authResult.user.uid;
       print(authResult.user.phoneNumber);
       print("Signed IN");
       Navigator.of(context).pushAndRemoveUntil(
@@ -184,6 +181,8 @@ class _LoginPageState extends State<LoginPage> {
       verifyFailed(e);
     }
   }
+
+  FacebookLogin fblogin = FacebookLogin();
 
   Widget build(BuildContext context) {
     ScreenSizeConfig().init(context);
@@ -421,6 +420,11 @@ class _LoginPageState extends State<LoginPage> {
           ),
           onTap: () async {
             if (i) {
+              AuthService().signInFacebook().then((user) {
+                if (user != null) {
+                  saveSocialPhoto(user);
+                }
+              });
             } else {
               checkBoxDialog();
             }

@@ -134,6 +134,7 @@ class DatabaseService {
         matchPrefs: [],
         continent: [],
       );
+
     }
   }
 
@@ -249,12 +250,14 @@ class DatabaseService {
   }
 
   updateLocation(Position position) async {
-    try {
+    print(uid);
+        try {
       return await reference.document(uid).updateData({
         "latitude": position.latitude,
         "longitude": position.longitude,
       });
     } catch (e) {
+       print(uid);
       return await reference.document(uid).setData({
         "latitude": position.latitude,
         "longitude": position.longitude,
@@ -485,6 +488,7 @@ class DatabaseService {
   }
 
   Stream<List<RequestedUser>> getMatchRequest() {
+    // return Stream.value.RequestedUser(){
     return requestReference
         .document(uid)
         .collection("Pending")

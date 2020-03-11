@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 //import 'package:progress_dialog/progress_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class SignUpWidget extends StatefulWidget {
   @override
@@ -28,6 +29,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   int holder = 977;
   bool i = false;
   ProgressDialog pr;
+
+  FacebookLogin fblogin = FacebookLogin();
 
   Future<void> verifyPhone() async {
     final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
@@ -453,6 +456,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
             //     ),
             //   ),
             // ),
+            
           ],
         ),
       ),
