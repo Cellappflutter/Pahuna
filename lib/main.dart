@@ -10,7 +10,7 @@ import 'package:ecommerce_app_ui_kit/Model/settings.dart';
 import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';
 import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
-
+import 'package:ecommerce_app_ui_kit/src/screens/wp.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
@@ -295,7 +295,9 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
                 fontSize: 12.0, color: config.Colors().secondColor(0.6)),
           ),
         ),
-        home: TabsWidget(
+        home: 
+        // InitializePage()
+        TabsWidget(
           currentTab: 1,
         ),
       ),

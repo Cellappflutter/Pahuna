@@ -2,16 +2,13 @@ import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
-
-import 'package:ecommerce_app_ui_kit/database/auth.dart';
-
 import 'package:ecommerce_app_ui_kit/Model/settings.dart';
-
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/Helper/error_helper.dart';
 import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
+import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,6 +18,7 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -162,13 +160,16 @@ class _LoginPageState extends State<LoginPage> {
       AuthResult authResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
       await Prefs.setUserUid(authResult.user.uid);
+
         double range= await Prefs.getRangeData();
         double start= await Prefs.getStartAgeData();
         double end= await Prefs.getEndAgeData();
         DiscoverySetting.agePrefs=RangeValues(start, end);
         DiscoverySetting.range=range;
       DatabaseService.uid=authResult.user.uid;
+
       pr.dismiss();
+      DatabaseService.uid = authResult.user.uid;
       print(authResult.user.phoneNumber);
       print("Signed IN");
       Navigator.of(context).pushAndRemoveUntil(
@@ -178,6 +179,8 @@ class _LoginPageState extends State<LoginPage> {
       verifyFailed(e);
     }
   }
+
+  FacebookLogin fblogin = FacebookLogin();
 
   Widget build(BuildContext context) {
     ScreenSizeConfig().init(context);
@@ -371,20 +374,12 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             RaisedButton(
-              onPressed: () {},
-              child: Text("Twitter Login"),
-            ),
-            RaisedButton(
-              onPressed: () async {
-                await AuthService().signInGoogle().then((onValue) {
-                  if (onValue) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => MainPageWrapper()));
-                  }
-                });
-              },
-              child: Text("Google Login"),
-            ),
+
+                child: Text("login with facebook"),
+                onPressed: () {
+                  AuthService().facebooklogin();
+                }),
+
           ],
         ),
       ),
