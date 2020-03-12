@@ -61,6 +61,8 @@ dependencies:
   bubble: ^1.1.9+1
   network_image_to_byte: ^0.0.1
 
+  flutter_slidable: ^0.4.9
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -40,6 +40,10 @@ class DatabaseService {
 
   }
 
+  Future deletechatfriend(String fid)async{
+await friendsforchatReference.document(uid).collection("chatfriends").document(fid).delete();
+  }
+
   Stream<List<Friendinfo>> chatlist() {
     return friendsforchatReference
         .document(uid)
