@@ -436,7 +436,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           onTap: () async {
             if (i) {
-              AuthService().signInFacebook().then((user) {
+              AuthService().signInFacebook(context).then((user) {
                 if (user != null) {
                   if (user.additionalUserInfo.isNewUser) {
                     print(user.additionalUserInfo.profile);

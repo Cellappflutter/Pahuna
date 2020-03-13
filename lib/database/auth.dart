@@ -1,3 +1,4 @@
+import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/settings.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
@@ -5,6 +6,7 @@ import 'package:ecommerce_app_ui_kit/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -89,20 +91,29 @@ class AuthService {
     return await _auth.signOut();
   }
 
-  Future<AuthResult> signInFacebook() async {
+  Future<AuthResult> signInFacebook(BuildContext context) async {
     FacebookLogin fbLogin = FacebookLogin();
     FacebookLoginResult result =
         await fbLogin.logInWithReadPermissions(['email', 'public_profile']);
     //.then((result) {
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
-        AuthResult signedInUser = await _auth.signInWithCredential(
-            FacebookAuthProvider.getCredential(
-                accessToken: result.accessToken.token));
-        await dataInit(signedInUser);
+        {
+          try {
+            AuthResult signedInUser = await _auth.signInWithCredential(
+                FacebookAuthProvider.getCredential(
+                    accessToken: result.accessToken.token));
+            await dataInit(signedInUser);
 
-        return signedInUser;
-
+            return signedInUser;
+          } catch (e) {
+            PlatformException e1=e;
+            errorDialog(context, e1.message);
+            print(e);
+          //  return null;
+          }
+        }
+        break;
       default:
         return null;
     }
