@@ -353,29 +353,31 @@ class _LoginPageState extends State<LoginPage> {
                           });
                         }),
                     Container(
-                        width: ScreenSizeConfig.safeBlockHorizontal * 72,
-                        child: RichText(
-                            maxLines: 5,
-                            overflow: TextOverflow.ellipsis,
-                            text: TextSpan(
-                                text:
-                                    "By using this application, you agree to Pahuna's ",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text:
-                                        'Terms of Service and Privacy Notice.',
-                                    style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      // color: Color.fromRGBO(41, 128, 185, 1),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () => launch(tos),
-                                  )
-                                ]))),
+                      width: ScreenSizeConfig.safeBlockHorizontal * 72,
+                      child: RichText(
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                        text: TextSpan(
+                          text:
+                              "By using this application, you agree to Pahuna's ",
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'Terms of Service and Privacy Notice.',
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                // color: Color.fromRGBO(41, 128, 185, 1),
+                                fontWeight: FontWeight.bold,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () => launch(tos),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
