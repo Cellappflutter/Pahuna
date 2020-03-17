@@ -127,14 +127,8 @@ class _StartChat extends State<Messagelist> {
               );
             }
           },
+          child: Icon(Icons.add),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => MessagesWidget()));
-        },
-        child: Icon(Icons.add),
       ),
     );
   }

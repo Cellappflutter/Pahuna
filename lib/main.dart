@@ -108,9 +108,6 @@ class _AuthPageState extends State<AuthPage> {
       await Future.delayed(Duration(seconds: 2));
       WidgetsBinding.instance.addPostFrameCallback((_) => checkPermission());
       if (firebaseUser != null) {
-        print(firebaseUser.providerData[1].providerId);
-        print(firebaseUser.uid);
-        print("=============================================");
         double range = await Prefs.getRangeData();
         double start = await Prefs.getStartAgeData();
         double end = await Prefs.getEndAgeData();
