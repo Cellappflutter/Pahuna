@@ -27,13 +27,22 @@ class _StartChat extends State<Messagelist> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return SafeArea(
-      child: Scaffold(
-        appBar: customAppBar(context, "Chats"),
-        body: StreamProvider.value(
-          value: DatabaseService().chatlist(),
-          child: Consumer<List<Friendinfo>>(
-            builder: (context, items, child) {
+    return Scaffold(
+      appBar: customAppBar(context, "Chats"),
+      body: StreamProvider.value(
+        value: DatabaseService().chatlist(),
+        child: Consumer<List<Friendinfo>>(
+          builder: (context, items, child) {
+            print(items);
+            if (items == null) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (items.length < 1) {
+              return Center(
+                child: Text("Start Chatting press on the +"),
+              );
+            } else {
               print(items);
               //  pr.dismiss();
               return Container(
@@ -63,7 +72,9 @@ class _StartChat extends State<Messagelist> {
                                   size: 20,
                                 ),
                               ),
-                              onTap: (){delete(item.uid);},
+                              onTap: () {
+                                delete(item.uid);
+                              },
                             ),
                             Container(
                               width: 40,
@@ -108,8 +119,14 @@ class _StartChat extends State<Messagelist> {
               );
             }
           },
-          child: Icon(Icons.add),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => MessagesWidget()));
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

@@ -1,10 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
-
 import 'package:ecommerce_app_ui_kit/Model/message.dart';
-
-import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
@@ -25,23 +20,34 @@ class DatabaseService {
   final CollectionReference friendsforchatReference =
       Firestore.instance.collection("ChatFriends");
 
-  Future chatFriend(String fid, String name,String avatar,String ownname, String selfavatar) async{
-     await friendsforchatReference .document(uid).collection("chatfriends").document(fid).setData({
+  Future chatFriend(String fid, String name, String avatar, String ownname,
+      String selfavatar) async {
+    await friendsforchatReference
+        .document(uid)
+        .collection("chatfriends")
+        .document(fid)
+        .setData({
       'name': name,
       'id': fid,
       'avatar': avatar,
     });
-     await friendsforchatReference .document(fid).collection("chatfriends").document(uid).setData({
+    await friendsforchatReference
+        .document(fid)
+        .collection("chatfriends")
+        .document(uid)
+        .setData({
       'name': ownname,
       'id': uid,
       'avatar': selfavatar,
     });
-
-
   }
 
-  Future deletechatfriend(String fid)async{
-await friendsforchatReference.document(uid).collection("chatfriends").document(fid).delete();
+  Future deletechatfriend(String fid) async {
+    await friendsforchatReference
+        .document(uid)
+        .collection("chatfriends")
+        .document(fid)
+        .delete();
   }
 
   Stream<List<Friendinfo>> chatlist() {
@@ -544,6 +550,6 @@ await friendsforchatReference.document(uid).collection("chatfriends").document(f
   }
 
   initUserDB() async {
-    await reference.document(uid).setData({"status": "online"},merge: true);
+    await reference.document(uid).setData({"status": "online"}, merge: true);
   }
 }

@@ -143,7 +143,7 @@ class _NearbySearchState extends State<NearbySearch>
                   backgroundColor: Colors.white,
                   context: context,
                   builder: (builder) {
-                    return Search_BottomSheet(info[i],widget.userData.name);
+                    return Search_BottomSheet(info[i], widget.userData.name);
                   });
             },
           ),
@@ -173,11 +173,11 @@ class _NearbySearchState extends State<NearbySearch>
             LatLng(info[i].latitude, info[i].longitude));
         info[i].distance = await Geolocator().distanceBetween(position.latitude,
             position.longitude, info[i].latitude, info[i].longitude);
-            print(info[i].distance);
-            print("dssssssss");
-         if ((info[i].distance < (DiscoverySetting.range*1000)) &&
-             (info[i].age > DiscoverySetting.agePrefs.start) &&
-             (info[i].age < DiscoverySetting.agePrefs.end)) {
+        print(info[i].distance);
+        print("dssssssss");
+        if ((info[i].distance < (DiscoverySetting.range * 1000)) &&
+            (info[i].age > DiscoverySetting.agePrefs.start) &&
+            (info[i].age < DiscoverySetting.agePrefs.end)) {
           newInfo.add(info[i]);
         }
       }
