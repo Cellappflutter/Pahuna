@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
@@ -143,8 +144,18 @@ class _AccountWidgetState extends State<AccountWidget> {
                                                       editableInfo.avatar !=
                                                           null)
                                                   ? Container(
-                                                      child: Image.network(
-                                                          editableInfo.avatar),
+                                                      child: CachedNetworkImage(
+                                                        imageUrl:
+                                                            editableInfo.avatar,
+                                                        placeholder: (context,
+                                                                url) =>
+                                                            CircularProgressIndicator(),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            Icon(Icons.error),
+                                                      ),
+                                                      // Image.network(
+                                                      //     editableInfo.avatar),
                                                     )
                                                   : Container(
                                                       color: Colors.red,

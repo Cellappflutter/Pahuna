@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:html/parser.dart';
 
 import '../Model/Data.dart';
 import '../src/widgets/ReviewItemWidget.dart';
+
 class Details_Tab extends StatefulWidget {
   final String details;
   Details_Tab({this.details});
@@ -33,7 +35,6 @@ class _Detail extends State<Details_Tab> {
             child: Column(
               children: <Widget>[
                 Container(
-              
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
@@ -54,7 +55,7 @@ class _Detail extends State<Details_Tab> {
                     ])),
                 Container(
                   alignment: Alignment.topLeft,
-                  margin: EdgeInsets.only(left: 5,right: 1),
+                  margin: EdgeInsets.only(left: 5, right: 1),
                   // color: Colors.green,
                   child: Text(
                     sth.body.text,
@@ -63,7 +64,6 @@ class _Detail extends State<Details_Tab> {
                 )
               ],
             ),
-
           ),
         ],
       ),
@@ -93,14 +93,13 @@ class _Media extends State<Medias_Tab> {
   @override
   Widget build(BuildContext context) {
     return SliverGrid(
-
-
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
         return Hero(
           tag: "image" + index.toString(),
           child: InkWell(
-              child: Image.network(
-                url[index],
+              child: 
+              // Image.network(
+                Image(image: CachedNetworkImageProvider(url[index]),
                 fit: BoxFit.fill,
                 loadingBuilder: (context, child, data) {
                   if (data == null) {
@@ -124,13 +123,18 @@ class _Media extends State<Medias_Tab> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Hero(
-                                tag: "image" + index.toString(),
-                                child: Image.network(
-                                  url[index],
-                                  height:
-                                      ScreenSizeConfig.safeBlockVertical * 50,
-                                  fit: BoxFit.fill,
-                                ))
+                              tag: "image" + index.toString(),
+                              child: Image(
+                                image: CachedNetworkImageProvider(url[index]),
+                                height: ScreenSizeConfig.safeBlockVertical * 50,
+                                fit: BoxFit.fill,
+                              ),
+                              // Image.network(
+                              //   url[index],
+                              //   height: ScreenSizeConfig.safeBlockVertical * 50,
+                              //   fit: BoxFit.fill,
+                              // ),
+                            ),
                           ],
                         ),
                       );
@@ -145,7 +149,6 @@ class _Media extends State<Medias_Tab> {
         childAspectRatio: 1,
       ),
     );
-
   }
 
   gridImages() {
@@ -153,10 +156,14 @@ class _Media extends State<Medias_Tab> {
       return Hero(
         tag: "image" + index.toString(),
         child: InkWell(
-            child: Image.network(
-              url[index],
+            child: Image(
+              image: CachedNetworkImageProvider(url[index]),
               fit: BoxFit.fill,
             ),
+            // Image.network(
+            //   url[index],
+            //   fit: BoxFit.fill,
+            // ),
             onTap: () {
               showDialog(
                   context: context,
@@ -169,12 +176,17 @@ class _Media extends State<Medias_Tab> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Hero(
-                              tag: "image" + index.toString(),
-                              child: Image.network(
-                                url[index],
+                            tag: "image" + index.toString(),
+                            child: Image(
+                                image: CachedNetworkImageProvider(url[index]),
                                 height: ScreenSizeConfig.safeBlockVertical * 50,
-                                fit: BoxFit.fill,
-                              ))
+                                fit: BoxFit.fill),
+                            // Image.network(
+                            //   url[index],
+                            //   height: ScreenSizeConfig.safeBlockVertical * 50,
+                            //   fit: BoxFit.fill,
+                            // ),
+                          )
                         ],
                       ),
                     );
@@ -182,7 +194,6 @@ class _Media extends State<Medias_Tab> {
             }),
       );
     }, childCount: url.length);
-
   }
 }
 

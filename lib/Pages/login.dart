@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/country_pickers.dart';
@@ -614,18 +615,29 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     CircleAvatar(
-                      child: Image.network(
-                        user.photoUrl,
-                        fit: BoxFit.fill,
-                        alignment: Alignment.center,
-                        loadingBuilder: (context, child, data) {
-                          if (data == null) {
-                            return child;
-                          } else {
-                            return CircularProgressIndicator();
-                          }
-                        },
-                      ),
+                      child: 
+                      Image(image: CachedNetworkImageProvider(user.photoUrl),
+                      fit: BoxFit.fill,
+                      alignment: Alignment.center,
+                      loadingBuilder:(context, child, data){
+                        if(data == null){
+                          return child;
+                        }else{
+                          return CircularProgressIndicator();
+                        }
+                      }),
+                      // Image.network(
+                      //   user.photoUrl,
+                      //   fit: BoxFit.fill,
+                      //   alignment: Alignment.center,
+                      //   loadingBuilder: (context, child, data) {
+                      //     if (data == null) {
+                      //       return child;
+                      //     } else {
+                      //       return CircularProgressIndicator();
+                      //     }
+                      //   },
+                      // ),
                     ),
                     RaisedButton(
                       onPressed: () async {
