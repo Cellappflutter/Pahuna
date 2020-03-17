@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_wordpress/flutter_wordpress.dart' as wp;
@@ -14,7 +15,13 @@ class DetailsPage extends StatelessWidget {
         height: 10,
       );
     } else {
-      return Image.network(post.featuredMedia.sourceUrl);
+      return 
+      CachedNetworkImage(
+      imageUrl: post.featuredMedia.sourceUrl,
+      placeholder: (context,url) => CircularProgressIndicator(),
+      errorWidget: (context,url,error) => Icon(Icons.error),
+    );
+      // Image.network(post.featuredMedia.sourceUrl);
     }
   }
 

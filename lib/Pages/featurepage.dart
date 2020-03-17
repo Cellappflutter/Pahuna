@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/Data.dart';
 import 'package:ecommerce_app_ui_kit/Pages/categories_tabs.dart';
@@ -146,12 +147,12 @@ class _FeaturePageState extends State<FeaturePage> {
         overflow: Overflow.visible,
         children: <Widget>[
           (widget.featureData.image != null && widget.featureData.image != "")
-              ? Image.network(
-                  widget.featureData.image,
-                  // Image.asset(
-                  //   "assets/user3.jpg",
-                  fit: BoxFit.fill,
-                )
+              ? 
+              Image(image:CachedNetworkImageProvider(widget.featureData.image),fit: BoxFit.fill,)
+              // Image.network(
+              //     widget.featureData.image,
+              //     fit: BoxFit.fill,
+              //   )
               : Image.asset(
                   "assets/user3.jpg",
                   fit: BoxFit.fill,
