@@ -96,26 +96,6 @@ class _StartChat extends State<MessagesWidget> {
                                 ],
                               ),
                             ),
-<<<<<<< HEAD
-                          ),
-                          onTap: () {
-                            print("uid = ${item.uid}");
-                            print("name = ${avatar}");
-                            databaseService.chatFriend(item.uid,item.name,avatar,info.name,info.avatar);
-                           // Navigator.pop(context);
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>ChatWidget(name: item.name,avatar: avatar,fid:item.uid)));
-                           
-                          }
-                          ,
-                        );
-                      }),
-                    );
-                  },
-                ),
-              );
-            }
-          },
-=======
                             onTap: () {
                               print("uid = ${item.uid}");
                               print("name = ${avatar}");
@@ -137,7 +117,6 @@ class _StartChat extends State<MessagesWidget> {
               }
             },
           ),
->>>>>>> 030218a33c0aac45b4d09d1c5ab83a39a3d8b7cb
         ),
       ),
     );

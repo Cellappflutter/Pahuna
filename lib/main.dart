@@ -7,7 +7,8 @@ import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/Data.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/settings.dart';
-import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';import 'package:ecommerce_app_ui_kit/database/Word.dart';
+import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';
+import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/wp.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ void main() {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Poppins',
+        unselectedWidgetColor: Colors.grey,
         primaryColor: config.Colors().whiteColor(1),
         brightness: Brightness.light,
         scaffoldBackgroundColor: Color(0xFF2C2C2C),
@@ -75,9 +77,9 @@ void main() {
         ),
       ),
       home:
-      // BigMess(),
-      // NoTime(), 
-      InitializePage(),
+          // BigMess(),
+          // NoTime(),
+          InitializePage(),
     ),
   );
 }
@@ -241,6 +243,7 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           fontFamily: 'Poppins',
+          unselectedWidgetColor: Colors.grey,
           primaryColor: config.Colors().whiteColor(1),
           brightness: Brightness.dark,
           accentColor: config.Colors().mainDarkColor(1),

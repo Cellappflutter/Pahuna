@@ -360,7 +360,7 @@ class _LoginPageState extends State<LoginPage> {
                 });
               }),
           Container(
-            width: ScreenSizeConfig.safeBlockHorizontal * 52,
+            width: ScreenSizeConfig.safeBlockHorizontal * 51.5,
             child: RichText(
               maxLines: 6,
               overflow: TextOverflow.ellipsis,
