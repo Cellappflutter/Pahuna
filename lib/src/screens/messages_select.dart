@@ -38,7 +38,16 @@ class _StartChat extends State<MessagesWidget> {
             } else if (items.length < 1) {
               return Center(
                 child:
-                    Text("No Connection Request, Why dont u send some request"),
+                    Column(mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          height: MediaQuery.of(context).size.height*0.4,
+                          //width: MediaQuery.of(context).size.height*0.4,
+                          decoration: BoxDecoration(image: DecorationImage(image: AssetImage('img/friends.png'),fit: BoxFit.cover)),),
+                        SizedBox(height: 30,),
+                                                Text("Make some friends to start talking."),
+                      ],
+                    ),
               );
             } else {
               print(items);

@@ -136,24 +136,13 @@ class _NearbySearchState extends State<NearbySearch>
                     radius: 15,
                   ),
             onTap: () {
-
               showDialog(
                 context: context,
                 builder: (BuildContext context){
                   return  CustomScroll(userData:info[i]); 
                 }
               );
-              // showModalBottomSheet(
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.only(
-              //           topLeft: Radius.circular(30),
-              //           topRight: Radius.circular(30)),
-              //     ),
-              //     backgroundColor: Colors.white,
-              //     context: context,
-              //     builder: (builder) {
-              //       return Search_BottomSheet(info[i],widget.userData.name);
-              //     });
+ 
             },
           ),
         ),
@@ -167,9 +156,6 @@ class _NearbySearchState extends State<NearbySearch>
     List<UserData> newInfo = List<UserData>();
     print("rangeee33333333333333333333333333rrr");
     print(info);
-    print(info.length);
-    print(position.latitude);
-    print(position.longitude);
     if (info != null &&
         info.length > 0 &&
         position.latitude != null &&
@@ -182,11 +168,11 @@ class _NearbySearchState extends State<NearbySearch>
             LatLng(info[i].latitude, info[i].longitude));
         info[i].distance = await Geolocator().distanceBetween(position.latitude,
             position.longitude, info[i].latitude, info[i].longitude);
-            print(info[i].distance);
-            print("dssssssss");
-         if ((info[i].distance < (DiscoverySetting.range*1000)) &&
-             (info[i].age > DiscoverySetting.agePrefs.start) &&
-             (info[i].age < DiscoverySetting.agePrefs.end)) {
+        print(info[i].distance);
+        print("dssssssss");
+        if ((info[i].distance < (DiscoverySetting.range * 1000)) &&
+            (info[i].age > DiscoverySetting.agePrefs.start) &&
+            (info[i].age < DiscoverySetting.agePrefs.end)) {
           newInfo.add(info[i]);
         }
       }

@@ -170,14 +170,11 @@ class _SignUpWidgetState extends State<SignUpWidget> {
       AuthResult authResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
       await Prefs.setUserUid(authResult.user.uid);
-      await Prefs.setIsFirstTime(authResult.additionalUserInfo.isNewUser);
     } catch (e) {
       verifyFailed(e);
       print("---------------------------");
     }
   }
-
-// /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
   Widget build(BuildContext context) {
     ScreenSizeConfig().init(context);
     return Scaffold(

@@ -111,9 +111,6 @@ class _AuthPageState extends State<AuthPage> {
       await Future.delayed(Duration(seconds: 2));
       WidgetsBinding.instance.addPostFrameCallback((_) => checkPermission());
       if (firebaseUser != null) {
-        print(firebaseUser.providerData[1].providerId);
-        print(firebaseUser.uid);
-        print("=============================================");
         double range = await Prefs.getRangeData();
         double start = await Prefs.getStartAgeData();
         double end = await Prefs.getEndAgeData();
@@ -307,7 +304,7 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
   Stream<Position> locationStream() {
     Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     var locationOptions =
-        LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 50);
+        LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 100);
     return geolocator.getPositionStream(locationOptions);
   }
 }
