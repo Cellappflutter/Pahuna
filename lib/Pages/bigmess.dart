@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/userdata.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,10 @@ class CustomScrollState extends State<CustomScroll> {
                     future: StorageService().getAvatar(widget.userData.uid),
                     builder: (BuildContext context, snapshot) {
                       if (snapshot.hasData) {
-                        return Image.network(snapshot.data, fit: BoxFit.cover);
+                        return 
+                        // Image.network(snapshot.data, fit: BoxFit.cover);
+                        Image(image: CachedNetworkImageProvider(snapshot.data),
+                        fit:BoxFit.cover);
                       } else {
                         return Image.asset('assets/user3.jpg',
                             fit: BoxFit.cover);
@@ -126,7 +130,7 @@ class CustomScrollState extends State<CustomScroll> {
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                   child: Center(
-                                    child: (_isClicked) ? Icon(Icons.person_add ):Text(
+                                    child: (_isClicked) ? Icon(Icons.check):Text(
                                       'FOLLOW',
                                       style: TextStyle(
                                           fontSize: 15,

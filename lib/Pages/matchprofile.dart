@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
@@ -96,13 +97,20 @@ class _MatchProfileState extends State<MatchProfile> {
                                           barrierDismissible: true,
                                           builder: (context) {
                                             return Dialog(
-                                              child: ((avatar !=
-                                                          "" &&
-                                                      avatar !=
-                                                          null)
+                                              child: ((avatar != "" &&
+                                                      avatar != null)
                                                   ? Container(
-                                                      child: Image.network(
-                                                          avatar),
+                                                      child: CachedNetworkImage(
+                                                        imageUrl: avatar,
+                                                        placeholder: (context,
+                                                                url) =>
+                                                            CircularProgressIndicator(),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            Icon(Icons.error),
+                                                      ),
+                                                      // Image.network(
+                                                      //     avatar),
                                                     )
                                                   : Container(
                                                       color: Colors.red,
@@ -111,11 +119,10 @@ class _MatchProfileState extends State<MatchProfile> {
                                             );
                                           });
                                     },
-                                    child: ((avatar != "" &&
-                                            avatar != null)
+                                    child: ((avatar != "" && avatar != null)
                                         ? CircleAvatar(
-                                            backgroundImage: NetworkImage(
-                                                avatar),
+                                            backgroundImage:
+                                                NetworkImage(avatar),
                                           )
                                         : CircleAvatar()))),
                           ],

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/detailspage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wordpress/flutter_wordpress.dart' as wp;
@@ -29,7 +30,14 @@ class WordPress extends StatelessWidget {
     if (post.featuredMedia == null) {
       return SizedBox();
     }
-    return Image.network(post.featuredMedia.sourceUrl);
+    return
+    CachedNetworkImage(
+      imageUrl: post.featuredMedia.sourceUrl,
+      placeholder: (context,url) => CircularProgressIndicator(),
+      errorWidget: (context,url,error) => Icon(Icons.error),
+    );
+    // Image(image: CachedNetworkImageProvider(post.featuredMedia.sourceUrl),); 
+    // Image.network(post.featuredMedia.sourceUrl);
   }
 
   _launchUrl(String link) async {

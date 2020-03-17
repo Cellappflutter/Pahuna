@@ -36,18 +36,14 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       child: NearbySearch(
                         position: Position(
-                            latitude: position.latitude, longitude: position.longitude),
+                            latitude: position.latitude,
+                            longitude: position.longitude),
                         userData: userData,
                       ),
                     ),
                   ]),
                 ),
                 sizeBox(),
-                RaisedButton(
-                  child:Text('Testing'),
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => BigMess()));
-                  }),
                 RaisedButton(
                   child: Text("Go Back"),
                   onPressed: () {
