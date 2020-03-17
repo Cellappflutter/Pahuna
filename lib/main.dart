@@ -7,8 +7,7 @@ import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/Data.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/settings.dart';
-import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';
-import 'package:ecommerce_app_ui_kit/database/Word.dart';
+import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/wp.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +20,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:ecommerce_app_ui_kit/Pages/bigmess.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -73,7 +73,10 @@ void main() {
               fontSize: 12.0, color: config.Colors().secondDarkColor(0.7)),
         ),
       ),
-      home: InitializePage(),
+      home:
+      // BigMess(),
+      // NoTime(), 
+      InitializePage(),
     ),
   );
 }

@@ -21,6 +21,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:grafpix/icons.dart';
 import 'package:grafpix/pixbuttons/radial.dart';
 
+import 'package:ecommerce_app_ui_kit/Pages/bigmess.dart';
+
 import 'package:provider/provider.dart';
 
 class NearbySearch extends StatefulWidget {
@@ -134,17 +136,13 @@ class _NearbySearchState extends State<NearbySearch>
                     radius: 15,
                   ),
             onTap: () {
-              showModalBottomSheet(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30)),
-                  ),
-                  backgroundColor: Colors.white,
-                  context: context,
-                  builder: (builder) {
-                    return Search_BottomSheet(info[i], widget.userData.name);
-                  });
+              showDialog(
+                context: context,
+                builder: (BuildContext context){
+                  return  CustomScroll(userData:info[i]); 
+                }
+              );
+ 
             },
           ),
         ),
