@@ -212,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 50, horizontal: 30),
+                    padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
                     margin: EdgeInsets.fromLTRB(
                       ScreenSizeConfig.blockSizeVertical * 5,
                       ScreenSizeConfig.blockSizeVertical * 23,
@@ -240,8 +240,6 @@ class _LoginPageState extends State<LoginPage> {
                           initialValue: 'np',
                           itemBuilder: _builderDropdownItem,
                           onValuePicked: (Country country) {
-                            print(
-                                "${country.name}(+${country.phoneCode}) getting selected item");
                             setState(() {
                               holder = int.parse(country.phoneCode);
                             });
@@ -277,56 +275,10 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                         SizedBox(
-                            height: ScreenSizeConfig.safeBlockVertical * 4),
-                        Container(
-                          margin: EdgeInsets.only(
-                              left: ScreenSizeConfig.safeBlockHorizontal * 0),
-                          child: Row(
-                            children: <Widget>[
-                              Checkbox(
-                                  activeColor: Colors.white,
-                                  checkColor: Theme.of(context).accentColor,
-                                  value: i,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      i = value;
-                                      print(value);
-                                    });
-                                  }),
-                              Container(
-                                width:
-                                    ScreenSizeConfig.safeBlockHorizontal * 52,
-                                child: RichText(
-                                  maxLines: 6,
-                                  overflow: TextOverflow.ellipsis,
-                                  text: TextSpan(
-                                    text:
-                                        "By using this application, you agree to Pahuna's ",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text:
-                                            'Terms of Service and Privacy Notice.',
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .indicatorColor,
-                                          // color: Color.fromRGBO(41, 128, 185, 1),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () => launch(tos),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                            height: ScreenSizeConfig.safeBlockVertical * 2),
+                        getTOSWidget(),
                         SizedBox(
-                            height: ScreenSizeConfig.safeBlockVertical * 4),
+                            height: ScreenSizeConfig.safeBlockVertical * 2),
                         FlatButton(
                           padding: EdgeInsets.symmetric(
                               vertical: 12, horizontal: 70),
@@ -371,65 +323,16 @@ class _LoginPageState extends State<LoginPage> {
                           shape: StadiumBorder(),
                         ),
                         SizedBox(
-                            height: ScreenSizeConfig.safeBlockVertical * 2),
+                            height: ScreenSizeConfig.safeBlockVertical * 1),
                         Text(
                           "OR",
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.display3,
                         ),
                         SizedBox(
-                          height: ScreenSizeConfig.safeBlockVertical * 2,
+                          height: ScreenSizeConfig.safeBlockVertical * 1,
                         ),
                         socialMediaAuthentication(),
-                        SizedBox(
-                            height: ScreenSizeConfig.safeBlockVertical * 4),
-                        Container(
-                          margin: EdgeInsets.only(
-                              left: ScreenSizeConfig.safeBlockHorizontal * 0),
-                          child: Row(
-                            children: <Widget>[
-                              Checkbox(
-                                  activeColor: Colors.white,
-                                  checkColor: Theme.of(context).accentColor,
-                                  value: i,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      i = value;
-                                      print(value);
-                                    });
-                                  }),
-                              Container(
-                                width:
-                                    ScreenSizeConfig.safeBlockHorizontal * 54,
-                                child: RichText(
-                                  maxLines: 6,
-                                  overflow: TextOverflow.ellipsis,
-                                  text: TextSpan(
-                                    text:
-                                        "By using this application, you agree to Pahuna's ",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text:
-                                            'Terms of Service and Privacy Notice.',
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .indicatorColor,
-                                          // color: Color.fromRGBO(41, 128, 185, 1),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () => launch(tos),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -438,6 +341,50 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  getTOSWidget() {
+    return Container(
+      child: Row(
+        children: <Widget>[
+          Checkbox(
+              activeColor: Colors.white,
+              checkColor: Theme.of(context).accentColor,
+              value: i,
+              onChanged: (bool value) {
+                setState(() {
+                  i = value;
+                  print(value);
+                });
+              }),
+          Container(
+            width: ScreenSizeConfig.safeBlockHorizontal * 52,
+            child: RichText(
+              maxLines: 6,
+              overflow: TextOverflow.ellipsis,
+              text: TextSpan(
+                text: "By using this application, you agree to Pahuna's ",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Terms of Service and Privacy Notice.',
+                    style: TextStyle(
+                      color: Theme.of(context).indicatorColor,
+                      // color: Color.fromRGBO(41, 128, 185, 1),
+                      fontWeight: FontWeight.bold,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () => launch(tos),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

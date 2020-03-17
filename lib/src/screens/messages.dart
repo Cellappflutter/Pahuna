@@ -28,115 +28,130 @@ class _StartChat extends State<Messagelist> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      appBar: customAppBar(context, "Chats"),
-      body: StreamProvider.value(
-        value: DatabaseService().chatlist(),
-        child: Consumer<List<Friendinfo>>(
-          builder: (context, items, child) {
-            print(items);
-            if (items == null) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (items.length < 1) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      height: MediaQuery.of(context).size.height*0.5,
-                      decoration: BoxDecoration(image: DecorationImage(image: AssetImage('img/astronaut.png'),fit:BoxFit.fill)),
-                    ),
-                    Text("It's like you're in space",style: TextStyle(fontSize: 15,fontFamily: 'Poppins',fontWeight: FontWeight.w300),),
-                  ],
-                ),
-              );
-            } else {
+    return SafeArea(
+      child: Scaffold(
+        appBar: customAppBar(context, "Chats"),
+        body: StreamProvider.value(
+          value: DatabaseService().chatlist(),
+          child: Consumer<List<Friendinfo>>(
+            builder: (context, items, child) {
               print(items);
-              //  pr.dismiss();
-              return Container(
-                color: Colors.transparent,
-                child: ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    final item = items[index];
-                    return Container(
-                        padding: EdgeInsets.all(6.0),
-                        height: ScreenSizeConfig.blockSizeVertical * 10,
-                        child: Slidable(
-                          delegate: SlidableScrollDelegate(),
-                          actionExtentRatio: 0.15,
-                          secondaryActions: <Widget>[
-                            InkWell(
-                              child: Container(
+              if (items == null) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (items.length < 1) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage('img/astronaut.png'),
+                                fit: BoxFit.fill)),
+                      ),
+                      Text(
+                        "It's like you're in space",
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w300),
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                print(items);
+                //  pr.dismiss();
+                return Container(
+                  color: Colors.transparent,
+                  child: ListView.builder(
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      final item = items[index];
+                      return Container(
+                          padding: EdgeInsets.all(6.0),
+                          height: ScreenSizeConfig.blockSizeVertical * 10,
+                          child: Slidable(
+                            delegate: SlidableScrollDelegate(),
+                            actionExtentRatio: 0.15,
+                            secondaryActions: <Widget>[
+                              InkWell(
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.red,
+                                  ),
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                ),
+                                onTap: () {
+                                  delete(item.uid);
+                                },
+                              ),
+                              Container(
                                 width: 40,
                                 height: 40,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: Colors.red,
+                                  color: Colors.blue,
                                 ),
                                 child: Icon(
-                                  Icons.delete,
+                                  Icons.refresh,
                                   color: Colors.white,
                                   size: 20,
                                 ),
                               ),
+                            ],
+                            child: ListTile(
+                              leading: (item.avatar != "" &&
+                                      item.avatar != null)
+                                  ? CircleAvatar(
+                                      backgroundImage:
+                                          NetworkImage(item.avatar),
+                                      radius:
+                                          ScreenSizeConfig.safeBlockVertical *
+                                              3.5,
+                                    )
+                                  : CircleAvatar(
+                                      backgroundColor: Colors.blue,
+                                      radius:
+                                          ScreenSizeConfig.safeBlockVertical *
+                                              3.5,
+                                    ),
+                              title: Text(item.name.toString().toUpperCase(),
+                                  style: Theme.of(context).textTheme.body2),
                               onTap: () {
-                                delete(item.uid);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ChatWidget(
+                                        name: item.name,
+                                        avatar: item.avatar,
+                                        fid: item.uid)));
                               },
+                              onLongPress: () {},
                             ),
-                            Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blue,
-                              ),
-                              child: Icon(
-                                Icons.refresh,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                            ),
-                          ],
-                          child: ListTile(
-                            leading: (item.avatar != "" && item.avatar != null)
-                                ? CircleAvatar(
-                                    backgroundImage: NetworkImage(item.avatar),
-                                    radius: ScreenSizeConfig.safeBlockVertical *
-                                        3.5,
-                                  )
-                                : CircleAvatar(
-                                    backgroundColor: Colors.blue,
-                                    radius: ScreenSizeConfig.safeBlockVertical *
-                                        3.5,
-                                  ),
-                            title: Text(item.name.toString().toUpperCase(),
-                                style: Theme.of(context).textTheme.body2),
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ChatWidget(
-                                      name: item.name,
-                                      avatar: item.avatar,
-                                      fid: item.uid)));
-                            },
-                            onLongPress: () {},
-                          ),
-                        ));
-                  },
-                ),
-              );
-            }
-          },
+                          ));
+                    },
+                  ),
+                );
+              }
+            },
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => MessagesWidget()));
-        },
-        child: Icon(Icons.add),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => MessagesWidget()));
+          },
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }
