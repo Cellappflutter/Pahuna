@@ -42,8 +42,18 @@ class _FriendsWidgetState extends State<FriendsWidget> {
               );
             } else if (items.length < 1) {
               return Center(
-                child:
-                    Text("No Connection Request, Why dont u send some request"),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                   Container(
+                      height: MediaQuery.of(context).size.height*0.35,
+                      decoration: BoxDecoration(image: DecorationImage(image: AssetImage('img/friends.png'),fit:BoxFit.fill)),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                        "You haven't made any friends."),
+                  ],
+                ),
               );
             } else {
               print(items);
@@ -66,8 +76,7 @@ class _FriendsWidgetState extends State<FriendsWidget> {
                               children: <Widget>[
                                 (avatar != "" && avatar != null)
                                     ? CircleAvatar(
-                                        backgroundImage:
-                                            NetworkImage(avatar),
+                                        backgroundImage: NetworkImage(avatar),
                                         radius:
                                             ScreenSizeConfig.safeBlockVertical *
                                                 6,
