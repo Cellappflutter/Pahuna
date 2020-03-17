@@ -18,8 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:geodesy/geodesy.dart';
 
 import 'package:geolocator/geolocator.dart';
-import 'package:grafpix/icons.dart';
-import 'package:grafpix/pixbuttons/radial.dart';
 
 import 'package:provider/provider.dart';
 
