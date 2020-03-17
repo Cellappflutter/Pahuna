@@ -134,17 +134,18 @@ class _NearbySearchState extends State<NearbySearch>
                     radius: 15,
                   ),
             onTap: () {
-              showModalBottomSheet(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30)),
-                  ),
-                  backgroundColor: Colors.white,
-                  context: context,
-                  builder: (builder) {
-                    return Search_BottomSheet(info[i],widget.userData.name);
-                  });
+             Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Search_BottomSheet(info[i],widget.userData.name)));
+              // showModalBottomSheet(
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.only(
+              //           topLeft: Radius.circular(30),
+              //           topRight: Radius.circular(30)),
+              //     ),
+              //     backgroundColor: Colors.white,
+              //     context: context,
+              //     builder: (builder) {
+              //       return Search_BottomSheet(info[i],widget.userData.name);
+              //     });
             },
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
 import 'package:ecommerce_app_ui_kit/Pages/matchprofile.dart';
+import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
@@ -40,7 +41,16 @@ class _StartChat extends State<Messagelist> {
               );
             } else if (items.length < 1) {
               return Center(
-                child: Text("Start Chatting press on the +"),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: MediaQuery.of(context).size.height*0.5,
+                      decoration: BoxDecoration(image: DecorationImage(image: AssetImage('img/astronaut.png'),fit:BoxFit.fill)),
+                    ),
+                    Text("It's like you're in space",style: TextStyle(fontSize: 15,fontFamily: 'Poppins',fontWeight: FontWeight.w300),),
+                  ],
+                ),
               );
             } else {
               print(items);

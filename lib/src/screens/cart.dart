@@ -57,7 +57,17 @@ class _CartWidgetState extends State<CartWidget> {
             } else if (items.length < 1) {
               return Center(
                 child:
-                    Text("No Connection Request, Why dont u send some request"),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          height: MediaQuery.of(context).size.height*0.45,
+                          //width: MediaQuery.of(context).size.height*0.4,
+                          decoration: BoxDecoration(image: DecorationImage(image: AssetImage('img/astro.png'),fit: BoxFit.fill)),),
+                        SizedBox(height: 30,),
+                        Text("You're Alone Here !!",style: TextStyle(fontSize: 13),),
+                      ],
+                    ),
               );
             } else {
               print(items);
