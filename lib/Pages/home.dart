@@ -17,8 +17,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     print("dsssssssssssssss");
-    // print(widget.userData);
-    // print(widget.position);
     ScreenSizeConfig().init(context);
     final position = Provider.of<Position>(context);
     final userData = Provider.of<CurrentUserInfo>(context);
@@ -37,7 +35,7 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       child: NearbySearch(
                         position: Position(
-                            latitude: 27.6912767, longitude: 85.3204131),
+                            latitude: position.latitude, longitude: position.longitude),
                         userData: userData,
                       ),
                     ),
