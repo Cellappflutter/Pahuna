@@ -82,7 +82,9 @@ class _StartChat extends State<Messagelist> {
                                   size: 20,
                                 ),
                               ),
-                              onTap: (){delete(item.uid);},
+                              onTap: () {
+                                delete(item.uid);
+                              },
                             ),
                             Container(
                               width: 40,
@@ -127,8 +129,14 @@ class _StartChat extends State<Messagelist> {
               );
             }
           },
-          child: Icon(Icons.add),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => MessagesWidget()));
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

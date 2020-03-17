@@ -1,15 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Prefs {
-  static Future<bool> setIsFirstTime(bool value) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.setBool("isFirstTime", value);
-  }
-
-  static Future<bool> getIsFirstTime() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getBool("isFirstTime") ?? true;
-  }
 
   static Future<String> getUserUid() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -60,7 +51,8 @@ class Prefs {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getBool("loggedIn") ?? false;
   }
-    static Future<bool> setEmailID(String value) async {
+
+  static Future<bool> setEmailID(String value) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.setString("emailid", value);
   }
@@ -68,6 +60,16 @@ class Prefs {
   static Future<String> getEmailID() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getString("emailid") ?? '';
+  }
+
+  static Future<bool> setPrevUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.setBool("isPrevUser", true);
+  }
+
+  static Future<bool> getPrevUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool("isPrevUser") ?? false;
   }
 
   static Future<bool> removeAll() async {

@@ -11,39 +11,46 @@ import 'package:ecommerce_app_ui_kit/src/screens/cart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/database/auth.dart';
+import 'package:package_info/package_info.dart';
+import 'package:provider/provider.dart';
 
-class DrawerWidget extends StatelessWidget {
- // User _user = new User.init().getCurrentUser();
-  AuthService authService = AuthService();
+class DrawerWidget extends StatefulWidget {
   final CurrentUserInfo info;
   DrawerWidget({this.info});
+
+  @override
+  _DrawerWidgetState createState() => _DrawerWidgetState();
+}
+
+class _DrawerWidgetState extends State<DrawerWidget> {
+  AuthService authService = AuthService();
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Drawer(
       child: ListView(
         children: <Widget>[
           UserAccountsDrawerHeader(
             decoration: BoxDecoration(
               color: Theme.of(context).hintColor.withOpacity(0.1),
-//              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(35)),
             ),
             accountName: Text(
-              info.name ?? "Name",
+              widget.info.name ?? "Name",
               style: Theme.of(context).textTheme.title,
             ),
             accountEmail: Text(
-              info.email ?? "EmailID",
+              widget.info.email ?? "EmailID",
               style: Theme.of(context).textTheme.caption,
             ),
-            currentAccountPicture: (info.avatar != null && info.avatar != "")
-                ? CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    backgroundImage: NetworkImage(info.avatar),
-                  )
-                : CircleAvatar(
-                    backgroundColor: Colors.blue,
-                  ),
+            currentAccountPicture:
+                (widget.info.avatar != null && widget.info.avatar != "")
+                    ? CircleAvatar(
+                        backgroundColor: Colors.blue,
+                        backgroundImage: NetworkImage(widget.info.avatar),
+                      )
+                    : CircleAvatar(
+                        backgroundColor: Colors.blue,
+                      ),
           ),
           ListTile(
             onTap: () {
@@ -60,10 +67,9 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              //  Navigator.of(context).pop();
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => AccountWidget(
-                        userInfo: info,
+                        userInfo: widget.info,
                       )));
             },
             leading: Icon(
@@ -89,18 +95,7 @@ class DrawerWidget extends StatelessWidget {
               "Connection Request",
               style: Theme.of(context).textTheme.subhead,
             ),
-            // trailing: Chip(
-            //   padding: EdgeInsets.symmetric(horizontal: 5),
-            //   backgroundColor: Colors.transparent,
-            //   shape: StadiumBorder(
-            //       side: BorderSide(color: Theme.of(context).focusColor)),
-            //   label: Text(
-            //     '8',
-            //     style: TextStyle(color: Theme.of(context).focusColor),
-            //   ),
-            // ),
           ),
-
           ListTile(
             onTap: () {
               Navigator.of(context).pop();
@@ -115,68 +110,7 @@ class DrawerWidget extends StatelessWidget {
               "Friends",
               style: Theme.of(context).textTheme.subhead,
             ),
-            // trailing: Chip(
-            //   padding: EdgeInsets.symmetric(horizontal: 5),
-            //   backgroundColor: Colors.transparent,
-            //   shape: StadiumBorder(
-            //       side: BorderSide(color: Theme.of(context).focusColor)),
-            //   label: Text(
-            //     '8',
-            //     style: TextStyle(color: Theme.of(context).focusColor),
-            //   ),
-            // ),
           ),
-
-          // ListTile(
-          //   onTap: () {
-          //     Navigator.of(context).pushNamed('/Tabs', arguments: 4);
-          //   },
-          //   leading: Icon(
-          //     UiIcons.heart,
-          //     color: Theme.of(context).focusColor.withOpacity(1),
-          //   ),
-          //   title: Text(
-          //     "Wish List",
-          //     style: Theme.of(context).textTheme.subhead,
-          //   ),
-          // ),
-          // ListTile(
-          //   dense: true,
-          //   title: Text(
-          //     "Products",
-          //     style: Theme.of(context).textTheme.body1,
-          //   ),
-          //   trailing: Icon(
-          //     Icons.remove,
-          //     color: Theme.of(context).focusColor.withOpacity(0.3),
-          //   ),
-          // ),
-          // ListTile(
-          //   onTap: () {
-          //     Navigator.of(context).pushNamed('/Categories');
-          //   },
-          //   leading: Icon(
-          //     UiIcons.folder_1,
-          //     color: Theme.of(context).focusColor.withOpacity(1),
-          //   ),
-          //   title: Text(
-          //     "Categories",
-          //     style: Theme.of(context).textTheme.subhead,
-          //   ),
-          // ),
-          // ListTile(
-          //   onTap: () {
-          //     Navigator.of(context).pushNamed('/Brands');
-          //   },
-          //   leading: Icon(
-          //     UiIcons.folder_1,
-          //     color: Theme.of(context).focusColor.withOpacity(1),
-          //   ),
-          //   title: Text(
-          //     "Brands",
-          //     style: Theme.of(context).textTheme.subhead,
-          //   ),
-          // ),
           ListTile(
             dense: true,
             title: Text(
@@ -185,9 +119,7 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () {
-              //Navigator.of(context).pushNamed('/Help');
-            },
+            onTap: () {},
             leading: Icon(
               UiIcons.information,
               color: Theme.of(context).focusColor.withOpacity(1),
@@ -198,9 +130,7 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () {
-              // Navigator.of(context).pushNamed('/Tabs', arguments: 1);
-            },
+            onTap: () {},
             leading: Icon(
               UiIcons.settings_1,
               color: Theme.of(context).focusColor.withOpacity(1),
@@ -211,9 +141,7 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () {
-              //   Navigator.of(context).pushNamed('/Languages');
-            },
+            onTap: () {},
             leading: Icon(
               UiIcons.planet_earth,
               color: Theme.of(context).focusColor.withOpacity(1),
@@ -243,19 +171,29 @@ class DrawerWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.subhead,
             ),
           ),
-          ListTile(
-            dense: true,
-            title: Text(
-              "Version 0.0.1",
-              style: Theme.of(context).textTheme.body1,
-            ),
-            trailing: Icon(
-              Icons.remove,
-              color: Theme.of(context).focusColor.withOpacity(0.3),
-            ),
+          FutureBuilder(
+            future: getPackageInfo(),
+            builder: (context, AsyncSnapshot<String> data) {
+              return ListTile(
+                dense: true,
+                title: Text(
+                  "Version " + ((data.hasData) ? data.data : "0.0.0"),
+                  style: Theme.of(context).textTheme.body1,
+                ),
+                trailing: Icon(
+                  Icons.remove,
+                  color: Theme.of(context).focusColor.withOpacity(0.3),
+                ),
+              );
+            },
           ),
         ],
       ),
     );
+  }
+
+  Future<String> getPackageInfo() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.version.toString();
   }
 }

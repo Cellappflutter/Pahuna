@@ -6,9 +6,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  CurrentUserInfo userData;
-  Position position;
-  HomePage({this.userData, this.position});
+  // CurrentUserInfo userData;
+  // Position position;
+  // HomePage({this.userData, this.position});
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -17,8 +17,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     print("dsssssssssssssss");
-    print(widget.userData);
-    print(widget.position);
+    // print(widget.userData);
+    // print(widget.position);
     ScreenSizeConfig().init(context);
     final position = Provider.of<Position>(context);
     final userData = Provider.of<CurrentUserInfo>(context);

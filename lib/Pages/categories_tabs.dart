@@ -4,20 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 
 import '../Model/Data.dart';
-import '../Model/Data.dart';
-import '../Model/Data.dart';
-import '../src/models/review.dart';
-import '../src/models/review.dart';
-import '../src/models/review.dart';
 import '../src/widgets/ReviewItemWidget.dart';
-import '../src/widgets/ReviewItemWidget.dart';
-
 class Details_Tab extends StatefulWidget {
   final String details;
   Details_Tab({this.details});
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _Detail();
   }
 }
@@ -25,7 +17,6 @@ class Details_Tab extends StatefulWidget {
 class _Detail extends State<Details_Tab> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return SliverList(
         delegate: SliverChildListDelegate([_description(widget.details)]));
   }
@@ -83,7 +74,6 @@ class _Detail extends State<Details_Tab> {
 class Medias_Tab extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _Media();
   }
 }

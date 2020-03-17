@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
@@ -11,18 +11,23 @@ import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/customappbar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:highlighter_coachmark/highlighter_coachmark.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:provider/provider.dart';
 
 class AccountWidget extends StatefulWidget {
+  final bool tutorialShow;
   final CurrentUserInfo userInfo;
-  AccountWidget({this.userInfo});
+  AccountWidget({this.tutorialShow, this.userInfo});
   @override
   _AccountWidgetState createState() => _AccountWidgetState();
 }
 
+typedef void VoidCallback(int data);
+
 class _AccountWidgetState extends State<AccountWidget> {
-  // User _user = new User.init().getCurrentUser();
   bool prefgender = false;
   int prefcount = 0;
   TextEditingController _genderController = TextEditingController();
@@ -30,7 +35,6 @@ class _AccountWidgetState extends State<AccountWidget> {
   TextEditingController _ageController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
-
   bool prefcontinent = false;
   bool prefinterest = false;
   File _image;
@@ -40,9 +44,20 @@ class _AccountWidgetState extends State<AccountWidget> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   CurrentUserInfo editableInfo;
   int check = 1;
-  // RangeValues values=DiscoverySetting.agePrefs;
+  GlobalKey _editButtonKey = GlobalKey();
+  GlobalKey _avatarKey = GlobalKey();
+
+  @override
+  void initState() {
+    if (widget.tutorialShow ?? false) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _showProfileIntro());
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final position = Provider.of<Position>(context);
     if (check == 1) {
       editableInfo = widget.userInfo ?? CurrentUserInfo();
       if (editableInfo.continent == null) {
@@ -101,6 +116,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                         ),
                       ),
                       SizedBox(
+                          key: _avatarKey,
                           width: 55,
                           height: 55,
                           child: InkWell(
@@ -209,7 +225,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                                                 await DatabaseService()
                                                     .updateUserProfile(
                                                         editableInfo);
-
                                                 PaintingBinding
                                                     .instance.imageCache
                                                     .clear();
@@ -223,11 +238,14 @@ class _AccountWidgetState extends State<AccountWidget> {
                                                     DiscoverySetting
                                                         .agePrefs.start);
                                                 pr.dismiss();
-
                                                 Navigator.of(context).pop();
                                                 setState(() {
                                                   edit = !edit;
                                                 });
+                                                if (widget.tutorialShow ??
+                                                    false) {
+                                                  _readyForMatch(position);
+                                                }
                                               } else {
                                                 Navigator.of(context).pop();
                                                 showDialog(
@@ -266,11 +284,16 @@ class _AccountWidgetState extends State<AccountWidget> {
                           },
                           child: edit == false
                               ? Container(
-                                  child: Column(children: <Widget>[
-                                  Icon(UiIcons.edit),
-                                  Text('Edit',
-                                      style: Theme.of(context).textTheme.body1)
-                                ]))
+                                  child: Column(
+                                    key: _editButtonKey,
+                                    children: <Widget>[
+                                      Icon(UiIcons.edit),
+                                      Text('Edit',
+                                          style:
+                                              Theme.of(context).textTheme.body1)
+                                    ],
+                                  ),
+                                )
                               : Container(
                                   child: Column(
                                     children: <Widget>[
@@ -353,9 +376,10 @@ class _AccountWidgetState extends State<AccountWidget> {
                             children: <Widget>[
                               Icon(UiIcons.user_1),
                               SizedBox(width: 10),
-                              Text("Profile Settings",
-                                  // style: Theme.of(context).textTheme.body2
-                                  )
+                              Text(
+                                "Profile Settings",
+                                // style: Theme.of(context).textTheme.body2
+                              )
                             ],
                           ),
                         ),
@@ -491,33 +515,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                             ),
                           ),
                         ),
-                        // ListTile(
-                        //   onTap: () {},
-                        //   dense: true,
-                        //   title: Text(
-                        //     'Match Preferences',
-                        //     style: Theme.of(context).textTheme.body1,
-                        //   ),
-                        //   trailing: Text(
-                        //     editableInfo.matchPrefs.toString(),
-                        //     // _user.getDateOfBirth()                          ,
-                        //     style:
-                        //         TextStyle(color: Theme.of(context).focusColor),
-                        //   ),
-                        // ),
-                        // ListTile(
-                        //   onTap: () {},
-                        //   dense: true,
-                        //   title: Text(
-                        //     'Continent',
-                        //     style: Theme.of(context).textTheme.body1,
-                        //   ),
-                        //   trailing: Text(
-                        //     editableInfo.continent.toString(),
-                        //     style:
-                        //         TextStyle(color: Theme.of(context).focusColor),
-                        //   ),
-                        // )
                       ],
                     ),
                   ),
@@ -546,9 +543,10 @@ class _AccountWidgetState extends State<AccountWidget> {
                           children: <Widget>[
                             Icon(UiIcons.file_2),
                             SizedBox(width: 10),
-                            Text("Description",
-                                // style: Theme.of(context).textTheme.body2
-                                ),
+                            Text(
+                              "Description",
+                              // style: Theme.of(context).textTheme.body2
+                            ),
                           ],
                         ),
                       ),
@@ -563,7 +561,9 @@ class _AccountWidgetState extends State<AccountWidget> {
                               hintText: "About yourself..."),
                           enabled: edit,
                           validator: (value) {
-                            if (value != null && value.trim() != '' && value != "null")
+                            if (value != null &&
+                                value.trim() != '' &&
+                                value != "null")
                               editableInfo.description = value;
                             return null;
                           },
@@ -719,9 +719,10 @@ class _AccountWidgetState extends State<AccountWidget> {
                               UiIcons.settings_2,
                             ),
                             SizedBox(width: 10),
-                            Text("Discovery Settings",
-                                // style: Theme.of(context).textTheme.body2
-                                ),
+                            Text(
+                              "Discovery Settings",
+                              // style: Theme.of(context).textTheme.body2
+                            ),
                           ],
                         )),
                         ListTile(
@@ -798,9 +799,10 @@ class _AccountWidgetState extends State<AccountWidget> {
                           children: <Widget>[
                             Icon(UiIcons.settings),
                             SizedBox(width: 10),
-                            Text("Accoutn Settings",
-                                // style: Theme.of(context).textTheme.body2
-                                ),
+                            Text(
+                              "Accoutn Settings",
+                              // style: Theme.of(context).textTheme.body2
+                            ),
                           ],
                         ),
                       ),
@@ -928,7 +930,6 @@ class _AccountWidgetState extends State<AccountWidget> {
       );
       widgets.add(widget1);
     }
-    //if(count>0){return widgets;}
     return widgets;
   }
 
@@ -950,7 +951,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                   ? editableInfo.continent.contains(pp.preferences[i])
                   : false,
               pressElevation: 5.0,
-              // disabledColor: Colors.red,
               selectedColor: Colors.blue,
               onSelected: (bool selected) {
                 if (selected) {
@@ -983,11 +983,7 @@ class _AccountWidgetState extends State<AccountWidget> {
     int count = 0;
     ProfileInterestPreferences pp = ProfileInterestPreferences();
     List<Widget> widgets = List<Widget>();
-    //print(editableInfo.matchPrefs);
-    // print(editableInfo.interest);
     print("++++++++++++++++++++++");
-
-//interestChips=userInfo.interest;
     for (int i = 0; i < pp.preferences.length; i++) {
       Widget widget1 = StatefulBuilder(
         builder: (BuildContext context, setState) {
@@ -1002,7 +998,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                   ? editableInfo.interest.contains(pp.preferences[i])
                   : false,
               pressElevation: 5.0,
-              // disabledColor: Colors.red,
               selectedColor: Colors.blue,
               onSelected: (bool selected) {
                 if (selected) {
@@ -1033,55 +1028,162 @@ class _AccountWidgetState extends State<AccountWidget> {
 
   genderDialog() async {
     await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return StatefulBuilder(builder: (context, setState) {
+          return Dialog(
+            elevation: 5,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                RadioListTile(
+                    title: Text("Male"),
+                    value: "Male",
+                    groupValue: editableInfo.gender,
+                    onChanged: (value) {
+                      setState(() {
+                        editableInfo.gender = value;
+                      });
+                    }),
+                RadioListTile(
+                    title: Text("Female"),
+                    value: "Female",
+                    groupValue: editableInfo.gender,
+                    onChanged: (value) {
+                      setState(() {
+                        editableInfo.gender = value;
+                      });
+                    }),
+                RadioListTile(
+                    title: Text("Others"),
+                    value: "Others",
+                    groupValue: editableInfo.gender,
+                    onChanged: (value) {
+                      setState(() {
+                        editableInfo.gender = value;
+                      });
+                    }),
+                Center(
+                  child: FlatButton(
+                      onPressed: () {
+                        _genderController.text = editableInfo.gender.toString();
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("OK")),
+                ),
+              ],
+            ),
+          );
+        });
+      },
+    );
+  }
+
+  void _showProfileIntro() {
+    showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          return StatefulBuilder(builder: (context, setState) {
-            return Dialog(
-              elevation: 5,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  RadioListTile(
-                      title: Text("Male"),
-                      value: "Male",
-                      groupValue: editableInfo.gender,
-                      onChanged: (value) {
-                        setState(() {
-                          editableInfo.gender = value;
-                        });
-                      }),
-                  RadioListTile(
-                      title: Text("Female"),
-                      value: "Female",
-                      groupValue: editableInfo.gender,
-                      onChanged: (value) {
-                        setState(() {
-                          editableInfo.gender = value;
-                        });
-                      }),
-                  RadioListTile(
-                      title: Text("Others"),
-                      value: "Others",
-                      groupValue: editableInfo.gender,
-                      onChanged: (value) {
-                        setState(() {
-                          editableInfo.gender = value;
-                        });
-                      }),
-                  Center(
-                    child: FlatButton(
-                        onPressed: () {
-                          _genderController.text =
-                              editableInfo.gender.toString();
-                          Navigator.of(context).pop();
-                        },
-                        child: Text("OK")),
-                  ),
-                ],
-              ),
-            );
-          });
-        });
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: TyperAnimatedTextKit(
+              text: [
+                "Looks like, your profile isnt ready yet, Why dont u give use some information to begin with"
+              ],
+              alignment: Alignment.center,
+              textAlign: TextAlign.center,
+              displayFullTextOnTap: true,
+              onFinished: () {
+                Future.delayed(Duration(seconds: 1)).then((onValue) {
+                  Navigator.of(context).pop();
+                });
+              },
+              speed: Duration(milliseconds: 50),
+              pause: Duration(milliseconds: 200),
+              isRepeatingAnimation: false,
+              textStyle: TextStyle(fontSize: 25, color: Colors.white),
+            ),
+          );
+        }).then((onValue) {
+      _editCoachMark();
+    });
+  }
+
+  void _readyForMatch(Position position) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: TyperAnimatedTextKit(
+              text: ["Awesome!, Let's find a match right away!"],
+              alignment: Alignment.center,
+              textAlign: TextAlign.center,
+              displayFullTextOnTap: true,
+              onFinished: () {
+                Future.delayed(Duration(seconds: 1)).then((onValue) {
+                  Navigator.of(context).pop();
+                });
+              },
+              speed: Duration(milliseconds: 50),
+              pause: Duration(milliseconds: 200),
+              isRepeatingAnimation: false,
+              textStyle: TextStyle(fontSize: 25, color: Colors.white),
+            ),
+          );
+        }).then((onValue) {
+      Navigator.pop(context, true);
+    });
+  }
+
+  void _editCoachMark() {
+    CoachMark coachMark = CoachMark();
+    RenderBox targetRenderBox =
+        _editButtonKey.currentContext.findRenderObject();
+    Rect rect =
+        targetRenderBox.localToGlobal(Offset.zero) & targetRenderBox.size;
+    rect = Rect.fromCircle(center: rect.center, radius: rect.longestSide * 0.3);
+    coachMark.show(
+        targetContext: _editButtonKey.currentContext,
+        onClose: () {
+          _avatarCoachMark();
+        },
+        children: [
+          Positioned(
+              left: rect.left,
+              right: rect.right,
+              top: rect.top - 55,
+              bottom: rect.bottom,
+              child: Text(
+                "Press Here to Edit your Profile",
+                style: TextStyle(color: Colors.red, fontSize: 25),
+              ))
+        ],
+        markRect: rect);
+  }
+
+  void _avatarCoachMark() {
+    CoachMark coachMark = CoachMark();
+    RenderBox targetRenderBox = _avatarKey.currentContext.findRenderObject();
+    Rect rect =
+        targetRenderBox.localToGlobal(Offset.zero) & targetRenderBox.size;
+    rect = Rect.fromCircle(center: rect.center, radius: rect.longestSide * 0.5);
+    coachMark.show(
+        targetContext: _avatarKey.currentContext,
+        onClose: () {},
+        children: [
+          Positioned(
+              left: rect.left / 2,
+              right: 0,
+              top: rect.top - 55,
+              bottom: rect.bottom,
+              child: Text(
+                "Press Here to insert your avatar",
+                style: TextStyle(color: Colors.red, fontSize: 25),
+              ))
+        ],
+        markRect: rect);
   }
 }
