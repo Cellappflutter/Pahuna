@@ -158,9 +158,6 @@ class _NearbySearchState extends State<NearbySearch>
     List<UserData> newInfo = List<UserData>();
     print("rangeee33333333333333333333333333rrr");
     print(info);
-    print(info.length);
-    print(position.latitude);
-    print(position.longitude);
     if (info != null &&
         info.length > 0 &&
         position.latitude != null &&

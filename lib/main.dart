@@ -301,7 +301,7 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
   Stream<Position> locationStream() {
     Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     var locationOptions =
-        LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 50);
+        LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 100);
     return geolocator.getPositionStream(locationOptions);
   }
 }

@@ -13,6 +13,7 @@ class DatabaseService {
   final CollectionReference reference = Firestore.instance.collection("pahuna");
   final CollectionReference reportReference =
       Firestore.instance.collection("report");
+
   final CollectionReference requestReference =
       Firestore.instance.collection("ConnectionRequest");
   final CollectionReference chatReference =
@@ -22,6 +23,7 @@ class DatabaseService {
 
   Future chatFriend(String fid, String name, String avatar, String ownname,
       String selfavatar) async {
+        
     await friendsforchatReference
         .document(uid)
         .collection("chatfriends")
