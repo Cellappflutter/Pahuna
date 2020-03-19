@@ -179,7 +179,7 @@ class _AuthPageState extends State<AuthPage> {
       //     }
     } else {
       print("object");
-      return ConnectivityResult.none == null
+      return ConnectivityResult.none != null
           ? AlertDialog(
               title: Text(
                 'No Internet Connection',

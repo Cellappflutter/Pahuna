@@ -77,7 +77,9 @@ class _StartChat extends State<MessagesWidget> {
                                 children: <Widget>[
                                   (avatar != "" && avatar != null)
                                       ? CircleAvatar(
-                                          backgroundImage: NetworkImage(avatar),
+                                          backgroundImage:
+                                          CachedNetworkImageProvider(avatar), 
+                                          // NetworkImage(avatar),
                                           radius:
                                               ScreenSizeConfig.safeBlockVertical *
                                                   6,
