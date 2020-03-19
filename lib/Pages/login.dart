@@ -647,7 +647,8 @@ class _LoginPageState extends State<LoginPage> {
                             .ref()
                             .child(DatabaseService.uid)
                             .child("avatar.jpg");
-                        NetworkImage(user.photoUrl);
+                            CachedNetworkImageProvider(user.photoUrl);
+                        // NetworkImage(user.photoUrl);
                         Uint8List image =
                             await StorageService().imageToByte(user.photoUrl);
                         print(user.photoUrl);

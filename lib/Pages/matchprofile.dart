@@ -122,7 +122,8 @@ class _MatchProfileState extends State<MatchProfile> {
                                     child: ((avatar != "" && avatar != null)
                                         ? CircleAvatar(
                                             backgroundImage:
-                                                NetworkImage(avatar),
+                                            CachedNetworkImageProvider(avatar),
+                                                // NetworkImage(avatar),
                                           )
                                         : CircleAvatar()))),
                           ],

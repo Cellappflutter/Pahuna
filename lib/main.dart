@@ -5,9 +5,11 @@ import 'package:ecommerce_app_ui_kit/Helper/ErrorHandler.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/Data.dart';
+import 'package:ecommerce_app_ui_kit/Model/connectionstatus.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/settings.dart';
-import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';import 'package:ecommerce_app_ui_kit/database/Word.dart';
+import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';
+import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/wp.dart';
 import 'package:flutter/material.dart';
@@ -74,9 +76,9 @@ void main() {
         ),
       ),
       home:
-      // BigMess(),
-      // NoTime(), 
-      InitializePage(),
+          // BigMess(),
+          // NoTime(),
+          InitializePage(),
     ),
   );
 }
@@ -176,17 +178,24 @@ class _AuthPageState extends State<AuthPage> {
       //     }
     } else {
       print("object");
-      return Container(
-        color: Color(0xffdd2827),
-        child: Center(
-          child: Image.asset(
-            "assets/pahuna_splash.png",
-            fit: BoxFit.scaleDown,
-            height: ScreenSizeConfig.safeBlockVertical * 50,
-            width: ScreenSizeConfig.safeBlockHorizontal * 50,
-          ),
-        ),
-      );
+      return ConnectivityResult.none == null
+          ? AlertDialog(
+              title: Text(
+                'No Internet Connection',
+              ),
+              content: Text('There seems to be Connection issue, Try turning data/wifi on'),
+            )
+          : Container(
+              color: Color(0xffdd2827),
+              child: Center(
+                child: Image.asset(
+                  "assets/pahuna_splash.png",
+                  fit: BoxFit.scaleDown,
+                  height: ScreenSizeConfig.safeBlockVertical * 50,
+                  width: ScreenSizeConfig.safeBlockHorizontal * 50,
+                ),
+              ),
+            );
     }
   }
 }
@@ -213,12 +222,15 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
     });
 
     Connectivity().onConnectivityChanged.listen((onData) {
+      print("++++++++++++++++++++++++++++++++++++++++++");
+      print(onData);
       if (onData == ConnectivityResult.none) {
         isConnected = false;
         WidgetsBinding.instance.addPostFrameCallback(
             (_) => showConnection(context, "Searching Connection"));
       } else {
-        loadingBar(context, "Searching Connection").dismiss();
+        loadingBar(context, "Searching Connection").dismiss()
+        ;
       }
     });
   }
@@ -292,9 +304,9 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
                 fontSize: 12.0, color: config.Colors().secondColor(0.6)),
           ),
         ),
-        home: 
-        // InitializePage()
-        TabsWidget(
+        home:
+            // InitializePage()
+            TabsWidget(
           currentTab: 1,
         ),
       ),

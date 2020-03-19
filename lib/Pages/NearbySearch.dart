@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:align_positioned/align_positioned.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/Animations/ripples.dart';
 import 'package:ecommerce_app_ui_kit/Helper/constant.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
@@ -126,7 +127,10 @@ class _NearbySearchState extends State<NearbySearch>
                 ? CircleAvatar(
                     backgroundImage:
                         //(avatar != null && avatar != "")
-                        (NetworkImage(avatar)),
+                        (
+                          CachedNetworkImageProvider(avatar)
+                          // NetworkImage(avatar)
+                          ),
 
                     //    : AssetImage("assets/facebook.png"),
                     radius: 15,

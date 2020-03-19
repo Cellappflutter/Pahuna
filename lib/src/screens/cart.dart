@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
@@ -175,13 +176,15 @@ class _CartWidgetState extends State<CartWidget> {
                                   (item.avatar != "" && item.avatar != null)
                                       ? CircleAvatar(
                                           backgroundImage:
-                                              NetworkImage(item.avatar),
+                                          CachedNetworkImageProvider(item.avatar),
+                                              // NetworkImage(item.avatar),
                                           radius: ScreenSizeConfig
                                                   .safeBlockVertical *
                                               6,
                                         )
                                       : CircleAvatar(
-                                          // backgroundImage: NetworkImage(item.avatar),
+                                        backgroundImage:CachedNetworkImageProvider(item.avatar),
+                                          // NetworkImage(item.avatar),
                                           radius: ScreenSizeConfig
                                                   .safeBlockVertical *
                                               6,
