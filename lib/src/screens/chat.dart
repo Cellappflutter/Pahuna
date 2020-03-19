@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bubble/bubble.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/message.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
@@ -78,7 +79,8 @@ class _chat extends State<ChatWidget> {
                                         ),
                                         CircleAvatar(
                                           backgroundImage:
-                                              NetworkImage(widget.avatar),
+                                          CachedNetworkImageProvider(widget.avatar),
+                                              // NetworkImage(widget.avatar),
                                           radius: 15,
                                         ),
                                         SizedBox(

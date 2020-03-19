@@ -57,12 +57,17 @@ class CustomScrollState extends State<CustomScroll> {
                     future: StorageService().getAvatar(widget.userData.uid),
                     builder: (BuildContext context, snapshot) {
                       if (snapshot.hasData) {
-                        return 
-                        // Image.network(snapshot.data, fit: BoxFit.cover);
-                        Image(image: CachedNetworkImageProvider(snapshot.data),
-                        fit:BoxFit.cover);
+                        return
+                            // Image.network(snapshot.data, fit: BoxFit.cover);
+                            Image(
+                                image:
+                                    CachedNetworkImageProvider(snapshot.data),
+                                fit: BoxFit.cover);
                       } else {
-                        return Image.asset('assets/user3.jpg',
+                        return Image(
+                            image: CachedNetworkImageProvider(
+                                "http://via.placeholder.com/200x150"),
+                            // Image.asset('assets/user3.jpg',
                             fit: BoxFit.cover);
                       }
                     },
@@ -117,26 +122,33 @@ class CustomScrollState extends State<CustomScroll> {
                               ), //End of Name and Email
                               InkWell(
                                 onTap: () {
-                                  setState(() {_isClicked = true;
+                                  setState(() {
+                                    _isClicked = true;
                                     width = 40;
                                   });
-                                                                },
+                                },
                                 child: AnimatedContainer(
-                                  duration: Duration(seconds: 1), width: width,height: 40,
+                                  duration: Duration(seconds: 1),
+                                  width: width,
+                                  height: 40,
                                   decoration: BoxDecoration(
-                                    color: (_isClicked) ?  Colors.red : Colors.white,
+                                    color: (_isClicked)
+                                        ? Colors.red
+                                        : Colors.white,
                                     border:
                                         Border.all(width: 2, color: Colors.red),
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                   child: Center(
-                                    child: (_isClicked) ? Icon(Icons.check):Text(
-                                      'FOLLOW',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.redAccent,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                    child: (_isClicked)
+                                        ? Icon(Icons.check)
+                                        : Text(
+                                            'FOLLOW',
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.redAccent,
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                   ),
                                 ),
                               ),

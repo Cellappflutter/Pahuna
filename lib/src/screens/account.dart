@@ -177,7 +177,8 @@ class _AccountWidgetState extends State<AccountWidget> {
                                           editableInfo.avatar != null)
                                       ? CircleAvatar(
                                           backgroundImage:
-                                              NetworkImage(editableInfo.avatar),
+                                          CachedNetworkImageProvider(editableInfo.avatar),
+                                              // NetworkImage(editableInfo.avatar),
                                         )
                                       : CircleAvatar()))),
                     ],
