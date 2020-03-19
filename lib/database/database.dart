@@ -23,7 +23,6 @@ class DatabaseService {
 
   Future chatFriend(String fid, String name, String avatar, String ownname,
       String selfavatar) async {
-        
     await friendsforchatReference
         .document(uid)
         .collection("chatfriends")
@@ -553,5 +552,23 @@ class DatabaseService {
 
   initUserDB() async {
     await reference.document(uid).setData({"status": "online"}, merge: true);
+  }
+
+  Future<bool> removeFriend(String user_id) async {
+    try {
+      await requestReference
+          .document(uid) //end_user UID
+          .collection("Accepted")
+          .document(user_id)
+          .delete();
+      await requestReference
+          .document(user_id) //end_user UID
+          .collection("Accepted")
+          .document(uid)
+          .delete();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

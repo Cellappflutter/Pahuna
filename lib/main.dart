@@ -21,6 +21,7 @@ import 'package:ecommerce_app_ui_kit/src/screens/tabs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:ecommerce_app_ui_kit/Pages/bigmess.dart';
 
@@ -210,27 +211,17 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 1), (_) {
-      Geolocator().isLocationServiceEnabled().then((onValue) {
-        if (!onValue) {
-          WidgetsBinding.instance.addPostFrameCallback(
-              (_) => showConnection(context, "Searching GPS"));
-        } else {
-          loadingBar(context, "Searching GPS").dismiss();
-        }
-      });
-    });
-
+    ProgressDialog p2 = loadingBar(context, "Searching Connection");
     Connectivity().onConnectivityChanged.listen((onData) {
       print("++++++++++++++++++++++++++++++++++++++++++");
       print(onData);
       if (onData == ConnectivityResult.none) {
         isConnected = false;
-        WidgetsBinding.instance.addPostFrameCallback(
-            (_) => showConnection(context, "Searching Connection"));
+        WidgetsBinding.instance.addPostFrameCallback((_) => p2.show());
       } else {
-        loadingBar(context, "Searching Connection").dismiss()
-        ;
+        if (p2.isShowing()) {
+          p2.dismiss();
+        }
       }
     });
   }

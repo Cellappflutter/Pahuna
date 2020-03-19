@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:grafpix/pixloaders/pix_loader.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -10,12 +9,12 @@ ProgressDialog loadingBar(BuildContext context,String message) {
       borderRadius: ScreenSizeConfig.blockSizeHorizontal * 5,
       backgroundColor: Colors.white,
       progressWidget: Center(
-        child: PixLoader(
-          faceColor: Colors.red,
-          duration: 10,
-          widthRatio: 0.15,
-          loaderType: LoaderType.Spinner,
-        ),
+        // child: PixLoader(
+        //   faceColor: Colors.red,
+        //   duration: 10,
+        //   widthRatio: 0.15,
+        //   loaderType: LoaderType.Spinner,
+        // ),
       ),
       elevation: 10.0,
       insetAnimCurve: Curves.bounceInOut,
