@@ -5,6 +5,7 @@ import 'package:ecommerce_app_ui_kit/Helper/ErrorHandler.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/Data.dart';
+import 'package:ecommerce_app_ui_kit/Model/connectionstatus.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/settings.dart';
 import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';
@@ -183,6 +184,7 @@ class _AuthPageState extends State<AuthPage> {
         return LoginPage();
       }
     } else {
+
       return Scaffold(
         body: Stack(
           children: <Widget>[
@@ -224,6 +226,8 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
     super.initState();
     ProgressDialog p2 = loadingBar(context, "Searching Connection");
     Connectivity().onConnectivityChanged.listen((onData) {
+      print("++++++++++++++++++++++++++++++++++++++++++");
+      print(onData);
       if (onData == ConnectivityResult.none) {
         isConnected = false;
         WidgetsBinding.instance.addPostFrameCallback((_) => p2.show());

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Pages/friends.dart';
@@ -46,7 +47,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 (widget.info.avatar != null && widget.info.avatar != "")
                     ? CircleAvatar(
                         backgroundColor: Colors.blue,
-                        backgroundImage: NetworkImage(widget.info.avatar),
+                        backgroundImage:
+                        CachedNetworkImageProvider(widget.info.avatar), 
+                        // NetworkImage(widget.info.avatar),
                       )
                     : CircleAvatar(
                         backgroundColor: Colors.blue,

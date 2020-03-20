@@ -147,8 +147,10 @@ class _FeaturePageState extends State<FeaturePage> {
         overflow: Overflow.visible,
         children: <Widget>[
           (widget.featureData.image != null && widget.featureData.image != "")
-              ? 
-              Image(image:CachedNetworkImageProvider(widget.featureData.image),fit: BoxFit.fill,)
+              ? Image(
+                  image: CachedNetworkImageProvider(widget.featureData.image),
+                  fit: BoxFit.fill,
+                )
               // Image.network(
               //     widget.featureData.image,
               //     fit: BoxFit.fill,
@@ -170,7 +172,9 @@ class _FeaturePageState extends State<FeaturePage> {
         }
       case 1:
         {
-          return Details_Tab(details: widget.featureData.content,);
+          return Details_Tab(
+            details: widget.featureData.content,
+          );
         }
       case 2:
         {

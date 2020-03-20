@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
@@ -112,7 +113,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                           ? CircleAvatar(
                               backgroundColor: Colors.red,
                               backgroundImage:
-                                  NetworkImage(widget.userInfo.avatar),
+                              CachedNetworkImageProvider(widget.userInfo.avatar),
+                                  // NetworkImage(widget.userInfo.avatar),
                             )
                           : CircleAvatar()),
                   RaisedButton(
