@@ -71,7 +71,6 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
                             )))
                     .then((onValue) async {
                   if (onValue) {
-                 //   await Prefs.setPrevUser();
                     showCoachMarkFAB();
                   }
                 });
@@ -226,8 +225,8 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
                   )))
         ],
         duration: null,
-        onClose: () async {
-         await Prefs.setPrevUser(); 
+        onClose: () async{
+          await Prefs.setPrevUser();
         });
   }
 }

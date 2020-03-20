@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
+import 'package:ecommerce_app_ui_kit/Pages/friends.dart';
 import 'package:ecommerce_app_ui_kit/Pages/matchprofile.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
@@ -104,7 +105,7 @@ class _StartChat extends State<Messagelist> {
                                   color: Colors.blue,
                                 ),
                                 child: Icon(
-                                  Icons.refresh,
+                                  Icons.call,
                                   color: Colors.white,
                                   size: 20,
                                 ),
@@ -145,8 +146,10 @@ class _StartChat extends State<Messagelist> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => MessagesWidget()));
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => FriendsWidget(
+                      tag: "Chat",
+                    )));
           },
           child: Icon(Icons.add),
         ),
