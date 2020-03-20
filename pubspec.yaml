@@ -54,6 +54,7 @@ dependencies:
   html: ^0.14.0+3
   bubble: ^1.1.9+1
   sliver_fab: ^1.0.0
+  cached_network_image: ^2.0.0
   network_image_to_byte: ^0.0.1
   highlighter_coachmark: ^0.0.3
   animated_text_kit: ^2.0.0
