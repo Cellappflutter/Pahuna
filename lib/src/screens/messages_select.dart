@@ -97,8 +97,6 @@ class _StartChat extends State<MessagesWidget> {
                               ),
                             ),
                             onTap: () {
-                              print("uid = ${item.uid}");
-                              print("name = ${avatar}");
                               databaseService.chatFriend(item.uid, item.name,
                                   avatar, info.name, info.avatar);
                               Navigator.of(context).pushReplacement(

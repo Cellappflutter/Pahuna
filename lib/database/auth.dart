@@ -83,7 +83,7 @@ class AuthService {
   }
 
   Future<void> signOut() async {
-    await Prefs.removeAll();
+    //await Prefs.removeAll();
     await DatabaseService().setOfflineStatus();
     await GoogleSignIn().signOut();
     await FacebookLogin().logOut();

@@ -7,7 +7,8 @@ import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/Data.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/settings.dart';
-import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';import 'package:ecommerce_app_ui_kit/database/Word.dart';
+import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';
+import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/wp.dart';
 import 'package:flutter/material.dart';
@@ -75,9 +76,9 @@ void main() {
         ),
       ),
       home:
-      // BigMess(),
-      // NoTime(), 
-      InitializePage(),
+          // BigMess(),
+          // NoTime(),
+          InitializePage(),
     ),
   );
 }
@@ -99,6 +100,8 @@ class _AuthPageState extends State<AuthPage> {
   bool isPrevUser;
   bool gotoLogin;
   bool islocation = false;
+  bool noInternet = false;
+  StreamSubscription internetStream;
   FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   void initState() {
@@ -107,10 +110,9 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   initInfo() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) => checkPermission());
     _auth.currentUser().then((firebaseUser) async {
-      //  print(firebaseUser.providerData[0]);
       await Future.delayed(Duration(seconds: 2));
-      WidgetsBinding.instance.addPostFrameCallback((_) => checkPermission());
       if (firebaseUser != null) {
         double range = await Prefs.getRangeData();
         double start = await Prefs.getStartAgeData();
@@ -131,12 +133,19 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   checkPermission() async {
+    internetStream = Connectivity().onConnectivityChanged.listen((onData) {
+      if (onData == ConnectivityResult.none) {
+        setState(() {
+          noInternet = true;
+        });
+      } else {
+        setState(() {
+          noInternet = false;
+        });
+      }
+    });
     await PermissionHandler().requestPermissions([PermissionGroup.location]);
-
     await Geolocator().checkGeolocationPermissionStatus().then((onValue) async {
-      print("000000000000000000000000000000000000");
-      print(onValue);
-      print("dssdsdsdsdsdsd");
       if (onValue != GeolocationStatus.granted) {
         await showDialog(
             context: context,
@@ -154,7 +163,6 @@ class _AuthPageState extends State<AuthPage> {
               );
             });
       } else {
-        print("dsdssd");
         setState(() {
           islocation = true;
         });
@@ -165,27 +173,39 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     if (gotoLogin != null && islocation == true) {
-      print("***********************");
       print(DatabaseService.uid);
-
-      //  {
       if (!gotoLogin) {
+        internetStream.cancel();
+        //  internetStream.
         return MainPageWrapper();
       } else {
+           internetStream.cancel();
         return LoginPage();
       }
-      //     }
     } else {
-      print("object");
-      return Container(
-        color: Color(0xffdd2827),
-        child: Center(
-          child: Image.asset(
-            "assets/pahuna_splash.png",
-            fit: BoxFit.scaleDown,
-            height: ScreenSizeConfig.safeBlockVertical * 50,
-            width: ScreenSizeConfig.safeBlockHorizontal * 50,
-          ),
+      return Scaffold(
+        body: Stack(
+          children: <Widget>[
+            Container(
+              color: Color(0xffdd2827),
+              child: Center(
+                child: Image.asset(
+                  "assets/pahuna_splash.png",
+                  fit: BoxFit.scaleDown,
+                  height: ScreenSizeConfig.safeBlockVertical * 50,
+                  width: ScreenSizeConfig.safeBlockHorizontal * 50,
+                ),
+              ),
+            ),
+            (noInternet)
+                ? Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Text(
+                        "No Internet Connection available, Make sure that Wi-Fi or mobile data is turned on, then try again",
+                        style: TextStyle(color: Colors.black, fontSize: 15)),
+                  )
+                : Container(),
+          ],
         ),
       );
     }
@@ -284,9 +304,7 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
                 fontSize: 12.0, color: config.Colors().secondColor(0.6)),
           ),
         ),
-        home:
-            // InitializePage()
-            TabsWidget(
+        home: TabsWidget(
           currentTab: 1,
         ),
       ),
