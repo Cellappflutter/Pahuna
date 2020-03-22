@@ -32,6 +32,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
+
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           fontFamily: 'Poppins',
@@ -263,6 +264,7 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
             value: Connectivity().onConnectivityChanged),
         StreamProvider.value(value: DatabaseService().callReceiver()),
       ],
+
       child: Consumer<bool>(
         builder: (context, data, child) {
           if (data != null) {
