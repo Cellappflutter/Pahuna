@@ -35,6 +35,7 @@ void main() {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Poppins',
+        unselectedWidgetColor: Colors.grey,
         primaryColor: config.Colors().whiteColor(1),
         brightness: Brightness.light,
         scaffoldBackgroundColor: Color(0xFF2C2C2C),
@@ -265,6 +266,7 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
             value: Connectivity().onConnectivityChanged),
         StreamProvider.value(value: DatabaseService().callReceiver()),
       ],
+
       child: Consumer<bool>(
         builder: (context, data, child) {
           if (data != null) {
