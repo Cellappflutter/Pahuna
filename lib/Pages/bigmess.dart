@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/userdata.dart';
+import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
@@ -140,15 +141,22 @@ class CustomScrollState extends State<CustomScroll> {
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                   child: Center(
-                                    child: (_isClicked)
-                                        ? Icon(Icons.check)
-                                        : Text(
-                                            'FOLLOW',
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.redAccent,
-                                                fontWeight: FontWeight.bold),
-                                          ),
+                                    child: InkWell(
+                                      child: (_isClicked)
+                                          ? Icon(Icons.check)
+                                          : Text(
+                                              'FOLLOW',
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.redAccent,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                      onTap: () {
+                                        DatabaseService().sendReq(
+                                            widget.userData.uid,
+                                            widget.userData.name);
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),

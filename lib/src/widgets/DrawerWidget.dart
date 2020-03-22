@@ -103,7 +103,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => FriendsWidget()));
+                  MaterialPageRoute(builder: (context) => FriendsWidget(tag: "Profile",)));
             },
             leading: Icon(
               UiIcons.users,

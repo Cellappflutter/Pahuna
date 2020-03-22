@@ -2,7 +2,8 @@ import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:flutter/material.dart';
 
-PreferredSizeWidget customAppBar(BuildContext context, String title) {
+PreferredSizeWidget customAppBar(BuildContext context, String title,
+    {bool callShow}) {
   return PreferredSize(
       child: Container(
         // color: Colors.red,
@@ -31,6 +32,16 @@ PreferredSizeWidget customAppBar(BuildContext context, String title) {
                 style: Theme.of(context).textTheme.display1,
               ),
             ),
+            (callShow != null)
+                ? Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      icon: new Icon(Icons.call,
+                          color: Theme.of(context).hintColor),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  )
+                : Container(),
           ],
         ),
         //         AppBar(

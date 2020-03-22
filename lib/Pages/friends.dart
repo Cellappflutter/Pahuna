@@ -8,13 +8,17 @@ import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/chat.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/customappbar.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/messages_select.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 
 class FriendsWidget extends StatefulWidget {
+  final String tag;
+  FriendsWidget({this.tag});
   @override
   _FriendsWidgetState createState() => _FriendsWidgetState();
 }
@@ -140,9 +144,18 @@ class _FriendsWidgetState extends State<FriendsWidget> {
                               title: Text(item.name.toString().toUpperCase(),
                                   style: Theme.of(context).textTheme.body2),
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        MatchProfile(userid: item.uid)));
+                                if (widget.tag == "Profile") {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          MatchProfile(userid: item.uid)));
+                                } else {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => ChatWidget(
+                                            fid: item.uid,
+                                            avatar: item.avatar,
+                                            name: item.name,
+                                          )));
+                                }
                               },
                               onLongPress: () {},
                             ),
