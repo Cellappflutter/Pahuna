@@ -103,14 +103,11 @@ class _HomeWidgetState extends State<HomeWidget>
             style: TextStyle(color: Colors.white),
           ),
           color: appColors.Colors().mainColor(1),
-          // splashColor: appColors.Colors().mainColor(1),
           onPressed: () {
             print("datacheck");
             print(data.content);
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => FeaturePage(featureData: data)));
-            // Navigator.of(context)
-            //     .push(MaterialPageRoute(builder: (context) => FeaturePage()));
           }),
     );
   }
