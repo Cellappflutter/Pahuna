@@ -6,6 +6,7 @@ import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
 import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/userdata.dart';
+import 'package:ecommerce_app_ui_kit/Model/prevUser.dart';
 
 class DatabaseService {
   static String uid;
@@ -13,11 +14,14 @@ class DatabaseService {
   final CollectionReference reference = Firestore.instance.collection("pahuna");
   final CollectionReference reportReference =
       Firestore.instance.collection("report");
-
+  final CollectionReference callReference =
+      Firestore.instance.collection("Call");
   final CollectionReference requestReference =
       Firestore.instance.collection("ConnectionRequest");
   final CollectionReference chatReference =
       Firestore.instance.collection("Chat");
+  final CollectionReference checkCallReference =
+      Firestore.instance.collection("checkCall");
   final CollectionReference friendsforchatReference =
       Firestore.instance.collection("ChatFriends");
 
@@ -70,7 +74,6 @@ class DatabaseService {
   }
 
   Future sendMessage(String message, String fid) async {
-    print('send:::::::::::::');
     print(uid);
     print(fid);
     print(uid.hashCode);
@@ -121,15 +124,20 @@ class DatabaseService {
     }).toList();
   }
 
-  Stream<bool> checkPrevUser() {
+  Stream<PrevUser> checkPrevUser() {
+    print("999999999999999999999999999999");
     return reference.document(uid).snapshots().map(converte);
   }
 
-  bool converte(DocumentSnapshot docs) {
+  PrevUser converte(DocumentSnapshot docs) {
+    print(docs.data);
+    print(uid);
+    print("&&&&&&&&&&&&&&&&&&&&");
     if (docs.data.containsKey('profile')) {
-      return true;
+      print("00000000000000000000000000000");
+      return PrevUser(prevUser: true);
     } else {
-      return false;
+      return PrevUser(prevUser: false);
     }
   }
 
@@ -383,7 +391,6 @@ class DatabaseService {
       final document = snapshot.documents;
       document.forEach((doc) {
         if (doc.documentID.compareTo(uid) != 0) {
-          print("dasssssssssssssssssss");
           print(doc.data['profile']['name'].toString());
           _userData.add(UserData(
             name: doc.data['profile']['name'] ?? "",
@@ -552,6 +559,10 @@ class DatabaseService {
 
   initUserDB() async {
     await reference.document(uid).setData({"status": "online"}, merge: true);
+    await onCallEnd();
+    await checkCallReference
+        .document(uid)
+        .setData({"receiveCall": false}, merge: true);
   }
 
   Future<bool> removeFriend(String user_id) async {
@@ -570,5 +581,41 @@ class DatabaseService {
     } catch (e) {
       return false;
     }
+  }
+
+  Future<dynamic> onCallStart() async {
+    return await callReference.document(uid).setData({
+      "onCall": true,
+    }, merge: true);
+  }
+
+  Future<dynamic> onCallEnd() async {
+    return await callReference.document(uid).setData(
+        ({
+          "onCall": false,
+        }),
+        merge: true);
+  }
+
+  Stream<bool> callReceiver() {
+    return checkCallReference.document(uid).snapshots().map((data) {
+      if (data.data['receiveCall']) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+
+  disableReceiveCall() async {
+    await checkCallReference
+        .document(uid)
+        .setData({"receiveCall": false}, merge: true);
+  }
+
+  enableUserReceiveCall(String userId) async {
+    await checkCallReference
+        .document(userId)
+        .setData({"receiveCall": true}, merge: true);
   }
 }

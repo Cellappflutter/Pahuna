@@ -1,6 +1,8 @@
+import 'package:ecommerce_app_ui_kit/Helper/constant.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
+import 'package:ecommerce_app_ui_kit/Pages/callpage.dart';
 import 'package:ecommerce_app_ui_kit/Pages/friends.dart';
 import 'package:ecommerce_app_ui_kit/Pages/matchprofile.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
@@ -13,6 +15,7 @@ import 'package:ecommerce_app_ui_kit/src/screens/messages_select.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/MessageItemWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class Messagelist extends StatefulWidget {
@@ -65,7 +68,6 @@ class _StartChat extends State<Messagelist> {
                 );
               } else {
                 print(items);
-                //  pr.dismiss();
                 return Container(
                   color: Colors.transparent,
                   child: ListView.builder(
@@ -97,18 +99,33 @@ class _StartChat extends State<Messagelist> {
                                   delete(item.uid);
                                 },
                               ),
-                              Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.blue,
+                              InkWell(
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.blue,
+                                  ),
+                                  child: Icon(
+                                    Icons.call,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
                                 ),
-                                child: Icon(
-                                  Icons.call,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
+                                onTap: () async {
+                                  await _handleCameraAndMic();
+                                  await DatabaseService()
+                                      .enableUserReceiveCall(item.uid);
+                                  Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                          builder: (context) => CallPage(
+                                                channelName: item.uid,
+                                              )))
+                                      .then((onValue) async {
+                                    await DatabaseService().onCallEnd();
+                                  });
+                                },
                               ),
                             ],
                             child: ListTile(
@@ -161,5 +178,11 @@ class _StartChat extends State<Messagelist> {
 
   delete(String fid) {
     databaseService.deletechatfriend(fid);
+  }
+
+  Future<void> _handleCameraAndMic() async {
+    await PermissionHandler().requestPermissions(
+      [PermissionGroup.camera, PermissionGroup.microphone],
+    );
   }
 }

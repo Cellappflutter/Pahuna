@@ -42,8 +42,6 @@ class _chat extends State<ChatWidget> {
   );
   @override
   Widget build(BuildContext context) {
-    //  DatabaseService.fid = widget.fid;
-    // TODO: implement build
     return StreamProvider<List<Message>>.value(
       value: DatabaseService().tomessages(widget.fid),
       child: SafeArea(
@@ -55,7 +53,6 @@ class _chat extends State<ChatWidget> {
                 Consumer<List<Message>>(
                   builder: (context, value, child) {
                     if (value != null) {
-                      //    print(value[0]);
                       return SingleChildScrollView(
                         child: Container(
                           height: ScreenSizeConfig.safeBlockVertical * 85,
@@ -66,7 +63,6 @@ class _chat extends State<ChatWidget> {
                                 print("fid:::::::::::::receive");
                                 print(widget.fid);
                                 print(widget.fid.hashCode);
-
                                 if (value[index].uid == widget.fid) {
                                   return Container(
                                     child: Row(
@@ -76,11 +72,7 @@ class _chat extends State<ChatWidget> {
                                                   .safeBlockVertical *
                                               1,
                                         ),
-                                        CircleAvatar(
-                                          backgroundImage:
-                                              NetworkImage(widget.avatar),
-                                          radius: 15,
-                                        ),
+
                                         SizedBox(
                                           width: 3,
                                         ),

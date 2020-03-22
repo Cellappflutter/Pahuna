@@ -171,11 +171,8 @@ class _LoginPageState extends State<LoginPage> {
       DiscoverySetting.range = range;
       DatabaseService.uid = authResult.user.uid;
       await DatabaseService().initUserDB();
-
       pr.dismiss();
       DatabaseService.uid = authResult.user.uid;
-      print(authResult.user.phoneNumber);
-      print("Signed IN");
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => MainPageWrapper()),
           (Route<dynamic> route) => false);

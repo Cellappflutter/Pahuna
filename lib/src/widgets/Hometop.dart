@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+import 'package:ecommerce_app_ui_kit/Model/prevUser.dart';
 import 'package:ecommerce_app_ui_kit/Pages/home.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/account.dart';
@@ -24,7 +25,7 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
   GlobalKey _findHereContainer = GlobalKey();
 
   AnimatedBuilder getContainer() {
-    final checkPrevUser = Provider.of<bool>(context);
+    final checkPrevUser = Provider.of<PrevUser>(context);
     final userData = Provider.of<CurrentUserInfo>(context);
     final String avatar = Provider.of<String>(context);
 
@@ -57,7 +58,9 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
               ),
             ),
             onTap: () async {
-              if (checkPrevUser) {
+              print("*(((((((((((((((((((((((*(*(*(*(*(*(*(*(*(*(*(*(*(");
+              print(checkPrevUser.prevUser);
+              if (checkPrevUser.prevUser ?? false) {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
                   return HomePage();
@@ -70,7 +73,7 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
                               tutorialShow: true,
                             )))
                     .then((onValue) async {
-                  if (onValue) {
+                  if (onValue ?? false) {
                     showCoachMarkFAB();
                   }
                 });
@@ -225,7 +228,7 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
                   )))
         ],
         duration: null,
-        onClose: () async{
+        onClose: () async {
           await Prefs.setPrevUser();
         });
   }
