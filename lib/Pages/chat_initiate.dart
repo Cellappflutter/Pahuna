@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
@@ -55,7 +56,8 @@ class _StartChat extends State<Start_Chat> {
                                 (avatar != "" && avatar != null)
                                     ? CircleAvatar(
                                         backgroundImage:
-                                            NetworkImage(avatar),
+                                        CachedNetworkImageProvider(avatar),
+                                            // NetworkImage(avatar),
                                         radius:
                                             ScreenSizeConfig.safeBlockVertical *
                                                 6,

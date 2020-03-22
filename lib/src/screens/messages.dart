@@ -1,4 +1,5 @@
 import 'package:ecommerce_app_ui_kit/Helper/constant.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
@@ -6,7 +7,6 @@ import 'package:ecommerce_app_ui_kit/Pages/callpage.dart';
 import 'package:ecommerce_app_ui_kit/Pages/friends.dart';
 import 'package:ecommerce_app_ui_kit/Pages/matchprofile.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
-
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/chat.dart';
@@ -33,7 +33,7 @@ class _StartChat extends State<Messagelist> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return SafeArea(
-      child: Scaffold(
+          child: Scaffold(
         appBar: customAppBar(context, "Chats"),
         body: StreamProvider.value(
           value: DatabaseService().chatlist(),
@@ -129,20 +129,18 @@ class _StartChat extends State<Messagelist> {
                               ),
                             ],
                             child: ListTile(
-                              leading: (item.avatar != "" &&
-                                      item.avatar != null)
+                              leading: (item.avatar != "" && item.avatar != null)
                                   ? CircleAvatar(
                                       backgroundImage:
-                                          NetworkImage(item.avatar),
-                                      radius:
-                                          ScreenSizeConfig.safeBlockVertical *
-                                              3.5,
+                                      CachedNetworkImageProvider(item.avatar), 
+                                      // NetworkImage(item.avatar),
+                                      radius: ScreenSizeConfig.safeBlockVertical *
+                                          3.5,
                                     )
                                   : CircleAvatar(
                                       backgroundColor: Colors.blue,
-                                      radius:
-                                          ScreenSizeConfig.safeBlockVertical *
-                                              3.5,
+                                      radius: ScreenSizeConfig.safeBlockVertical *
+                                          3.5,
                                     ),
                               title: Text(item.name.toString().toUpperCase(),
                                   style: Theme.of(context).textTheme.body2),

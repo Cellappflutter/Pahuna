@@ -65,7 +65,10 @@ class CustomScrollState extends State<CustomScroll> {
                                     CachedNetworkImageProvider(snapshot.data),
                                 fit: BoxFit.cover);
                       } else {
-                        return Image.asset('assets/user3.jpg',
+                        return Image(
+                            image: CachedNetworkImageProvider(
+                                "http://via.placeholder.com/200x150"),
+                            // Image.asset('assets/user3.jpg',
                             fit: BoxFit.cover);
                       }
                     },
