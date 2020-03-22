@@ -114,7 +114,7 @@ class _StartChat extends State<Messagelist> {
                                   ),
                                 ),
                                 onTap: () async {
-                                  await _handleCameraAndMic();
+                                  await handleCameraAndMic();
                                   await DatabaseService()
                                       .enableUserReceiveCall(item.uid);
                                   Navigator.of(context)
@@ -178,9 +178,4 @@ class _StartChat extends State<Messagelist> {
     databaseService.deletechatfriend(fid);
   }
 
-  Future<void> _handleCameraAndMic() async {
-    await PermissionHandler().requestPermissions(
-      [PermissionGroup.camera, PermissionGroup.microphone],
-    );
-  }
 }

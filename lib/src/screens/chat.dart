@@ -47,7 +47,7 @@ class _chat extends State<ChatWidget> {
       value: DatabaseService().tomessages(widget.fid),
       child: SafeArea(
         child: Scaffold(
-          appBar: customAppBar(context, widget.name),
+          appBar: customAppBar(context, widget.name,callShow: true,uid: widget.fid),
           body: SingleChildScrollView(
             child: Column(
               children: <Widget>[
