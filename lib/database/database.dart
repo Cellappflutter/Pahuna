@@ -615,4 +615,10 @@ class DatabaseService {
         .document(userId)
         .setData({"receiveCall": true, "uid": uid}, merge: true);
   }
+
+  Future<bool> checkOnCallAvailable(String userId) {
+    return callReference.document(userId).get().then((onValue) {
+      return onValue.data['onCall'] ?? true;
+    });
+  }
 }

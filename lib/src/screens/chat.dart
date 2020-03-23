@@ -47,7 +47,8 @@ class _chat extends State<ChatWidget> {
       value: DatabaseService().tomessages(widget.fid),
       child: SafeArea(
         child: Scaffold(
-          appBar: customAppBar(context, widget.name,callShow: true,uid: widget.fid),
+          appBar: customAppBar(context, widget.name,
+              callShow: true, uid: widget.fid),
           body: SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -109,18 +110,20 @@ class _chat extends State<ChatWidget> {
                     ],
                   ),
                   child: Container(
-                    height: 50,
+                    //  height: 0,
                     child: TextField(
+                      maxLines: 2,
+                      
                       controller: message,
                       style: TextStyle(color: config.Colors().mainColor(1)),
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(20),
-                        hintText: 'Chat text here',
+                        hintText: 'Enter text here',
                         hintStyle: TextStyle(
                             color:
                                 config.Colors().mainColor(1).withOpacity(0.5)),
                         suffixIcon: IconButton(
-                          padding: EdgeInsets.only(right: 30),
+                          padding: EdgeInsets.only(right: 3),
                           onPressed: () {
                             messageService.sendMessage(
                                 message.text, widget.fid);

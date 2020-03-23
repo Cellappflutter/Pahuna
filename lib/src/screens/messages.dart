@@ -1,5 +1,6 @@
 import 'package:ecommerce_app_ui_kit/Helper/constant.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
@@ -33,7 +34,7 @@ class _StartChat extends State<Messagelist> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return SafeArea(
-          child: Scaffold(
+      child: Scaffold(
         appBar: customAppBar(context, "Chats"),
         body: StreamProvider.value(
           value: DatabaseService().chatlist(),
@@ -115,32 +116,45 @@ class _StartChat extends State<Messagelist> {
                                 ),
                                 onTap: () async {
                                   await handleCameraAndMic();
-                                  await DatabaseService()
-                                      .enableUserReceiveCall(item.uid);
-                                  Navigator.of(context)
-                                      .push(MaterialPageRoute(
-                                          builder: (context) => CallPage(
-                                                channelName: item.uid,
-                                              )))
+                                  DatabaseService()
+                                      .checkOnCallAvailable(item.uid)
                                       .then((onValue) async {
-                                    await DatabaseService().onCallEnd();
+                                    if (!onValue) {
+                                      await DatabaseService()
+                                          .enableUserReceiveCall(item.uid);
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) => CallPage(
+                                                    channelName: item.uid,
+                                                  )))
+                                          .then((onValue) async {
+                                        await DatabaseService().onCallEnd();
+                                      });
+                                    } else {
+                                      errorDialog(context,
+                                          "User is in Another Call, Please try again");
+                                    }
                                   });
                                 },
                               ),
                             ],
                             child: ListTile(
-                              leading: (item.avatar != "" && item.avatar != null)
+                              leading: (item.avatar != "" &&
+                                      item.avatar != null)
                                   ? CircleAvatar(
                                       backgroundImage:
-                                      CachedNetworkImageProvider(item.avatar), 
+                                          CachedNetworkImageProvider(
+                                              item.avatar),
                                       // NetworkImage(item.avatar),
-                                      radius: ScreenSizeConfig.safeBlockVertical *
-                                          3.5,
+                                      radius:
+                                          ScreenSizeConfig.safeBlockVertical *
+                                              3.5,
                                     )
                                   : CircleAvatar(
                                       backgroundColor: Colors.blue,
-                                      radius: ScreenSizeConfig.safeBlockVertical *
-                                          3.5,
+                                      radius:
+                                          ScreenSizeConfig.safeBlockVertical *
+                                              3.5,
                                     ),
                               title: Text(item.name.toString().toUpperCase(),
                                   style: Theme.of(context).textTheme.body2),
@@ -177,5 +191,4 @@ class _StartChat extends State<Messagelist> {
   delete(String fid) {
     databaseService.deletechatfriend(fid);
   }
-
 }
