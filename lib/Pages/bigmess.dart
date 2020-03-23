@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/Pages/NearbySearch.dart';
+import 'package:provider/provider.dart';
+
+import '../Model/currentuser.dart';
 
 class BigMess extends StatelessWidget {
   @override
@@ -21,9 +24,10 @@ class BigMess extends StatelessWidget {
 }
 
 class CustomScroll extends StatefulWidget {
-  UserData userData;
-  CustomScroll({this.userData});
-
+  UserData requestData;
+  CurrentUserInfo userData;
+  CustomScroll({this.userData, this.requestData});
+// need both senders and the receivers data userData is of sender and requestData is of receiver
   @override
   State createState() => new CustomScrollState();
 }
@@ -40,6 +44,7 @@ class CustomScrollState extends State<CustomScroll> {
 
   @override
   Widget build(BuildContext context) {
+   // final info = Provider.of<CurrentUserInfo>(context);
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(
@@ -55,7 +60,7 @@ class CustomScrollState extends State<CustomScroll> {
                   height:
                       (kEffectHeight - offset * 0.5).clamp(0.0, kEffectHeight),
                   child: FutureBuilder(
-                    future: StorageService().getAvatar(widget.userData.uid),
+                    future: StorageService().getAvatar(widget.requestData.uid),
                     builder: (BuildContext context, snapshot) {
                       if (snapshot.hasData) {
                         return
@@ -104,8 +109,8 @@ class CustomScrollState extends State<CustomScroll> {
                                 child: Column(
                                   children: <Widget>[
                                     Text(
-                                      widget.userData.name != null
-                                          ? widget.userData.name
+                                      widget.requestData.name != null
+                                          ? widget.requestData.name
                                           : "Name",
                                       style: TextStyle(
                                         fontSize: 25,
@@ -113,7 +118,7 @@ class CustomScrollState extends State<CustomScroll> {
                                         // color: Colors.white
                                       ),
                                     ),
-                                    Text(widget.userData.email,
+                                    Text(widget.requestData.email,
                                         style: TextStyle(
                                           fontSize: 18,
                                           // color: Colors.white
@@ -153,8 +158,9 @@ class CustomScrollState extends State<CustomScroll> {
                                             ),
                                       onTap: () {
                                         DatabaseService().sendReq(
-                                            widget.userData.uid,
+                                            widget.requestData.uid,// patahuney ko uid and afnoname pathauna parxa
                                             widget.userData.name);
+
                                       },
                                     ),
                                   ),
@@ -169,7 +175,7 @@ class CustomScrollState extends State<CustomScroll> {
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              widget.userData.description,
+                              widget.requestData.description,
                               style: TextStyle(
                                   fontSize: 19, fontStyle: FontStyle.italic),
                             ),
@@ -200,7 +206,7 @@ class CustomScrollState extends State<CustomScroll> {
                                   runSpacing: 2.0,
                                   alignment: WrapAlignment.spaceEvenly,
                                   children:
-                                      _interestChip(widget.userData.interest))
+                                      _interestChip(widget.requestData.interest))
                             ],
                           ),
                         ),
