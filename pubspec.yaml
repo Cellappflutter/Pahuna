@@ -63,7 +63,7 @@ dependencies:
   flutter_slidable: ^0.4.9
   package_info: ^0.4.0+16
   vibration: ^1.2.4
-  vibrate: ^0.0.4
+  flutter_ringtone_player: ^2.0.0
   
 
 dev_dependencies:

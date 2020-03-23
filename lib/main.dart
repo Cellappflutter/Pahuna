@@ -7,17 +7,16 @@ import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/Data.dart';
 import 'package:ecommerce_app_ui_kit/Model/callreceivestatus.dart';
 import 'package:ecommerce_app_ui_kit/Model/prevUser.dart';
-import 'package:ecommerce_app_ui_kit/Model/connectionstatus.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/settings.dart';
 import 'package:ecommerce_app_ui_kit/Pages/callReceive.dart';
-import 'package:ecommerce_app_ui_kit/Pages/callpage.dart';
-import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';
 import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
+
 import 'package:ecommerce_app_ui_kit/src/screens/wp.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/Hometop.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
@@ -29,7 +28,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:ecommerce_app_ui_kit/Pages/bigmess.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -82,9 +80,7 @@ void main() {
               fontSize: 12.0, color: config.Colors().secondDarkColor(0.7)),
         ),
       ),
-      home: 
-      //CallReceiver(),
-      InitializePage(),
+      home: InitializePage(),
     ),
   );
 }
@@ -308,10 +304,11 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
             if (data.receiveCall && data.receiveCall != prevData) {
               print("-------------------------------vitra0000000000000000");
               prevData = true;
+              DatabaseService().onCallStart();
               DatabaseService().disableReceiveCall();
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => CallReceiver(callReceiver: data)));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CallReceiver(callReceiver: data)));
               });
             } else {
               prevData = false;

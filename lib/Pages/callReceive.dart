@@ -9,7 +9,8 @@ import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/customappbar.dart';
 import 'package:flutter/material.dart';
-import 'package:vibrate/vibrate.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:vibration/vibration.dart';
 
 class CallReceiver extends StatefulWidget {
@@ -25,14 +26,31 @@ class _CallReceiverState extends State<CallReceiver>
     with TickerProviderStateMixin {
   double height = 80;
   AnimationController _animationController;
+  bool isSessionActive = false;
   @override
   void initState() {
     super.initState();
-    Vibrate.vibrate();
-    Vibration.vibrate(pattern: [500, 1000, 500, 1000, 500]);
+    // Vibrate().vibrate();
+    FlutterRingtonePlayer.playRingtone(
+        asAlarm: false, looping: true, volume: 0.5);
+    Timer.periodic(
+        Duration(
+          seconds: 2,
+        ), (_) {
+      if (!isSessionActive) {
+        Vibration.vibrate(duration: 1000);
+      }
+    });
     _animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 4));
     _animationController.repeat();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    // _animationController.dispose();
   }
 
   @override
@@ -126,6 +144,10 @@ class _CallReceiverState extends State<CallReceiver>
                       ),
                     ),
                     onTap: () async {
+                      setState(() {
+                        isSessionActive = true;
+                      });
+                      FlutterRingtonePlayer.stop();
                       Vibration.cancel();
                       await handleCameraAndMic();
                       Navigator.of(context)
@@ -135,6 +157,7 @@ class _CallReceiverState extends State<CallReceiver>
                                   )))
                           .then((onValue) {
                         DatabaseService().onCallEnd();
+                        _animationController.dispose();
                         Navigator.pop(context);
                       });
                     },
@@ -151,8 +174,13 @@ class _CallReceiverState extends State<CallReceiver>
                       ),
                     ),
                     onTap: () async {
-                        Vibration.cancel();
+                      setState(() {
+                        isSessionActive = true;
+                      });
+                      FlutterRingtonePlayer.stop();
+                      Vibration.cancel();
                       DatabaseService().onCallEnd();
+                      _animationController.dispose();
                       Navigator.pop(context);
                     },
                   ),

@@ -1,3 +1,4 @@
+import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Pages/callpage.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
@@ -41,14 +42,23 @@ PreferredSizeWidget customAppBar(BuildContext context, String title,
                           color: Theme.of(context).hintColor),
                       onPressed: () async {
                         await handleCameraAndMic();
-                        await DatabaseService().enableUserReceiveCall(uid);
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(
-                                builder: (context) => CallPage(
-                                      channelName: uid,
-                                    )))
+                        DatabaseService()
+                            .checkOnCallAvailable(uid)
                             .then((onValue) async {
-                          await DatabaseService().onCallEnd();
+                          if (!onValue) {
+                            await DatabaseService().enableUserReceiveCall(uid);
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                    builder: (context) => CallPage(
+                                          channelName: uid,
+                                        )))
+                                .then((onValue) async {
+                              await DatabaseService().onCallEnd();
+                            });
+                          } else {
+                            errorDialog(context,
+                                          "User is in Another Call, Please try again");
+                          }
                         });
                       },
                     ),
@@ -73,10 +83,10 @@ PreferredSizeWidget customAppBar(BuildContext context, String title,
       ),
       preferredSize: Size(MediaQuery.of(context).size.width * 100,
           ScreenSizeConfig.safeBlockHorizontal * 14));
-
 }
-  Future<void> handleCameraAndMic() async {
-    await PermissionHandler().requestPermissions(
-      [PermissionGroup.camera, PermissionGroup.microphone],
-    );
-  }
+
+Future<void> handleCameraAndMic() async {
+  await PermissionHandler().requestPermissions(
+    [PermissionGroup.camera, PermissionGroup.microphone],
+  );
+}
