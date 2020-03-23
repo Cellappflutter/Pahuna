@@ -136,7 +136,8 @@ class _FriendsWidgetState extends State<FriendsWidget> {
                                       friendavatar=snapshot.data;
                                       return CircleAvatar(
                                         backgroundImage:
-                                            NetworkImage(snapshot.data),
+                                        CachedNetworkImageProvider(snapshot.data),
+                                            // NetworkImage(snapshot.data),
                                         radius:
                                             ScreenSizeConfig.safeBlockVertical *
                                                 3.5,
