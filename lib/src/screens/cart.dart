@@ -189,7 +189,8 @@ class _CartWidgetState extends State<CartWidget> {
                                     (item.avatar != "" && item.avatar != null)
                                         ? CircleAvatar(
                                             backgroundImage:
-                                                NetworkImage(item.avatar),
+                                            CachedNetworkImageProvider(item.avatar),
+                                                // NetworkImage(item.avatar),
                                             radius: ScreenSizeConfig
                                                     .safeBlockVertical *
                                                 6,

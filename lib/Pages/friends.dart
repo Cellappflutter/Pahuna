@@ -16,6 +16,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 
+import '../Model/currentuser.dart';
+import '../database/database.dart';
+import '../database/database.dart';
+
 class FriendsWidget extends StatefulWidget {
   final String tag;
   FriendsWidget({this.tag});
@@ -25,8 +29,12 @@ class FriendsWidget extends StatefulWidget {
 
 class _FriendsWidgetState extends State<FriendsWidget> {
   SlidableController slidableController;
+  final DatabaseService databaseService = DatabaseService();
+  
+  String friendavatar;
   @override
   Widget build(BuildContext context) {
+    final info = Provider.of<CurrentUserInfo>(context);
     return SafeArea(
       child: Scaffold(
         appBar: customAppBar(context, "Friends"),
@@ -125,9 +133,11 @@ class _FriendsWidgetState extends State<FriendsWidget> {
                                   future: StorageService().getAvatar(item.uid),
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
+                                      friendavatar=snapshot.data;
                                       return CircleAvatar(
                                         backgroundImage:
-                                            NetworkImage(snapshot.data),
+                                        CachedNetworkImageProvider(snapshot.data),
+                                            // NetworkImage(snapshot.data),
                                         radius:
                                             ScreenSizeConfig.safeBlockVertical *
                                                 3.5,
@@ -149,7 +159,13 @@ class _FriendsWidgetState extends State<FriendsWidget> {
                                       builder: (context) =>
                                           MatchProfile(userid: item.uid)));
                                 } else {
-                                  Navigator.of(context).push(MaterialPageRoute(
+                                  print(info.avatar);
+                                  print(item.avatar);
+                                  print(friendavatar);
+                                   databaseService.chatFriend(item.uid, item.name,friendavatar
+                                  , info.name, info.avatar);
+
+                                  Navigator.of(context).pushReplacement(MaterialPageRoute(
                                       builder: (context) => ChatWidget(
                                             fid: item.uid,
                                             avatar: item.avatar,

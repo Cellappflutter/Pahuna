@@ -141,7 +141,7 @@ class _NearbySearchState extends State<NearbySearch>
               showDialog(
                 context: context,
                 builder: (BuildContext context){
-                  return  CustomScroll(userData:info[i]); 
+                  return  CustomScroll(requestData:info[i],userData: widget.userData,); 
                 }
               );
  
