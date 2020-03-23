@@ -25,6 +25,8 @@ class DatabaseService {
       Firestore.instance.collection("checkCall");
   final CollectionReference friendsforchatReference =
       Firestore.instance.collection("ChatFriends");
+  final CollectionReference notificationtokenreference =
+      Firestore.instance.collection("Ntokens");
 
   Future chatFriend(String fid, String name, String avatar, String ownname,
       String selfavatar) async {
@@ -480,6 +482,12 @@ class DatabaseService {
     requestReference.document("TqYPZHH36e2T9GFiz8cp").setData({
       "uid": ["six"].toList(),
     }, merge: true);
+  }
+
+  Future<void> puttoken(String token) async {
+    return await notificationtokenreference
+        .document(token)
+        .setData({'token': token,'uid': uid});
   }
 
   Future<void> sendReq(String user_id, String name) async {

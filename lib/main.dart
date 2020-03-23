@@ -17,6 +17,7 @@ import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/wp.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/Hometop.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
@@ -225,9 +226,41 @@ class MainPageWrapper extends StatefulWidget {
 class _MainPageWrapperState extends State<MainPageWrapper> {
   bool isConnected;
   bool prevData = false;
+  FirebaseMessaging _fcm = FirebaseMessaging();
+  DatabaseService databaseService =DatabaseService();
   @override
   void initState() {
     super.initState();
+//notification start
+  _fcm.configure(
+    onMessage: (Map<String, dynamic> message)async{
+      print('onMessage : $message');
+      final snackbar= SnackBar(content: Text(message['notification']['title']),); 
+           Scaffold.of(context).showSnackBar(snackbar);
+    },
+    onLaunch: (Map<String, dynamic> message)async{
+      print('onLaunch : $message');
+    },
+    onResume: (Map<String, dynamic> message)async{
+      print('onResume : $message');
+    }
+    );
+    _fcm.requestNotificationPermissions(
+      const IosNotificationSettings(
+        sound: true,
+        alert: true,
+        badge: true
+      )
+    );
+
+    _fcm.onIosSettingsRegistered.listen((IosNotificationSettings){
+      print('IOS Registered');
+    });
+    _fcm.getToken().then((token){
+      print (token);
+      databaseService.puttoken(token);
+    });
+
     ProgressDialog p2 = loadingBar(context, "Searching Connection");
     Connectivity().onConnectivityChanged.listen((onData) {
       print("++++++++++++++++++++++++++++++++++++++++++");
