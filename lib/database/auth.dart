@@ -26,12 +26,12 @@ class AuthService {
     try {
       GoogleSignIn googleSignIn = GoogleSignIn();
       GoogleSignInAccount account = await googleSignIn.signIn();
-      GoogleSignInAuthentication authentication = await account.authentication;
+      GoogleSignInAuthentication googleAuthentication = await account.authentication;
       await Prefs.setEmailID(account.email);
       AuthResult result = await _auth.signInWithCredential(
           GoogleAuthProvider.getCredential(
-              idToken: authentication.idToken,
-              accessToken: authentication.accessToken));
+              idToken: googleAuthentication.idToken,
+              accessToken: googleAuthentication.accessToken));
       await dataInit(result);
       return result;
     } catch (e) {
