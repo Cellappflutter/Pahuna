@@ -5,10 +5,12 @@ import 'package:ecommerce_app_ui_kit/Helper/ErrorHandler.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/Data.dart';
+import 'package:ecommerce_app_ui_kit/Model/prevUser.dart';
 import 'package:ecommerce_app_ui_kit/Model/connectionstatus.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/settings.dart';
-import 'package:ecommerce_app_ui_kit/Pages/call/call.dart';
+import 'package:ecommerce_app_ui_kit/Pages/callReceive.dart';
+import 'package:ecommerce_app_ui_kit/Pages/callpage.dart';
 import 'package:ecommerce_app_ui_kit/Pages/featurepage.dart';
 import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
@@ -30,59 +32,57 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Poppins',
-        primaryColor: config.Colors().whiteColor(1),
-        brightness: Brightness.light,
-        scaffoldBackgroundColor: Color(0xFF2C2C2C),
-        accentColor: config.Colors().mainDarkColor(1),
-        hintColor: config.Colors().secondDarkColor(1),
-        focusColor: config.Colors().accentDarkColor(1),
-        textTheme: TextTheme(
-          button: TextStyle(color: Color(0xFF252525)),
-          headline: TextStyle(
-              fontSize: 20.0, color: config.Colors().secondDarkColor(1)),
-          display1: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.w600,
-              color: config.Colors().secondDarkColor(1)),
-          display2: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.w600,
-              color: config.Colors().secondDarkColor(1)),
-          display3: TextStyle(
-              fontSize: 22.0,
-              fontWeight: FontWeight.w700,
-              color: config.Colors().mainDarkColor(1)),
-          display4: TextStyle(
-              fontSize: 22.0,
-              fontWeight: FontWeight.w300,
-              color: config.Colors().secondDarkColor(1)),
-          subhead: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w500,
-              color: config.Colors().secondDarkColor(1)),
-          title: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.w600,
-              color: config.Colors().mainDarkColor(1)),
-          body1: TextStyle(
-              fontSize: 12.0, color: config.Colors().secondDarkColor(1)),
-          body2: TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.w600,
-              color: config.Colors().secondDarkColor(1)),
-          caption: TextStyle(
-              fontSize: 12.0, color: config.Colors().secondDarkColor(0.7)),
+
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'Poppins',
+          primaryColor: config.Colors().whiteColor(1),
+          brightness: Brightness.light,
+          scaffoldBackgroundColor: Color(0xFF2C2C2C),
+          accentColor: config.Colors().mainDarkColor(1),
+          hintColor: config.Colors().secondDarkColor(1),
+          focusColor: config.Colors().accentDarkColor(1),
+          textTheme: TextTheme(
+            button: TextStyle(color: Color(0xFF252525)),
+            headline: TextStyle(
+                fontSize: 20.0, color: config.Colors().secondDarkColor(1)),
+            display1: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.w600,
+                color: config.Colors().secondDarkColor(1)),
+            display2: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w600,
+                color: config.Colors().secondDarkColor(1)),
+            display3: TextStyle(
+                fontSize: 22.0,
+                fontWeight: FontWeight.w700,
+                color: config.Colors().mainDarkColor(1)),
+            display4: TextStyle(
+                fontSize: 22.0,
+                fontWeight: FontWeight.w300,
+                color: config.Colors().secondDarkColor(1)),
+            subhead: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.w500,
+                color: config.Colors().secondDarkColor(1)),
+            title: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w600,
+                color: config.Colors().mainDarkColor(1)),
+            body1: TextStyle(
+                fontSize: 12.0, color: config.Colors().secondDarkColor(1)),
+            body2: TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.w600,
+                color: config.Colors().secondDarkColor(1)),
+            caption: TextStyle(
+                fontSize: 12.0, color: config.Colors().secondDarkColor(0.7)),
+          ),
         ),
-      ),
-      home:
-          // BigMess(),
-          // NoTime(),
+        home: 
           InitializePage(),
-          // CallPage(),
-    ),
+        ),
   );
 }
 
@@ -182,11 +182,10 @@ class _AuthPageState extends State<AuthPage> {
         //  internetStream.
         return MainPageWrapper();
       } else {
-           internetStream.cancel();
+        internetStream.cancel();
         return LoginPage();
       }
     } else {
-
       return Scaffold(
         body: Stack(
           children: <Widget>[
@@ -223,6 +222,7 @@ class MainPageWrapper extends StatefulWidget {
 
 class _MainPageWrapperState extends State<MainPageWrapper> {
   bool isConnected;
+  bool prevData = false;
   @override
   void initState() {
     super.initState();
@@ -254,65 +254,87 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
     return MultiProvider(
       providers: [
         FutureProvider<List<Featuredata>>.value(value: Wordget().word()),
-        StreamProvider.value(value: DatabaseService().checkPrevUser()),
+        StreamProvider<PrevUser>.value(
+            value: DatabaseService().checkPrevUser()),
         StreamProvider<CurrentUserInfo>.value(
             value: DatabaseService().getUserData()),
         FutureProvider<String>.value(value: StorageService().getUserAvatar()),
         StreamProvider<Position>.value(value: locationStream()),
         StreamProvider<ConnectivityResult>.value(
             value: Connectivity().onConnectivityChanged),
+        StreamProvider.value(value: DatabaseService().callReceiver()),
       ],
-      child: MaterialApp(
-        title: 'Pahuna',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          fontFamily: 'Poppins',
-          primaryColor: config.Colors().whiteColor(1),
-          brightness: Brightness.dark,
-          accentColor: config.Colors().mainDarkColor(1),
-          focusColor: config.Colors().accentColor(1),
-          hintColor: config.Colors().secondColor(1),
-          textTheme: TextTheme(
-            button: TextStyle(color: Colors.white),
-            headline: TextStyle(
-                fontSize: 20.0, color: config.Colors().secondColor(1)),
-            display1: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w600,
-                color: config.Colors().secondColor(1)),
-            display2: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w600,
-                color: config.Colors().secondColor(1)),
-            display3: TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.w700,
-                color: config.Colors().mainColor(1)),
-            display4: TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.w300,
-                color: config.Colors().secondColor(1)),
-            subhead: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w500,
-                color: config.Colors().secondColor(1)),
-            title: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w600,
-                color: config.Colors().mainColor(1)),
-            body1: TextStyle(
-                fontSize: 12.0, color: config.Colors().secondColor(1)),
-            body2: TextStyle(
-                fontSize: 14.0,
-                fontWeight: FontWeight.w600,
-                color: config.Colors().secondColor(1)),
-            caption: TextStyle(
-                fontSize: 12.0, color: config.Colors().secondColor(0.6)),
-          ),
-        ),
-        home: TabsWidget(
-          currentTab: 1,
-        ),
+
+      child: Consumer<bool>(
+        builder: (context, data, child) {
+          if (data != null) {
+            print(data);
+            print(prevData);
+            if (data && data != prevData) {
+              print("-------------------------------vitra0000000000000000");
+              prevData = true;
+              DatabaseService().disableReceiveCall();
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => CallReceiver()));
+              });
+            } else {
+              prevData = false;
+            }
+          }
+          return MaterialApp(
+            title: 'Pahuna',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              fontFamily: 'Poppins',
+              primaryColor: config.Colors().whiteColor(1),
+              brightness: Brightness.dark,
+              accentColor: config.Colors().mainDarkColor(1),
+              focusColor: config.Colors().accentColor(1),
+              hintColor: config.Colors().secondColor(1),
+              textTheme: TextTheme(
+                button: TextStyle(color: Colors.white),
+                headline: TextStyle(
+                    fontSize: 20.0, color: config.Colors().secondColor(1)),
+                display1: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w600,
+                    color: config.Colors().secondColor(1)),
+                display2: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600,
+                    color: config.Colors().secondColor(1)),
+                display3: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w700,
+                    color: config.Colors().mainColor(1)),
+                display4: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w300,
+                    color: config.Colors().secondColor(1)),
+                subhead: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w500,
+                    color: config.Colors().secondColor(1)),
+                title: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w600,
+                    color: config.Colors().mainColor(1)),
+                body1: TextStyle(
+                    fontSize: 12.0, color: config.Colors().secondColor(1)),
+                body2: TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w600,
+                    color: config.Colors().secondColor(1)),
+                caption: TextStyle(
+                    fontSize: 12.0, color: config.Colors().secondColor(0.6)),
+              ),
+            ),
+            home: TabsWidget(
+              currentTab: 1,
+            ),
+          );
+        },
       ),
     );
   }
@@ -326,14 +348,10 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     ScreenSizeConfig().init(context);
     return MaterialApp(
-      //   title: 'Pahuna',
-      // initialRoute: '/',
-      //  onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData(
         fontFamily: 'Poppins',

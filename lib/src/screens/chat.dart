@@ -43,20 +43,17 @@ class _chat extends State<ChatWidget> {
   );
   @override
   Widget build(BuildContext context) {
-    //  DatabaseService.fid = widget.fid;
-    // TODO: implement build
     return StreamProvider<List<Message>>.value(
       value: DatabaseService().tomessages(widget.fid),
       child: SafeArea(
         child: Scaffold(
-          appBar: customAppBar(context, widget.name),
+          appBar: customAppBar(context, widget.name,callShow: true,uid: widget.fid),
           body: SingleChildScrollView(
             child: Column(
               children: <Widget>[
                 Consumer<List<Message>>(
                   builder: (context, value, child) {
                     if (value != null) {
-                      //    print(value[0]);
                       return SingleChildScrollView(
                         child: Container(
                           height: ScreenSizeConfig.safeBlockVertical * 85,
@@ -67,7 +64,6 @@ class _chat extends State<ChatWidget> {
                                 print("fid:::::::::::::receive");
                                 print(widget.fid);
                                 print(widget.fid.hashCode);
-
                                 if (value[index].uid == widget.fid) {
                                   return Container(
                                     child: Row(
@@ -76,12 +72,6 @@ class _chat extends State<ChatWidget> {
                                           width: ScreenSizeConfig
                                                   .safeBlockVertical *
                                               1,
-                                        ),
-                                        CircleAvatar(
-                                          backgroundImage:
-                                          CachedNetworkImageProvider(widget.avatar),
-                                              // NetworkImage(widget.avatar),
-                                          radius: 15,
                                         ),
                                         SizedBox(
                                           width: 3,

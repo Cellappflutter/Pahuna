@@ -7,7 +7,11 @@ packages:
       name: agora_rtc_engine
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "1.0.8"
+=======
+    version: "1.0.5"
+>>>>>>> b1c5fcacb0c53d0d7edee81186da61da9b41ec82
   align_positioned:
     dependency: "direct main"
     description:
@@ -50,6 +54,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
+  auto_size_text:
+    dependency: "direct main"
+    description:
+      name: auto_size_text
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   boolean_selector:
     dependency: transitive
     description:

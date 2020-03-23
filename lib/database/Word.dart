@@ -2,10 +2,6 @@ import 'package:ecommerce_app_ui_kit/Model/Data.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 import '../Model/Data.dart';
-import '../Model/Data.dart';
-import '../Model/Data.dart';
-import '../Model/Data.dart';
-import '../Model/Data.dart';
 
 class Wordget {
   WordPressAPI api = WordPressAPI('http://cellapp.info/demo/crm/wp-json/wp/v2');
