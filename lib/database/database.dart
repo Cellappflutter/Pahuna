@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app_ui_kit/Model/callreceivestatus.dart';
 import 'package:ecommerce_app_ui_kit/Model/message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
@@ -597,25 +598,21 @@ class DatabaseService {
         merge: true);
   }
 
-  Stream<bool> callReceiver() {
+  Stream<CallReceiveStatus> callReceiver() {
     return checkCallReference.document(uid).snapshots().map((data) {
-      if (data.data['receiveCall']) {
-        return true;
-      } else {
-        return false;
-      }
+      return CallReceiveStatus(data.data['uid'], data.data['receiveCall']);
     });
   }
 
   disableReceiveCall() async {
     await checkCallReference
         .document(uid)
-        .setData({"receiveCall": false}, merge: true);
+        .setData({"receiveCall": false, "uid": null}, merge: true);
   }
 
   enableUserReceiveCall(String userId) async {
     await checkCallReference
         .document(userId)
-        .setData({"receiveCall": true}, merge: true);
+        .setData({"receiveCall": true, "uid": uid}, merge: true);
   }
 }
