@@ -486,8 +486,8 @@ class DatabaseService {
 
   Future<void> puttoken(String token) async {
     return await notificationtokenreference
-        .document(token)
-        .setData({'token': token,'uid': uid});
+        .document(uid)
+        .setData({'token': token});
   }
 
   Future<void> sendReq(String user_id, String name) async {
@@ -495,7 +495,7 @@ class DatabaseService {
         .document(user_id) //end_user UID
         .collection("Pending")
         .document(uid) //currentUser UID
-        .setData({"time": DateTime.now().toUtc().toString(), "name": name});
+        .setData({"time": DateTime.now().toUtc().toString(), "name": name,"From":uid,"To":user_id});
   }
 
   Future<bool> acceptReq(
