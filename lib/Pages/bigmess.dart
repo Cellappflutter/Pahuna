@@ -70,11 +70,15 @@ class CustomScrollState extends State<CustomScroll> {
                                     CachedNetworkImageProvider(snapshot.data),
                                 fit: BoxFit.cover);
                       } else {
-                        return Image(
-                            image: CachedNetworkImageProvider(
-                                "http://via.placeholder.com/200x150"),
-                            // Image.asset('assets/user3.jpg',
-                            fit: BoxFit.cover);
+                        return
+                            // Image(
+                            // image: CachedNetworkImageProvider(
+                            //     "http://via.placeholder.com/200x150"
+                            //     ),
+                            Image.asset('assets/brokenimage.png',
+                                fit: BoxFit.cover);
+                        // fit: BoxFit.cover
+                        // );
                       }
                     },
                   ),
@@ -86,8 +90,8 @@ class CustomScrollState extends State<CustomScroll> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         // 40
-                        topRight: Radius.circular(40),
-                        topLeft: Radius.circular(40),
+                        topRight: Radius.circular(30),
+                        topLeft: Radius.circular(30),
                       ),
                       color: Colors.white),
                   height: (200 + offset * 0.5) * 1,
@@ -98,7 +102,9 @@ class CustomScrollState extends State<CustomScroll> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(top: 50),
+                          padding: EdgeInsets.only(
+                            top: 50,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,8 +117,10 @@ class CustomScrollState extends State<CustomScroll> {
                                     Text(
                                       widget.requestData.name != null
                                           ? widget.requestData.name
+                                              .toUpperCase()
                                           : "Name",
                                       style: TextStyle(
+                                        letterSpacing: 1.2,
                                         fontSize: 25,
                                         fontWeight: FontWeight.bold,
                                         // color: Colors.white
@@ -120,7 +128,9 @@ class CustomScrollState extends State<CustomScroll> {
                                     ),
                                     Text(widget.requestData.email,
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          letterSpacing: 1.2,
+                                          fontSize: 16,
+                                          fontStyle: FontStyle.italic,
                                           // color: Colors.white
                                         ))
                                   ],
@@ -152,6 +162,7 @@ class CustomScrollState extends State<CustomScroll> {
                                           : Text(
                                               'FOLLOW',
                                               style: TextStyle(
+                                                  letterSpacing: 1.2,
                                                   fontSize: 15,
                                                   color: Colors.redAccent,
                                                   fontWeight: FontWeight.bold),
@@ -172,20 +183,37 @@ class CustomScrollState extends State<CustomScroll> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 50),
+                        SizedBox(height: 30),
+                        SizedBox(
+                          child: Container(color: Colors.grey),
+                          width: 600,
+                          height: 1,
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
                         Container(
-                          margin: EdgeInsets.only(left: 5),
+                          margin: EdgeInsets.symmetric(horizontal: 7),
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
                               widget.requestData.description,
                               style: TextStyle(
-                                  fontSize: 19, fontStyle: FontStyle.italic),
+                                height: 1.4,
+                                letterSpacing: 1,
+                                fontSize: 17.5,
+                              ),
                             ),
                           ),
                         ),
+                        SizedBox(height: 30),
                         SizedBox(
-                          height: 50,
+                          child: Container(color: Colors.grey),
+                          width: 400,
+                          height: 1,
+                        ),
+                        SizedBox(
+                          height: 30,
                         ),
                         Container(
                           margin: EdgeInsets.only(left: 7),
@@ -195,10 +223,11 @@ class CustomScrollState extends State<CustomScroll> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Interest',
+                                  'INTEREST',
                                   style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.2,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w400,
                                       color:
                                           Theme.of(context).primaryColorDark),
                                 ),
@@ -251,8 +280,10 @@ class CustomScrollState extends State<CustomScroll> {
             label: Text(
               interest[i],
               style: TextStyle(
+                letterSpacing: 1.2,
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 15,
+                fontWeight: FontWeight.w800,
               ),
             ),
           ),
