@@ -1,3 +1,4 @@
+import 'package:ecommerce_app_ui_kit/Model/appbaraction.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/account.dart';
@@ -57,39 +58,31 @@ class _TabsWidgetState extends State<TabsWidget> {
           style: Theme.of(context).textTheme.display1,
         ),
         actions: <Widget>[
-          new ShoppingCartButtonWidget(
-              iconColor: Theme.of(context).hintColor,
-              labelColor: Theme.of(context).accentColor),
-          Container(
-              width: 30,
-              height: 30,
-              margin: EdgeInsets.only(top: 12.5, bottom: 12.5, right: 20),
-              child: InkWell(
-                  borderRadius: BorderRadius.circular(300),
-                  onTap: () async {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => AccountWidget(
-                              userInfo: info,
-                            )));
-                  },
-                  child: Icon(
-                    UiIcons.user_1,
-                    color: appColors.Colors().accentColor(1),
-                  ))),
-          Container(
-              width: 30,
-              height: 30,
-              margin: EdgeInsets.only(top: 12.5, bottom: 12.5, right: 20),
-              child: InkWell(
-                  borderRadius: BorderRadius.circular(300),
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Messagelist()));
-                  },
-                  child: Icon(
-                    UiIcons.chat,
-                    color: appColors.Colors().accentColor(1),
-                  ))),
+          AppBarActions(
+            uiIcon: UiIcons.user,
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AccountWidget(
+                        userInfo: info,
+                      )));
+            },
+          ),
+          AppBarActions(
+            uiIcon: UiIcons.user_1,
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AccountWidget(
+                        userInfo: info,
+                      )));
+            },
+          ),
+          AppBarActions(
+            uiIcon: UiIcons.chat,
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Messagelist()));
+            },
+          ),
         ],
       ),
       body: Stack(children: <Widget>[

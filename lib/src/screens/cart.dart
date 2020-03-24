@@ -36,20 +36,6 @@ class _CartWidgetState extends State<CartWidget> {
     return SafeArea(
       child: Scaffold(
         appBar: customAppBar(context, "Request"),
-        // appBar: AppBar(
-        //   automaticallyImplyLeading: false,
-        //   leading: new IconButton(
-        //     icon: new Icon(UiIcons.return_icon,
-        //         color: Theme.of(context).hintColor),
-        //     onPressed: () => Navigator.of(context).pop(),
-        //   ),
-        //   backgroundColor: Colors.transparent,
-        //   elevation: 0,
-        //   title: Text(
-        //     'Requests',
-        //     style: Theme.of(context).textTheme.display1,
-        //   ),
-        // ),
         body: StreamProvider.value(
           value: DatabaseService().getMatchRequest(),
           child: Consumer<List<RequestedUser>>(
@@ -65,7 +51,6 @@ class _CartWidgetState extends State<CartWidget> {
                     children: <Widget>[
                       Container(
                         height: MediaQuery.of(context).size.height * 0.45,
-                        //width: MediaQuery.of(context).size.height*0.4,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage('img/astro.png'),
