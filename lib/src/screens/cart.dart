@@ -174,8 +174,9 @@ class _CartWidgetState extends State<CartWidget> {
                                     (item.avatar != "" && item.avatar != null)
                                         ? CircleAvatar(
                                             backgroundImage:
-                                            CachedNetworkImageProvider(item.avatar),
-                                                // NetworkImage(item.avatar),
+                                                CachedNetworkImageProvider(
+                                                    item.avatar),
+                                            // NetworkImage(item.avatar),
                                             radius: ScreenSizeConfig
                                                     .safeBlockVertical *
                                                 6,
@@ -201,33 +202,8 @@ class _CartWidgetState extends State<CartWidget> {
                                                         FontWeight.w700))
                                           ],
                                         ),
-                                        SizedBox(height: 15),
-                                        Text("Time : ${item.time}"),
                                         SizedBox(width: 10),
                                         Text("uid : ${item.uid}")
-                                        // FlatButton.icon(
-                                        //     onPressed: () {
-                                        //       setState(() {
-                                        //         items.removeAt(index);
-                                        //       });
-                                        //     },
-                                        //     icon: Icon(
-                                        //       Icons.arrow_right,
-                                        //       color: Colors.green,
-                                        //     ),
-                                        //     label: Text("ACCEPT",
-                                        //         style: TextStyle(
-                                        //             color: Colors.green))),
-                                        // FlatButton.icon(
-                                        //     onPressed: null,
-                                        //     icon: Icon(
-                                        //       Icons.arrow_left,
-                                        //       color: config.Colors().mainColor(1),
-                                        //     ),
-                                        //     label: Text("REJECT",
-                                        //         style: TextStyle(
-                                        //             color: config.Colors()
-                                        //                 .mainColor(1))))
                                       ],
                                     )
                                   ],

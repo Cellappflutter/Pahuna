@@ -100,7 +100,7 @@ class _CallReceiverState extends State<CallReceiver>
                     ),
                     FutureBuilder(
                       future:
-                          StorageService().getAvatar("widget.callReceiver.uid"),
+                          StorageService().getAvatar(widget.callReceiver.uid),
                       builder: (context, AsyncSnapshot<String> snapshot) {
                         if (snapshot.hasData) {
                           if (snapshot.data != null) {
