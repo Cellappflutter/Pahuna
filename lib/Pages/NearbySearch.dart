@@ -123,14 +123,7 @@ class _NearbySearchState extends State<NearbySearch>
           child: InkWell(
             child: (avatar != null && avatar != "")
                 ? CircleAvatar(
-                    backgroundImage:
-                        //(avatar != null && avatar != "")
-                        (
-                          CachedNetworkImageProvider(avatar)
-                          // NetworkImage(avatar)
-                          ),
-
-                    //    : AssetImage("assets/facebook.png"),
+                    backgroundImage: (CachedNetworkImageProvider(avatar)),
                     radius: 15,
                   )
                 : CircleAvatar(
@@ -139,12 +132,13 @@ class _NearbySearchState extends State<NearbySearch>
                   ),
             onTap: () {
               showDialog(
-                context: context,
-                builder: (BuildContext context){
-                  return  CustomScroll(requestData:info[i],userData: widget.userData,); 
-                }
-              );
- 
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CustomScroll(
+                      requestData: info[i],
+                      userData: widget.userData,
+                    );
+                  });
             },
           ),
         ),
@@ -158,10 +152,7 @@ class _NearbySearchState extends State<NearbySearch>
     List<UserData> newInfo = List<UserData>();
     print("rangeee33333333333333333333333333rrr");
     print(info);
-    if (info != null &&
-        info.length > 0 &&
-        position.latitude != null &&
-        position.longitude != null) {
+    if (info != null && info.length > 0 && position != null) {
       print(info.length);
       for (int i = 0; i < info.length; i++) {
         print(info[i].latitude);
@@ -186,13 +177,6 @@ class _NearbySearchState extends State<NearbySearch>
   @override
   Widget build(BuildContext context) {
     _controller.repeat();
-    print(widget.userData.interest.toString() +
-        "" +
-        widget.userData.matchPrefs.toString() +
-        "" +
-        widget.userData.name +
-        "" +
-        widget.userData.continent.toString());
     print("000000000000000000000000000");
     return StreamProvider.value(
       value: _databaseService.getOnlineUsers(widget.userData),
@@ -203,11 +187,11 @@ class _NearbySearchState extends State<NearbySearch>
         ),
         child: Stack(
           children: <Widget>[
-            Text(
-                widget.position.latitude.toString() ??
-                    "" + " , " + widget.position.longitude.toString() ??
-                    "",
-                style: TextStyle(color: Colors.yellow, fontSize: 30)),
+            // Text(
+            //     widget.position.latitude.toString() ??
+            //         "" + " , " + widget.position.longitude.toString() ??
+            //         "s",
+            //     style: TextStyle(color: Colors.yellow, fontSize: 30)),
             Center(
               child: SizedBox(
                 width: widget.size * 5.125,
