@@ -160,10 +160,12 @@ class CustomScrollState extends State<CustomScroll> {
                                         setState(() {
                                           _isClicked = true;
                                         });
-                                        DatabaseService().sendReq(
-                                            widget.requestData
-                                                .uid, // patahuney ko uid and afnoname pathauna parxa
-                                            widget.userData.name);
+                                        if (!_isClicked) {
+                                          DatabaseService().sendReq(
+                                              widget.requestData
+                                                  .uid, // patahuney ko uid and afnoname pathauna parxa
+                                              widget.userData.name);
+                                        }
                                       },
                                     ),
                                   ),
