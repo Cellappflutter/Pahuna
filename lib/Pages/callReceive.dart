@@ -9,6 +9,7 @@ import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/customappbar.dart';
 import 'package:flutter/material.dart';
+import 'package:vibrate/vibrate.dart';
 import 'package:vibration/vibration.dart';
 
 class CallReceiver extends StatefulWidget {
