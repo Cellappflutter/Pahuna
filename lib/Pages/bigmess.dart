@@ -156,16 +156,15 @@ class CustomScrollState extends State<CustomScroll> {
                                                   color: Colors.redAccent,
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                      onTap: () {
-                                        setState(() {
-                                          _isClicked = true;
-                                        });
+                                      onTap: () async {
                                         if (!_isClicked) {
-                                          DatabaseService().sendReq(
+                                          await DatabaseService().sendReq(
                                               widget.requestData
                                                   .uid, // patahuney ko uid and afnoname pathauna parxa
                                               widget.userData.name);
+                                          _isClicked = true;
                                         }
+                                        setState(() {});
                                       },
                                     ),
                                   ),

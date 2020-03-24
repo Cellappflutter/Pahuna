@@ -61,23 +61,25 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
             onTap: () async {
               print("*(((((((((((((((((((((((*(*(*(*(*(*(*(*(*(*(*(*(*(");
               print(checkPrevUser.prevUser);
-              if (checkPrevUser.prevUser ?? false) {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) {
-                  return HomePage();
-                }));
-              } else {
-                await Navigator.of(context)
-                    .push(MaterialPageRoute(
-                        builder: (context) => AccountWidget(
-                              userInfo: userData,
-                              tutorialShow: true,
-                            )))
-                    .then((onValue) async {
-                  if (onValue ?? false) {
-                    showCoachMarkFAB();
-                  }
-                });
+              if (checkPrevUser != null) {
+                if (checkPrevUser.prevUser ?? false) {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return HomePage();
+                  }));
+                } else {
+                  await Navigator.of(context)
+                      .push(MaterialPageRoute(
+                          builder: (context) => AccountWidget(
+                                userInfo: userData,
+                                tutorialShow: true,
+                              )))
+                      .then((onValue) async {
+                    if (onValue ?? false) {
+                      showCoachMarkFAB();
+                    }
+                  });
+                }
               }
             },
           );
@@ -157,7 +159,7 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
                       "Looking Around For a Travel Mate",
                       style: Theme.of(context).textTheme.title.merge(TextStyle(
                           height: 1,
-                          fontSize: ScreenSizeConfig.safeBlockVertical*5,
+                          fontSize: ScreenSizeConfig.safeBlockVertical * 5,
                           color: config.Colors().yellowColor(1))),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.fade,
