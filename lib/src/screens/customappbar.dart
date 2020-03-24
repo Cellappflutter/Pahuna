@@ -66,20 +66,6 @@ PreferredSizeWidget customAppBar(BuildContext context, String title,
                 : Container(),
           ],
         ),
-        //         AppBar(
-        //   automaticallyImplyLeading: false,
-        //   leading: new IconButton(
-        //     icon: new Icon(UiIcons.return_icon,
-        //         color: Theme.of(context).hintColor),
-        //     onPressed: () => Navigator.of(context).pop(),
-        //   ),
-        //   backgroundColor: Colors.transparent,
-        //   elevation: 0,
-        //   title: Text(
-        //     'Requests',
-        //     style: Theme.of(context).textTheme.display1,
-        //   ),
-        // ),
       ),
       preferredSize: Size(MediaQuery.of(context).size.width * 100,
           ScreenSizeConfig.safeBlockHorizontal * 14));

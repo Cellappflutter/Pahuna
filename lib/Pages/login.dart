@@ -553,71 +553,77 @@ class _LoginPageState extends State<LoginPage> {
         barrierDismissible: false,
         builder: (context) {
           return Dialog(
-            child: Center(
-              child: Container(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    CircleAvatar(
-                      child: 
-                      Image(image: CachedNetworkImageProvider(user.photoUrl),
-                      fit: BoxFit.fill,
-                      alignment: Alignment.center,
-                      loadingBuilder:(context, child, data){
-                        if(data == null){
-                          return child;
-                        }else{
-                          return CircularProgressIndicator();
-                        }
-                      }),
-                      // Image.network(
-                      //   user.photoUrl,
-                      //   fit: BoxFit.fill,
-                      //   alignment: Alignment.center,
-                      //   loadingBuilder: (context, child, data) {
-                      //     if (data == null) {
-                      //       return child;
-                      //     } else {
-                      //       return CircularProgressIndicator();
-                      //     }
-                      //   },
-                      // ),
-                    ),
-                    RaisedButton(
-                      onPressed: () async {
-                        print(DatabaseService.uid);
-                        StorageReference storageReference = FirebaseStorage
-                            .instance
-                            .ref()
-                            .child(DatabaseService.uid)
-                            .child("avatar.jpg");
-                            CachedNetworkImageProvider(user.photoUrl);
-                        // NetworkImage(user.photoUrl);
-                        Uint8List image =
-                            await StorageService().imageToByte(user.photoUrl);
-                        print(user.photoUrl);
-                        StorageUploadTask task =
-                            storageReference.putData(image);
-                        await task.onComplete;
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => MainPageWrapper()),
-                            (Route<dynamic> route) => false);
-                      },
-                      child:
-                          Text("Yes, I want to use this picture as my avatar"),
-                    ),
-                    RaisedButton(
-                      onPressed: () async {
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => MainPageWrapper()),
-                            (Route<dynamic> route) => false);
-                      },
-                      child: Text("No, I dont want to set my avatar myself"),
-                    ),
-                  ],
-                ),
+            child: Container(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    "Use this picture as your avatar?",
+                    style: TextStyle(
+                        color: Theme.of(context).hintColor, fontSize: 15),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  CircleAvatar(
+                    radius: 50,
+                    child: (user != null)
+                        ? Image(
+                            image: CachedNetworkImageProvider(user.photoUrl),
+                            fit: BoxFit.fill,
+                            alignment: Alignment.center,
+                            loadingBuilder: (context, child, data) {
+                              if (data == null) {
+                                return child;
+                              } else {
+                                return CircularProgressIndicator();
+                              }
+                            })
+                        : Container(),
+                  ),
+                  SizedBox(
+                    height: 3,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      RaisedButton(
+                        color: Colors.green,
+                        onPressed: () async {
+                          print(DatabaseService.uid);
+                          StorageReference storageReference = FirebaseStorage
+                              .instance
+                              .ref()
+                              .child(DatabaseService.uid)
+                              .child("avatar.jpg");
+                          CachedNetworkImageProvider(user.photoUrl);
+                          Uint8List image =
+                              await StorageService().imageToByte(user.photoUrl);
+                          print(user.photoUrl);
+                          StorageUploadTask task =
+                              storageReference.putData(image);
+                          await task.onComplete;
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => MainPageWrapper()),
+                              (Route<dynamic> route) => false);
+                        },
+                        child: Icon(Icons.check),
+                      ),
+                      RaisedButton(
+                        color: Colors.red,
+                        onPressed: () async {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => MainPageWrapper()),
+                              (Route<dynamic> route) => false);
+                        },
+                        child: Icon(Icons.clear),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           );

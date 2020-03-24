@@ -47,111 +47,156 @@ class _chat extends State<ChatWidget> {
       value: DatabaseService().tomessages(widget.fid),
       child: SafeArea(
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomPadding: false,
           appBar: customAppBar(context, widget.name,
               callShow: true, uid: widget.fid),
-          body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Consumer<List<Message>>(
-                  builder: (context, value, child) {
-                    if (value != null) {
-                      return SingleChildScrollView(
-                        child: Container(
-                          height: ScreenSizeConfig.safeBlockVertical * 85,
-                          child: ListView.builder(
-                              reverse: false,
-                              itemCount: value.length,
-                              itemBuilder: (context, index) {
-                                print("fid:::::::::::::receive");
-                                print(widget.fid);
-                                print(widget.fid.hashCode);
-                                if (value[index].uid == widget.fid) {
-                                  return Container(
-                                    child: Row(
-                                      children: <Widget>[
-                                        SizedBox(
-                                          width: ScreenSizeConfig
-                                                  .safeBlockVertical *
-                                              1,
-                                        ),
-                                        SizedBox(
-                                          width: 3,
-                                        ),
-                                        Bubble(
-                                          style: styleSomebody,
-                                          child: Text(value[index].message),
-                                        ),
-                                      ],
+          body: Column(
+            children: <Widget>[
+              Consumer<List<Message>>(
+                builder: (context, value, child) {
+                  if (value != null) {
+                    return Expanded(
+                      child: Container(
+                        height: ScreenSizeConfig.safeBlockVertical * 85,
+                        child: ListView.builder(
+                            reverse: false,
+                            itemCount: value.length,
+                            itemBuilder: (context, index) {
+                              print("fid:::::::::::::receive");
+                              print(widget.fid);
+                              print(widget.fid.hashCode);
+                              if (value[index].uid == widget.fid) {
+                                return Container(
+                                  child: Row(
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height:
+                                            ScreenSizeConfig.safeBlockVertical *
+                                                1,
+                                      ),
+                                      Bubble(
+                                        style: styleSomebody,
+                                        child: Text(value[index].message),
+                                      ),
+                                      SizedBox(
+                                        height:
+                                            ScreenSizeConfig.safeBlockVertical *
+                                                1,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return Column(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      height: 2,
                                     ),
-                                  );
-                                } else {
-                                  return Bubble(
-                                    style: styleMe,
-                                    child: Text(value[index].message),
-                                  );
-                                }
-                              }),
-                        ),
-                      );
-                    } else
-                      return Container(
-                        child: Text("LOADING.."),
-                      );
-                  },
+                                    Bubble(
+                                      style: styleMe,
+                                      child: Text(value[index].message),
+                                    ),
+                                    SizedBox(
+                                      height: 2,
+                                    ),
+                                  ],
+                                );
+                              }
+                            }),
+                      ),
+                    );
+                  } else
+                    return Container(
+                      child: Text("LOADING.."),
+                    );
+                },
+              ),
+              Container(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                decoration: BoxDecoration(
+                  color: config.Colors().whiteColor(1),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        offset: Offset(0, -4),
+                        blurRadius: 10)
+                  ],
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: config.Colors().whiteColor(1),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
-                          offset: Offset(0, -4),
-                          blurRadius: 10)
-                    ],
-                  ),
-                  child: Container(
-                    //  height: 0,
-                    child: TextField(
-                      maxLines: 2,
-                      
-                      controller: message,
-                      style: TextStyle(color: config.Colors().mainColor(1)),
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(20),
-                        hintText: 'Enter text here',
-                        hintStyle: TextStyle(
-                            color:
-                                config.Colors().mainColor(1).withOpacity(0.5)),
-                        suffixIcon: IconButton(
-                          padding: EdgeInsets.only(right: 3),
-                          onPressed: () {
-                            messageService.sendMessage(
-                                message.text, widget.fid);
-                            Timer(Duration(milliseconds: 100), () {
-                              message.clear();
-                            });
-                          },
-                          icon: Icon(
-                            UiIcons.cursor,
-                            color: config.Colors().mainColor(1),
-                            size: 30,
-                          ),
-                        ),
-                        border:
-                            UnderlineInputBorder(borderSide: BorderSide.none),
-                        enabledBorder:
-                            UnderlineInputBorder(borderSide: BorderSide.none),
-                        focusedBorder:
-                            UnderlineInputBorder(borderSide: BorderSide.none),
+                child: TextField(
+                  maxLines: 2,
+                  controller: message,
+                  keyboardType: TextInputType.multiline,
+                  style: TextStyle(color: config.Colors().mainColor(1)),
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(left: 5, top: 8),
+                    hintText: 'Enter text here',
+                    hintStyle: TextStyle(
+                        color: config.Colors().mainColor(1).withOpacity(0.5)),
+                    suffixIcon: IconButton(
+                      padding: EdgeInsets.only(right: 3),
+                      onPressed: () {
+                        messageService.sendMessage(message.text, widget.fid);
+                        Timer(Duration(milliseconds: 100), () {
+                          message.clear();
+                        });
+                      },
+                      icon: Icon(
+                        UiIcons.cursor,
+                        color: config.Colors().mainColor(1),
+                        size: 25,
                       ),
                     ),
                   ),
-                )
-              ],
-            ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 }
+// Container(
+//                   decoration: BoxDecoration(
+//                     color: config.Colors().whiteColor(1),
+//                     boxShadow: [
+//                       BoxShadow(
+//                           color: Colors.black.withOpacity(0.5),
+//                           offset: Offset(0, -4),
+//                           blurRadius: 10)
+//                     ],
+//                   ),
+//                   child: Container(
+//                     padding: EdgeInsets.only(
+//                         bottom: MediaQuery.of(context).viewInsets.bottom),
+//                     child: TextField(
+//                       maxLines: 2,
+//                       controller: message,
+//                       style: TextStyle(color: config.Colors().mainColor(1)),
+//                       decoration: InputDecoration(
+//                         contentPadding: EdgeInsets.all(20),
+//                         hintText: 'Enter text here',
+//                         hintStyle: TextStyle(
+//                             color:
+//                                 config.Colors().mainColor(1).withOpacity(0.5)),
+//                         suffixIcon: IconButton(
+//                           padding: EdgeInsets.only(right: 3),
+//                           onPressed: () {
+//                             messageService.sendMessage(
+//                                 message.text, widget.fid);
+//                             Timer(Duration(milliseconds: 100), () {
+//                               message.clear();
+//                             });
+//                           },
+//                           icon: Icon(
+//                             UiIcons.cursor,
+//                             color: config.Colors().mainColor(1),
+//                             size: 30,
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),

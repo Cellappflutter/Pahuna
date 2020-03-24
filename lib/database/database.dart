@@ -92,7 +92,7 @@ class DatabaseService {
         .setData({
       'uid': uid,
       'message': message,
-      'date_time': Timestamp.now(),
+      'date_time': Timestamp.fromDate(DateTime.now().toUtc()),
     });
   }
 
@@ -127,9 +127,11 @@ class DatabaseService {
     }).toList();
   }
 
-  Stream<PrevUser> checkPrevUser() {
+  Future<PrevUser> checkPrevUser() {
     print("999999999999999999999999999999");
-    return reference.document(uid).snapshots().map(converte);
+    return reference.document(uid).get().then((onValue) {
+      return converte(onValue);
+    });
   }
 
   PrevUser converte(DocumentSnapshot docs) {
@@ -394,7 +396,6 @@ class DatabaseService {
       final document = snapshot.documents;
       document.forEach((doc) {
         if (doc.documentID.compareTo(uid) != 0) {
-          print(doc.data['profile']['name'].toString());
           _userData.add(UserData(
             name: doc.data['profile']['name'] ?? "",
             latitude: doc.data['latitude'] ?? "",
@@ -414,11 +415,6 @@ class DatabaseService {
     } else
       return null;
   }
-
-  // ProfileData(Map<dynamic, dynamic> data){
-
-  // }
-
   List<dynamic> _interestValues(Map<dynamic, dynamic> data) {
     return data['interest'];
   }
@@ -486,8 +482,8 @@ class DatabaseService {
 
   Future<void> puttoken(String token) async {
     return await notificationtokenreference
-        .document(token)
-        .setData({'token': token,'uid': uid});
+        .document(uid)
+        .setData({'token': token});
   }
 
   Future<void> sendReq(String user_id, String name) async {
@@ -495,7 +491,38 @@ class DatabaseService {
         .document(user_id) //end_user UID
         .collection("Pending")
         .document(uid) //currentUser UID
-        .setData({"time": DateTime.now().toUtc().toString(), "name": name});
+        .setData({
+      "time": Timestamp.fromDate(DateTime.now().toUtc()),
+      "name": name,
+      "From": uid,
+      "Seen": false,
+      "To": user_id
+    });
+  }
+
+  Future<void> seenReq(String user_id) {
+    requestReference
+        .document(uid)
+        .collection("Pending")
+        .document(user_id)
+        .setData({
+      "Seen": true,
+    }, merge: true);
+  }
+
+  Stream<List<RequestedUser>> getUnseenReq() {
+    return requestReference
+        .document(uid)
+        .collection("Pending")
+        .where("Seen", isEqualTo: false)
+        .snapshots()
+        .map(requestMapper);
+  }
+
+  Future<String> getName(String userid) {
+    return reference.document(userid).get().then((onValue) {
+      return onValue.data['name'] ?? '';
+    });
   }
 
   Future<bool> acceptReq(
@@ -506,16 +533,18 @@ class DatabaseService {
           .document(user_id) //end_user UID
           .collection("Accepted")
           .document(uid) //currentUser UID
-          .setData(
-              {"time": DateTime.now().toUtc().toString(), "name": receiverName},
-              merge: true);
+          .setData({
+        "time": Timestamp.fromDate(DateTime.now().toUtc()),
+        "name": receiverName
+      }, merge: true);
       await requestReference
           .document(uid) //end_user UID
           .collection("Accepted")
           .document(user_id) //currentUser UID
-          .setData(
-              {"time": DateTime.now().toUtc().toString(), "name": senderName},
-              merge: true);
+          .setData({
+        "time": Timestamp.fromDate(DateTime.now().toUtc()),
+        "name": senderName
+      }, merge: true);
       await requestReference
           .document(uid) //end_user UID
           .collection("Pending")
@@ -555,7 +584,7 @@ class DatabaseService {
 
   reportIssue(FlutterErrorDetails error) {
     return reportReference.document(uid).setData({
-      "time": DateTime.now().toUtc().toString(),
+      "time": Timestamp.fromDate(DateTime.now().toUtc()),
       "issue": error.summary.toString(),
     }, merge: true);
   }

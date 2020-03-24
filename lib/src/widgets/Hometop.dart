@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
+import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/prevUser.dart';
 import 'package:ecommerce_app_ui_kit/Pages/home.dart';
@@ -43,7 +44,7 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
           return InkWell(
             child: Container(
               key: _findHereContainer,
-              padding: EdgeInsets.all(24),
+              padding: EdgeInsets.all(10),
               child: Text("Find Here",
                   style: TextStyle(
                       color: config.Colors().yellowColor(1),
@@ -60,23 +61,25 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
             onTap: () async {
               print("*(((((((((((((((((((((((*(*(*(*(*(*(*(*(*(*(*(*(*(");
               print(checkPrevUser.prevUser);
-              if (checkPrevUser.prevUser ?? false) {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) {
-                  return HomePage();
-                }));
-              } else {
-                await Navigator.of(context)
-                    .push(MaterialPageRoute(
-                        builder: (context) => AccountWidget(
-                              userInfo: userData,
-                              tutorialShow: true,
-                            )))
-                    .then((onValue) async {
-                  if (onValue ?? false) {
-                    showCoachMarkFAB();
-                  }
-                });
+              if (checkPrevUser != null) {
+                if (checkPrevUser.prevUser ?? false) {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return HomePage();
+                  }));
+                } else {
+                  await Navigator.of(context)
+                      .push(MaterialPageRoute(
+                          builder: (context) => AccountWidget(
+                                userInfo: userData,
+                                tutorialShow: true,
+                              )))
+                      .then((onValue) async {
+                    if (onValue ?? false) {
+                      showCoachMarkFAB();
+                    }
+                  });
+                }
               }
             },
           );
@@ -146,10 +149,8 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Container(
-              // width: config.App(context).appWidth(40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Align(
@@ -158,20 +159,16 @@ class _hometop extends State<Hometop> with TickerProviderStateMixin {
                       "Looking Around For a Travel Mate",
                       style: Theme.of(context).textTheme.title.merge(TextStyle(
                           height: 1,
-                          fontSize: 30,
+                          fontSize: ScreenSizeConfig.safeBlockVertical * 5,
                           color: config.Colors().yellowColor(1))),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.fade,
-                      maxLines: 3,
+                      maxLines: 4,
                     ),
                   ),
                   Align(
                     alignment: Alignment.center,
-                    child: Wrap(
-                      children: <Widget>[
-                        getContainer(),
-                      ],
-                    ),
+                    child: getContainer(),
                   ),
                 ],
               ),

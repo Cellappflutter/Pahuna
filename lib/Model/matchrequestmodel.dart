@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class RequestedUser {
   String uid;
-  String time;
+  Timestamp time;
   String avatar;
   String name;
   RequestedUser({this.uid, this.time, this.avatar, this.name});

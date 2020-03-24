@@ -177,8 +177,9 @@ class _AccountWidgetState extends State<AccountWidget> {
                                           editableInfo.avatar != null)
                                       ? CircleAvatar(
                                           backgroundImage:
-                                          CachedNetworkImageProvider(editableInfo.avatar),
-                                              // NetworkImage(editableInfo.avatar),
+                                              CachedNetworkImageProvider(
+                                                  editableInfo.avatar),
+                                          // NetworkImage(editableInfo.avatar),
                                         )
                                       : CircleAvatar()))),
                     ],
@@ -409,7 +410,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                                 border: InputBorder.none,
                                 hintText: 'Full Name',
                               ),
-                              textDirection: TextDirection.rtl,
                               textAlign: TextAlign.right,
                               enabled: edit,
                               validator: (value) {
@@ -445,12 +445,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                             width: ScreenSizeConfig.safeBlockHorizontal * 50,
                             child: Text(
                               editableInfo.gender.toString(),
-                              // controller: _genderController,
-                              // decoration: InputDecoration(
-                              //   border: InputBorder.none,
-                              //   hintText: 'Gender',
-                              // ),
-                              textDirection: TextDirection.rtl,
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                   color: Theme.of(context).focusColor),
@@ -467,13 +461,11 @@ class _AccountWidgetState extends State<AccountWidget> {
                           trailing: Container(
                             width: ScreenSizeConfig.safeBlockHorizontal * 50,
                             child: TextFormField(
-                              // controller: _ageController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Age',
                               ),
                               keyboardType: TextInputType.number,
-                              textDirection: TextDirection.rtl,
                               textAlign: TextAlign.right,
                               enabled: edit,
                               validator: (value) {
@@ -482,9 +474,10 @@ class _AccountWidgetState extends State<AccountWidget> {
                                     value != "null") {
                                   editableInfo.age = int.parse(value);
                                   return null;
+                                } else {
+                                  return "Age Must be greator than 18";
                                 }
                               },
-                              // initialValue: editableInfo.age.toString(),
                               controller: _ageController,
                               style: TextStyle(
                                   color: Theme.of(context).focusColor),
@@ -501,13 +494,11 @@ class _AccountWidgetState extends State<AccountWidget> {
                           trailing: Container(
                             width: ScreenSizeConfig.safeBlockHorizontal * 50,
                             child: TextFormField(
-                              //  controller: _emailController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Email',
                               ),
                               keyboardType: TextInputType.emailAddress,
-                              textDirection: TextDirection.rtl,
                               textAlign: TextAlign.right,
                               enabled: edit,
                               validator: (value) {
@@ -520,7 +511,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                                   return "Email cannot be empty";
                                 }
                               },
-                              //  initialValue: editableInfo.email.toString(),
                               controller: _emailController,
                               style: TextStyle(
                                   color: Theme.of(context).focusColor),
@@ -548,16 +538,12 @@ class _AccountWidgetState extends State<AccountWidget> {
                     primary: false,
                     children: <Widget>[
                       ListTile(
-                        // leading: Icon(UiIcons.file_2),
-                        // title: Text('Description',
-                        //     style: Theme.of(context).textTheme.body2)),
                         title: Row(
                           children: <Widget>[
                             Icon(UiIcons.file_2),
                             SizedBox(width: 10),
                             Text(
                               "Description",
-                              // style: Theme.of(context).textTheme.body2
                             ),
                           ],
                         ),
@@ -625,6 +611,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                                 builder: (context) {
                                   return Dialog(
                                       child: Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       Wrap(children: _matchPrefsChipDesign()),
                                       FlatButton(
@@ -641,9 +628,12 @@ class _AccountWidgetState extends State<AccountWidget> {
                         dense: true,
                         title: Text("Match Preferences",
                             style: Theme.of(context).textTheme.body1),
-                        trailing: Text(editableInfo.matchPrefs.toString(),
-                            style:
-                                TextStyle(color: Theme.of(context).focusColor)),
+                        trailing: (editableInfo.matchPrefs.length > 0)
+                            ? Text("[...........]",
+                                style: TextStyle(
+                                    color: Theme.of(context).focusColor))
+                            : Text("Match Preferences",
+                                style: TextStyle(color: Colors.black38)),
                       ),
                       ListTile(
                         onTap: () async {
@@ -654,6 +644,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                                 builder: (context) {
                                   return Dialog(
                                       child: Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       Wrap(children: _continentChipDesign()),
                                       FlatButton(
@@ -670,40 +661,46 @@ class _AccountWidgetState extends State<AccountWidget> {
                         dense: true,
                         title: Text("Continent",
                             style: Theme.of(context).textTheme.body1),
-                        trailing: Text(editableInfo.continent.toString(),
-                            style:
-                                TextStyle(color: Theme.of(context).focusColor)),
+                        trailing: (editableInfo.continent.length > 0)
+                            ? Text("[...........]",
+                                style: TextStyle(
+                                    color: Theme.of(context).focusColor))
+                            : Text("Continent",
+                                style: TextStyle(color: Colors.black38)),
                       ),
                       ListTile(
-                          onTap: () async {
-                            if (edit) {
-                              await showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (context) {
-                                    return Dialog(
-                                        child: Column(
-                                      children: <Widget>[
-                                        Wrap(children: _interestChipDesign()),
-                                        FlatButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text("Ok"))
-                                      ],
-                                    ));
-                                  });
-                              setState(() {});
-                            }
-                          },
-                          dense: false,
-                          title: Text("Interest",
-                              style: Theme.of(context).textTheme.body1),
-                          trailing: Text(
-                            editableInfo.interest.toString(),
-                            style:
-                                TextStyle(color: Theme.of(context).focusColor),
-                          ))
+                        onTap: () async {
+                          if (edit) {
+                            await showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) {
+                                  return Dialog(
+                                      child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Wrap(children: _interestChipDesign()),
+                                      FlatButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("Ok"))
+                                    ],
+                                  ));
+                                });
+                            setState(() {});
+                          }
+                        },
+                        dense: false,
+                        title: Text("Interest",
+                            style: Theme.of(context).textTheme.body1),
+                        trailing: (editableInfo.interest.length > 0)
+                            ? Text("[...........]",
+                                style: TextStyle(
+                                    color: Theme.of(context).focusColor))
+                            : Text("Interest",
+                                style: TextStyle(color: Colors.black38)),
+                      )
                     ],
                   ),
                 ),
