@@ -44,7 +44,7 @@ class CustomScrollState extends State<CustomScroll> {
 
   @override
   Widget build(BuildContext context) {
-   // final info = Provider.of<CurrentUserInfo>(context);
+    // final info = Provider.of<CurrentUserInfo>(context);
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(
@@ -134,8 +134,8 @@ class CustomScrollState extends State<CustomScroll> {
                                   });
                                 },
                                 child: AnimatedContainer(
-                                  duration: Duration(seconds: 1),
-                                  width: width,
+                                  duration: Duration(milliseconds: 400),
+                                  width: (_isClicked) ? 40 : width,
                                   height: 40,
                                   decoration: BoxDecoration(
                                     color: (_isClicked)
@@ -157,10 +157,13 @@ class CustomScrollState extends State<CustomScroll> {
                                                   fontWeight: FontWeight.bold),
                                             ),
                                       onTap: () {
+                                        setState(() {
+                                          _isClicked = true;
+                                        });
                                         DatabaseService().sendReq(
-                                            widget.requestData.uid,// patahuney ko uid and afnoname pathauna parxa
+                                            widget.requestData
+                                                .uid, // patahuney ko uid and afnoname pathauna parxa
                                             widget.userData.name);
-
                                       },
                                     ),
                                   ),
@@ -205,8 +208,8 @@ class CustomScrollState extends State<CustomScroll> {
                                   spacing: 6.0,
                                   runSpacing: 2.0,
                                   alignment: WrapAlignment.spaceEvenly,
-                                  children:
-                                      _interestChip(widget.requestData.interest))
+                                  children: _interestChip(
+                                      widget.requestData.interest))
                             ],
                           ),
                         ),

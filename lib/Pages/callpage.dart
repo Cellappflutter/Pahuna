@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:ecommerce_app_ui_kit/Helper/constant.dart';
+import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:flutter/material.dart';
 
@@ -21,8 +22,9 @@ class _CallPageState extends State<CallPage> {
   final _infoStrings = <String>[];
   bool muted = false;
   bool video = true;
+  double dx = ScreenSizeConfig.safeBlockHorizontal * 100-150;
+  double dy = 0;
 
-  @override
   void dispose() {
     _users.clear();
     _finalUsers.clear();
@@ -65,8 +67,6 @@ class _CallPageState extends State<CallPage> {
       int uid,
       int elapsed,
     ) async {
-      await DatabaseService()
-          .onCallStart();
     };
 
     AgoraRtcEngine.onLeaveChannel = () async {
@@ -77,7 +77,6 @@ class _CallPageState extends State<CallPage> {
       });
     };
     AgoraRtcEngine.onConnectionLost = () async {
-    
       Navigator.pop(context);
     };
     AgoraRtcEngine.onUserJoined = (int uid, int elapsed) {
@@ -187,13 +186,38 @@ class _CallPageState extends State<CallPage> {
             child: Stack(
           children: <Widget>[
             _expandedVideoRow([views[1]]),
-            Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                height: 150,
-                width: 150,
-                child: _expandedVideoRow(
-                  [views[0]],
+            Positioned(
+              left: dx,
+              top: dy,
+              child: GestureDetector(
+                onPanUpdate: (details) {
+                  setState(() {
+                    if ((dx + details.delta.dx + 150) >
+                        ScreenSizeConfig.safeBlockHorizontal * 100) {
+                      dx = ScreenSizeConfig.safeBlockHorizontal * 100 - 150;
+                    } else if ((dx + details.delta.dx) <
+                        ScreenSizeConfig.safeBlockHorizontal * 0) {
+                      dx = 0;
+                    } else {
+                      dx += details.delta.dx;
+                    }
+                    if ((dy + details.delta.dy + 150) >
+                        ScreenSizeConfig.safeBlockVertical * 100) {
+                      dy = ScreenSizeConfig.safeBlockVertical * 100 - 150;
+                    } else if ((dy + details.delta.dy) <
+                        ScreenSizeConfig.safeBlockVertical * 0) {
+                      dy = 0;
+                    } else {
+                      dy += details.delta.dy;
+                    }
+                  });
+                },
+                child: Container(
+                  height: 150,
+                  width: 150,
+                  child: _expandedVideoRow(
+                    [views[0]],
+                  ),
                 ),
               ),
             ),
@@ -225,32 +249,52 @@ class _CallPageState extends State<CallPage> {
     return Container(
       alignment: Alignment.bottomCenter,
       padding: const EdgeInsets.symmetric(vertical: 48),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          RawMaterialButton(
-            onPressed: _onToggleVideo,
-            child: Icon(
-              video ? Icons.videocam : Icons.videocam_off,
-              color: video ? Colors.blueAccent : Colors.white,
-              size: 20.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: video ? Colors.white : Colors.blueAccent,
-            padding: const EdgeInsets.all(12.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              RawMaterialButton(
+                onPressed: _onToggleVideo,
+                child: Icon(
+                  video ? Icons.videocam : Icons.videocam_off,
+                  color: video ? Colors.blueAccent : Colors.white,
+                  size: 20.0,
+                ),
+                shape: CircleBorder(),
+                elevation: 2.0,
+                fillColor: video ? Colors.white : Colors.blueAccent,
+                padding: const EdgeInsets.all(12.0),
+              ),
+              RawMaterialButton(
+                onPressed: _onToggleMute,
+                child: Icon(
+                  muted ? Icons.mic_off : Icons.mic,
+                  color: muted ? Colors.white : Colors.blueAccent,
+                  size: 20.0,
+                ),
+                shape: CircleBorder(),
+                elevation: 2.0,
+                fillColor: muted ? Colors.blueAccent : Colors.white,
+                padding: const EdgeInsets.all(12.0),
+              ),
+              RawMaterialButton(
+                onPressed: _onSwitchCamera,
+                child: Icon(
+                  Icons.switch_camera,
+                  color: Colors.blueAccent,
+                  size: 20.0,
+                ),
+                shape: CircleBorder(),
+                elevation: 2.0,
+                fillColor: Colors.white,
+                padding: const EdgeInsets.all(12.0),
+              )
+            ],
           ),
-          RawMaterialButton(
-            onPressed: _onToggleMute,
-            child: Icon(
-              muted ? Icons.mic_off : Icons.mic,
-              color: muted ? Colors.white : Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: muted ? Colors.blueAccent : Colors.white,
-            padding: const EdgeInsets.all(12.0),
+          SizedBox(
+            height: 10,
           ),
           RawMaterialButton(
             onPressed: () => _onCallEnd(context),
@@ -264,18 +308,6 @@ class _CallPageState extends State<CallPage> {
             fillColor: Colors.redAccent,
             padding: const EdgeInsets.all(15.0),
           ),
-          RawMaterialButton(
-            onPressed: _onSwitchCamera,
-            child: Icon(
-              Icons.switch_camera,
-              color: Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          )
         ],
       ),
     );
