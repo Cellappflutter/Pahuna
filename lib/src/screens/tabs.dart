@@ -2,6 +2,7 @@ import 'package:ecommerce_app_ui_kit/Model/appbaraction.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/account.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/cart.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/home.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/messages.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/DrawerWidget.dart';
@@ -61,10 +62,8 @@ class _TabsWidgetState extends State<TabsWidget> {
           AppBarActions(
             uiIcon: UiIcons.user,
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AccountWidget(
-                        userInfo: info,
-                      )));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => CartWidget()));
             },
           ),
           AppBarActions(

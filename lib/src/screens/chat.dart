@@ -124,31 +124,32 @@ class _chat extends State<ChatWidget> {
                         blurRadius: 10)
                   ],
                 ),
-                  child: TextField(
-                    maxLines: 2,
-                    controller: message,
-                    style: TextStyle(color: config.Colors().mainColor(1)),
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(left: 5,top: 8),
-                      hintText: 'Enter text here',
-                      hintStyle: TextStyle(
-                          color: config.Colors().mainColor(1).withOpacity(0.5)),
-                      suffixIcon: IconButton(
-                        padding: EdgeInsets.only(right: 3),
-                        onPressed: () {
-                          messageService.sendMessage(message.text, widget.fid);
-                          Timer(Duration(milliseconds: 100), () {
-                            message.clear();
-                          });
-                        },
-                        icon: Icon(
-                          UiIcons.cursor,
-                          color: config.Colors().mainColor(1),
-                          size: 25,
-                        ),
+                child: TextField(
+                  maxLines: 2,
+                  controller: message,
+                  keyboardType: TextInputType.multiline,
+                  style: TextStyle(color: config.Colors().mainColor(1)),
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(left: 5, top: 8),
+                    hintText: 'Enter text here',
+                    hintStyle: TextStyle(
+                        color: config.Colors().mainColor(1).withOpacity(0.5)),
+                    suffixIcon: IconButton(
+                      padding: EdgeInsets.only(right: 3),
+                      onPressed: () {
+                        messageService.sendMessage(message.text, widget.fid);
+                        Timer(Duration(milliseconds: 100), () {
+                          message.clear();
+                        });
+                      },
+                      icon: Icon(
+                        UiIcons.cursor,
+                        color: config.Colors().mainColor(1),
+                        size: 25,
                       ),
                     ),
                   ),
+                ),
               ),
             ],
           ),

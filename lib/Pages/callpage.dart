@@ -80,6 +80,7 @@ class _CallPageState extends State<CallPage> {
       Navigator.pop(context);
     };
     AgoraRtcEngine.onUserJoined = (int uid, int elapsed) {
+
       ///When 2nd user joins
       print("user JOINEDD");
       setState(() {
