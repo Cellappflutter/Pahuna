@@ -66,7 +66,7 @@ class _chat extends State<ChatWidget> {
                               print("fid:::::::::::::receive");
                               print(widget.fid);
                               print(widget.fid.hashCode);
-                              if (value[index].uid == widget.fid) {
+                              if (value[index].from == widget.fid) {
                                 return Container(
                                   child: Row(
                                     children: <Widget>[
