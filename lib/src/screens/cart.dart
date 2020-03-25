@@ -104,7 +104,7 @@ class _CartWidgetState extends State<CartWidget> {
                           print(direction.index);
                           if (direction == DismissDirection.startToEnd) {
                             DatabaseService()
-                                .acceptReq(item.uid, item.name, info.name)
+                                .acceptReq(item.uid, item.name)
                                 .then((onValue) {
                               setState(() {
                                 items.removeAt(index);
