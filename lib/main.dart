@@ -79,7 +79,7 @@ void main() {
         ),
       ),
       home:
-         // AccountWidget(),
+       // newConnectionRequest(),
          InitializePage(),
     ),
   );
@@ -258,7 +258,8 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
                 barrierDismissible: false,
                 builder: (context) {
                   return newConnectionRequest(
-                      requestedUser: onData, name: name);
+                      requestedUser: onData, name: name
+                      );
                 });
           });
         }
