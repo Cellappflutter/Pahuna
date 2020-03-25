@@ -113,7 +113,7 @@ class DatabaseService {
   }
   Future<String>getUserDescription(String userId){
     return reference.document(userId).get().then((onValue){
-      return onValue['description'];
+      return onValue.data['profile']['description']??"No Description available";
     });
   }
 
@@ -504,12 +504,13 @@ class DatabaseService {
 
   Future<String> getName(String userid) {
     return reference.document(userid).get().then((onValue) {
-      return onValue.data['name'] ?? '';
+      return onValue.data['profile']['name'] ?? '';
     });
   }
 
   Future<bool> acceptReq(
-      String user_id, String senderName, String receiverName) async {
+      String user_id, String senderName) async {
+       String receiverName= await getName(uid);
     try {
       await requestReference
           .document(user_id) //end_user UID
