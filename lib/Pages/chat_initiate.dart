@@ -24,7 +24,6 @@ class _StartChat extends State<Start_Chat> {
       body: StreamProvider.value(value: DatabaseService().getAllMatched(),
       child: Consumer<List<RequestedUser>>(
           builder: (context, items, child) {
-            print(items);
             if (items == null) {
               return Center(
                 child: CircularProgressIndicator(),
@@ -35,8 +34,6 @@ class _StartChat extends State<Start_Chat> {
                     Text("No Connection Request, Why dont u send some request"),
               );
             } else {
-              print(items);
-              //  pr.dismiss();
               return Container(
                 color: Colors.transparent,
                 child: ListView.builder(

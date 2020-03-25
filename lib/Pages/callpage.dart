@@ -70,7 +70,6 @@ class _CallPageState extends State<CallPage> {
     };
 
     AgoraRtcEngine.onLeaveChannel = () async {
-      print("User Leavedd");
       setState(() {
         _users.clear();
         _finalUsers.clear();
