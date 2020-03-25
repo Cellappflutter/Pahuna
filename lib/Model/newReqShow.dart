@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/UiHelper/tinder_Card.dart';
+import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/matchrequestmodel.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
@@ -10,7 +11,6 @@ import 'package:provider/provider.dart';
 class newConnectionRequest extends StatefulWidget {
   final List<RequestedUser> requestedUser;
   final String name;
-
   const newConnectionRequest({Key key, this.requestedUser, this.name})
       : super(key: key);
   @override
@@ -34,43 +34,102 @@ class _newConnectionRequestState extends State<newConnectionRequest>
                 : 1,
             stackNum: 3,
             swipeEdge: 4.0,
-            maxWidth: MediaQuery.of(context).size.width * 0.9,
-            maxHeight: MediaQuery.of(context).size.width * 0.9,
-            minWidth: MediaQuery.of(context).size.width * 0.8,
-            minHeight: MediaQuery.of(context).size.width * 0.8,
+            maxWidth: MediaQuery.of(context).size.width * 0.8,
+            maxHeight: MediaQuery.of(context).size.width * 1,
+            minWidth: MediaQuery.of(context).size.width * 0.7,
+            minHeight: MediaQuery.of(context).size.width * 0.9,
             cardBuilder: (context, index) => Card(
               color: Colors.white,
               child: Stack(
                 children: <Widget>[
-                  FutureBuilder(
-                      future: StorageService()
-                          .getAvatar(widget.requestedUser[index].uid),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          if (snapshot.data != '') {
-                            return CachedNetworkImage(
-                              imageUrl: snapshot.data,
-                              height: MediaQuery.of(context).size.height * 0.6,
-                              fit: BoxFit.cover,
-                            );
-                          } else {
-                            return Image.asset("assets/placeholder.png",
-                                fit: BoxFit.cover,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.6);
-                          }
-                        }
-                        return Center(child: CircularProgressIndicator());
-                      }),
-                  Align(
-                    alignment: Alignment.bottomCenter,
+                  Column(
+                    children: <Widget>[
+                      Container(
+                        child: FutureBuilder<String>(
+                            future: StorageService()
+                                .getAvatar(widget.requestedUser[index].uid),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                if (snapshot.data != '') {
+                                  return CachedNetworkImage(
+                                    imageUrl: snapshot.data,
+                                    fit: BoxFit.fill,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    height:
+                                        MediaQuery.of(context).size.width * 0.7,
+                                  );
+                                }
+                                // else {
+                                //   return Padding(
+                                //     padding: const EdgeInsets.all(5.0),
+                                //     child: ClipRRect(
+                                //       borderRadius: BorderRadius.circular(10.0),
+                                //       child: Image.asset(
+                                //         "assets/user3.jpg",
+                                //         width:
+                                //             MediaQuery.of(context).size.width *
+                                //                 0.8,
+                                //         height:
+                                //             MediaQuery.of(context).size.width *
+                                //                 0.7,
+                                //         fit: BoxFit.fill,
+                                //       ),
+                                //     ),
+                                //   );
+                                // }
+                              }
+                              return Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Image.asset(
+                                    "assets/user3.jpg",
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    height:
+                                        MediaQuery.of(context).size.width * 0.7,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              );
+                            }),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.width * 0.04),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          child: FutureBuilder(
+                              future: DatabaseService().getUserDescription(
+                                  widget.requestedUser[index].uid),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  if (snapshot.data != null) {
+                                    return Text(
+                                      snapshot.data.toString(),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontStyle: FontStyle.italic),
+                                    );
+                                  }
+                                }
+                                return Container(
+                                  height: 1,
+                                );
+                              }),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    right: MediaQuery.of(context).size.width * 0.20,
+                    top: MediaQuery.of(context).size.width * 0.65,
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         InkWell(
                           child: Container(
-                            margin: EdgeInsets.only(bottom: 10, left: 5),
+                            //  margin: EdgeInsets.only(bottom: 10, left: 5),
                             padding: EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
@@ -79,13 +138,14 @@ class _newConnectionRequestState extends State<newConnectionRequest>
                             child: Icon(
                               Icons.check,
                               color: Colors.white,
-                              size: 35,
+                              size: 25,
                             ),
                           ),
                           onTap: () {
                             controller.triggerLeft();
                           },
                         ),
+                        SizedBox(width: ScreenSizeConfig.blockSizeHorizontal*5),
                         InkWell(
                           onTap: () {
                             controller.triggerRight();
@@ -100,7 +160,7 @@ class _newConnectionRequestState extends State<newConnectionRequest>
                             child: Icon(
                               Icons.clear,
                               color: Colors.white,
-                              size: 35,
+                              size: 25,
                             ),
                           ),
                         ),

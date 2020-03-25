@@ -31,8 +31,6 @@ class _CartWidgetState extends State<CartWidget> {
   @override
   Widget build(BuildContext context) {
     final info = Provider.of<CurrentUserInfo>(context);
-    final pr = loadingBar(context, "Fetching data");
-    // TODO: implement build
     return SafeArea(
       child: Scaffold(
         appBar: customAppBar(context, "Request"),
@@ -67,154 +65,109 @@ class _CartWidgetState extends State<CartWidget> {
                   ),
                 );
               } else {
-                print(items);
-                pr.dismiss();
-                return Container(
-                  margin: EdgeInsetsDirectional.only(top: 2),
-                  color: Colors.transparent,
-                  child: ListView.builder(
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      final item = items[index];
-                      return Container(
-                        margin: EdgeInsets.only(bottom: 15),
-                        // margin: EdgeInsets.only(top:6,left:6,right:6,bottom:25),
-                        // padding: EdgeInsets.all(10.0),
-                        height: ScreenSizeConfig.safeBlockVertical * 20,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          border: Border.all(
-                              // color: Colors.blue,
-                              width: 2),
-                          boxShadow: [
-                            BoxShadow(
-                                // color: Colors.white70,
-                                blurRadius: 10.0,
-                                spreadRadius: 3.0,
-                                offset: Offset(5, 5))
-                          ],
+                return ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    final item = items[index];
+                    return Container(
+                      child: Dismissible(
+                        key: dismissableKey,
+                        background: Container(
+                          color: Colors.green,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Icon(
+                                Icons.check,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
-                        child: Dismissible(
-                          key: dismissableKey,
-                          background: Container(
-                            color: Colors.green,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                ),
+                        secondaryBackground: Container(
+                          color: Color(0xFFE15244),
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Icon(
+                                UiIcons.trash,
+                                color: Colors.white,
                               ),
                             ),
                           ),
-                          secondaryBackground: Container(
-                            color: Color(0xFFE15244),
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: Icon(
-                                  UiIcons.trash,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                          onDismissed: (direction) {
-                            print(direction.index);
-
-                            if (direction == DismissDirection.startToEnd) {
-                              DatabaseService()
-                                  .acceptReq(item.uid, item.name, info.name)
-                                  .then((onValue) {
-                                setState(() {
-                                  items.removeAt(index);
-                                  print(
-                                      "-------------------------requesteduser----------------");
-                                  print(item.name);
-                                  print(
-                                      "------------------------currentuser-----------------------");
-                                  print(info.name);
-                                });
-                              });
-                            } else {
+                        ),
+                        onDismissed: (direction) {
+                          print(direction.index);
+                          if (direction == DismissDirection.startToEnd) {
+                            DatabaseService()
+                                .acceptReq(item.uid, item.name, info.name)
+                                .then((onValue) {
                               setState(() {
                                 items.removeAt(index);
                               });
-                            }
-                          },
-                          child: Column(
+                            });
+                          } else {
+                            setState(() {
+                              items.removeAt(index);
+                            });
+                          }
+                        },
+                        child: Card(
+                          color: Colors.white,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Container(
-                                // margin: EdgeInsets.all(8),
-                                // padding: EdgeInsets.all(9.0),
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                  border:
-                                      Border.all(color: Colors.blue, width: 2),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.white70,
-                                        blurRadius: 10.0,
-                                        spreadRadius: 3.0,
-                                        offset: Offset(5, 5))
-                                  ],
-                                ),
-                                height: ScreenSizeConfig.blockSizeVertical * 18,
-                                child: Center(
-                                    child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    (item.avatar != "" && item.avatar != null)
-                                        ? CircleAvatar(
-                                            backgroundImage:
-                                                CachedNetworkImageProvider(
-                                                    item.avatar),
-                                            // NetworkImage(item.avatar),
-                                            radius: ScreenSizeConfig
-                                                    .safeBlockVertical *
-                                                6,
-                                          )
-                                        : CircleAvatar(
-                                            // backgroundImage: NetworkImage(item.avatar),
-                                            radius: ScreenSizeConfig
-                                                    .safeBlockVertical *
-                                                6,
-                                          ),
-                                    Column(
-                                      children: <Widget>[
-                                        SizedBox(height: 10),
-                                        Row(
-                                          children: <Widget>[
-                                            Text(
-                                                item.name
-                                                    .toString()
-                                                    .toUpperCase(),
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w700))
-                                          ],
-                                        ),
-                                        SizedBox(width: 10),
-                                        Text("uid : ${item.uid}")
-                                      ],
+                              (item.avatar != "" && item.avatar != null)
+                                  ? Container(
+                                      child: CachedNetworkImage(
+                                        imageUrl: item.avatar,
+                                        height:
+                                            ScreenSizeConfig.safeBlockVertical *
+                                                13,
+                                        fit: BoxFit.fill,
+                                      ),
                                     )
-                                  ],
-                                )),
-                              )
+                                  : Container(
+                                      child: Image.asset(
+                                        "assets/placeholder.png",
+                                        height:
+                                            ScreenSizeConfig.safeBlockVertical *
+                                                13,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    child: Text(
+                                        item.name.toString().toUpperCase(),
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w700)),
+                                  ),
+                                  Text("Wants to connect with you",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w300
+                                      ))
+                                ],
+                              ),
+
+                              //Text("uid : ${item.uid}")
                             ],
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 );
               }
             },
