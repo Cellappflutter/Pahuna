@@ -10,9 +10,7 @@ import 'package:provider/provider.dart';
 
 class newConnectionRequest extends StatefulWidget {
   final List<RequestedUser> requestedUser;
-  final String name;
-  const newConnectionRequest({Key key, this.requestedUser, this.name})
-      : super(key: key);
+  const newConnectionRequest({Key key, this.requestedUser}) : super(key: key);
   @override
   _newConnectionRequestState createState() => _newConnectionRequestState();
 }
@@ -193,11 +191,10 @@ class _newConnectionRequestState extends State<newConnectionRequest>
             swipeCompleteCallback:
                 (CardSwipeOrientation orientation, int index) async {
               if (orientation == CardSwipeOrientation.LEFT) {
-                if (widget.name != null) {
-                  await DatabaseService().acceptReq(
-                      widget.requestedUser[index].uid,
-                      widget.requestedUser[index].name);
-                }
+                await DatabaseService().acceptReq(
+                    widget.requestedUser[index].uid,
+                    widget.requestedUser[index].name);
+
                 checkLastIndex(index);
               }
               if (orientation == CardSwipeOrientation.RIGHT) {

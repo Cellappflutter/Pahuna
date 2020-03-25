@@ -79,8 +79,8 @@ void main() {
         ),
       ),
       home:
-       // newConnectionRequest(),
-         InitializePage(),
+          // newConnectionRequest(),
+          InitializePage(),
     ),
   );
 }
@@ -252,14 +252,11 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
       if (onData != null) {
         if (onData.length > 0) {
           WidgetsBinding.instance.addPostFrameCallback((_) async {
-            String name = await DatabaseService().getName(DatabaseService.uid);
             showDialog(
                 context: context,
                 barrierDismissible: false,
                 builder: (context) {
-                  return newConnectionRequest(
-                      requestedUser: onData, name: name
-                      );
+                  return newConnectionRequest(requestedUser: onData);
                 });
           });
         }
