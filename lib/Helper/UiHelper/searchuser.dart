@@ -252,13 +252,6 @@ class _SearchUserFormState extends State<SearchUserForm> {
 
   insertData() {
     SearchPrefsdata searchPrefsdata = SearchPrefsdata();
-    print("d--------------------------d");
-    print(range);
-    print(matchPrefs);
-    print(interest);
-    print(continents);
-    print(continent);
-    print("dddddddddddddddd");
     searchPrefsdata.matchPrefs = matchPrefs;
     searchPrefsdata.interest = interest;
     searchPrefsdata.continent = continent;

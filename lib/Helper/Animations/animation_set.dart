@@ -97,9 +97,6 @@ class AnimatorSetState extends State<AnimatorSet>
 }
 
 class AnimatedLogo extends StatelessWidget {
-  ///opacityNotify：监听透明度变化，将正在变化的动画值作为opacityValue
-  ///opacity：透明度动画集合
-  ///opacityValue：最终显示的透明度
   List<ValueNotifier<double>> opacityNotify = List()..length = 16;
   List<Animation<double>> opacity = List()..length = 16;
   double opacityValue;
@@ -135,7 +132,6 @@ class AnimatedLogo extends StatelessWidget {
   final List<Animator> animatorSet;
   final int duration;
 
-  ///解析交错动画
   void _parseAnimation() {
     double start = 0.0;
     double end = 0.0;
@@ -144,18 +140,6 @@ class AnimatedLogo extends StatelessWidget {
       start = anim.delay / duration + end; //延时+上次结束
       end = start + anim.duration / duration; //上次开始+时长
 
-      if (debug) {
-        print("duration=" +
-            duration.toString() +
-            " anim.duration=" +
-            anim.duration.toString() +
-            " anim.delay=" +
-            anim.delay.toString() +
-            " start=" +
-            start.toString() +
-            " end=" +
-            end.toString());
-      }
 
       if (anim is Serial) {
         ///并行动画处理
@@ -253,18 +237,6 @@ class AnimatedLogo extends StatelessWidget {
 
   ///解析动画每帧动画
   void _parseAnimationItem(Animator anim, double start, double end) {
-    if (debug) {
-      print("anim = " +
-          anim.toString() +
-          "| anim.from = " +
-          anim.from.toString() +
-          "| anim.to = " +
-          anim.to.toString() +
-          "| start = " +
-          start.toString() +
-          "| end = " +
-          end.toString());
-    }
 
     if (anim is W) {
       width = Tween<double>(

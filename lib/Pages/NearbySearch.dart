@@ -92,24 +92,8 @@ class _NearbySearchState extends State<NearbySearch>
 
   Future<List<Widget>> userWidgets(List<UserData> info) async {
     List<Widget> widgets = List<Widget>();
-    print("UserWidgets Vitra");
-
-    print(info);
     for (int i = 0; i < info.length; i++) {
       String avatar = await StorageService().getAvatar(info[i].uid);
-      print("------------------------------");
-      print(avatar);
-      print(info[i].uid);
-      print(info.length);
-      print(-(ScreenSizeConfig.blockSizeHorizontal *
-          8 *
-          cos(info[i].bearing) *
-          (info[i].distance / 1000)));
-      print(ScreenSizeConfig.blockSizeVertical *
-          8 *
-          sin(info[i].bearing) *
-          (info[i].distance / 1000));
-
       widgets.add(
         AlignPositioned(
           dx: -(ScreenSizeConfig.blockSizeHorizontal *
@@ -150,19 +134,16 @@ class _NearbySearchState extends State<NearbySearch>
   Future<List<UserData>> getRangedData(
       List<UserData> info, Position position) async {
     List<UserData> newInfo = List<UserData>();
-    print("rangeee33333333333333333333333333rrr");
-    print(info);
+
     if (info != null && info.length > 0 && position != null) {
-      print(info.length);
+
       for (int i = 0; i < info.length; i++) {
-        print(info[i].latitude);
+
         info[i].bearing = geodesy.bearingBetweenTwoGeoPoints(
             LatLng(position.latitude, position.longitude),
             LatLng(info[i].latitude, info[i].longitude));
         info[i].distance = await Geolocator().distanceBetween(position.latitude,
             position.longitude, info[i].latitude, info[i].longitude);
-        print(info[i].distance);
-        print("dssssssss");
         if ((info[i].distance < (DiscoverySetting.range * 1000)) &&
             (info[i].age > DiscoverySetting.agePrefs.start) &&
             (info[i].age < DiscoverySetting.agePrefs.end)) {
@@ -177,7 +158,6 @@ class _NearbySearchState extends State<NearbySearch>
   @override
   Widget build(BuildContext context) {
     _controller.repeat();
-    print("000000000000000000000000000");
     return StreamProvider.value(
       value: _databaseService.getOnlineUsers(widget.userData),
       child: CustomPaint(
@@ -218,7 +198,6 @@ class _NearbySearchState extends State<NearbySearch>
                             }
                           });
                     } else {
-                      print("----------------NODATA_-----------------");
                       return Container(
                         height: 0,
                       );
