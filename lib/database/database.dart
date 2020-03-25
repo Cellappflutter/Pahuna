@@ -111,12 +111,17 @@ class DatabaseService {
         .snapshots()
         .map(_messagesnapshot);
   }
+  Future<String>getUserDescription(String userId){
+    return reference.document(userId).get().then((onValue){
+      return onValue['description'];
+    });
+  }
 
   List<Message> _messagesnapshot(QuerySnapshot docs) {
     return docs.documents.map((f) {
       return Message(
-        from: f.data['from'] ?? '',
-        to:f.data['to']?? '',
+        from: f.data['From'] ?? '',
+        to:f.data['To']?? '',
         message: f.data['message'] ?? '',
         timestamp: f.data['date_time'] ?? '',
       );
