@@ -42,7 +42,6 @@ class _FriendsWidgetState extends State<FriendsWidget> {
           value: DatabaseService().getAllMatched(),
           child: Consumer<List<RequestedUser>>(
             builder: (context, items, child) {
-              print(items);
               if (items == null) {
                 return Center(
                   child: CircularProgressIndicator(),

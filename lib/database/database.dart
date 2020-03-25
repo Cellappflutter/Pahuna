@@ -77,14 +77,8 @@ class DatabaseService {
   }
 
   Future sendMessage(String message, String fid) async {
-    print(uid);
-    print(fid);
-    print(uid.hashCode);
-    print(fid.hashCode);
     int chatid = uid.hashCode + fid.hashCode;
     String cid = chatid.toString();
-    print(cid);
-    print(chatid);
     return await chatReference
         .document(cid)
         .collection(cid)
@@ -128,18 +122,13 @@ class DatabaseService {
   }
 
   Future<PrevUser> checkPrevUser() {
-    print("999999999999999999999999999999");
     return reference.document(uid).get().then((onValue) {
       return converte(onValue);
     });
   }
 
   PrevUser converte(DocumentSnapshot docs) {
-    print(docs.data);
-    print(uid);
-    print("&&&&&&&&&&&&&&&&&&&&");
     if (docs.data.containsKey('profile')) {
-      print("00000000000000000000000000000");
       return PrevUser(prevUser: true);
     } else {
       return PrevUser(prevUser: false);
@@ -186,10 +175,6 @@ class DatabaseService {
   }
 
   Stream<List<UserData>> getOnlineUsers(CurrentUserInfo searchPrefsdata) {
-    print("Checkuser");
-    print(searchPrefsdata.continent);
-    print(searchPrefsdata.interest);
-    print(searchPrefsdata.matchPrefs);
     Query q = reference;
     Query datatwo = _matchPrefsQuery(searchPrefsdata.matchPrefs, q);
     Query datathree = _matchContinentsQuery(searchPrefsdata.continent, datatwo);
@@ -203,14 +188,12 @@ class DatabaseService {
     switch (matchPrefs.length) {
       case 1:
         {
-          print("one");
           query = dataone.where("profile.matchPrefs." + matchPrefs[0],
               isEqualTo: true);
           return query;
         }
       case 2:
         {
-          print("two");
           query = dataone
               .where("profile.matchPrefs." + matchPrefs[0], isEqualTo: true)
               .where("profile.matchPrefs." + matchPrefs[1], isEqualTo: true);
@@ -218,7 +201,6 @@ class DatabaseService {
         }
       case 3:
         {
-          print("three");
           query = dataone
               .where("profile.matchPrefs." + matchPrefs[0], isEqualTo: true)
               .where("profile.matchPrefs." + matchPrefs[1], isEqualTo: true)
@@ -297,14 +279,12 @@ class DatabaseService {
   }
 
   updateLocation(Position position) async {
-    print(uid);
     try {
       return await reference.document(uid).updateData({
         "latitude": position.latitude,
         "longitude": position.longitude,
       });
     } catch (e) {
-      print(uid);
       return await reference.document(uid).setData({
         "latitude": position.latitude,
         "longitude": position.longitude,
@@ -321,7 +301,6 @@ class DatabaseService {
       return await reference.document(uid).setData({
         "profile": _prefsProfileData(searchPrefsdata),
       }, merge: true);
-      // }
     }
   }
 
@@ -333,7 +312,7 @@ class DatabaseService {
     return profileData;
   }
 
-  updateUserProfile(CurrentUserInfo userInfo) async {
+  Future<void>updateUserProfile(CurrentUserInfo userInfo) async {
     try {
       return await reference.document(uid).updateData({
         "profile": _updateProfileData(userInfo),
@@ -342,7 +321,6 @@ class DatabaseService {
       return await reference.document(uid).setData({
         "profile": _updateProfileData(userInfo),
       }, merge: true);
-      // }
     }
   }
 
@@ -422,8 +400,6 @@ class DatabaseService {
   List<dynamic> _continentValues(Map<dynamic, dynamic> data) {
     List<dynamic> _list = List<dynamic>();
     Map<dynamic, dynamic> continents = data['continent'];
-    print("d");
-    print(continents);
     if (continents['Asian']) {
       _list.add('Asian');
     }
@@ -528,7 +504,6 @@ class DatabaseService {
   Future<bool> acceptReq(
       String user_id, String senderName, String receiverName) async {
     try {
-      print("dssssssssssssssssssss");
       await requestReference
           .document(user_id) //end_user UID
           .collection("Accepted")
@@ -557,8 +532,7 @@ class DatabaseService {
   }
 
   Stream<List<RequestedUser>> getAllMatched() {
-    print(uid);
-    print("----------------");
+
     return requestReference
         .document(uid)
         .collection("Accepted")

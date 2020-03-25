@@ -1,7 +1,6 @@
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/constant.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
-import 'package:ecommerce_app_ui_kit/Pages/profileedit.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -102,61 +101,11 @@ class _ProfilePageState extends State<ProfilePage> {
               if (snapshot.hasData) {
                 // Navigator.pop(context);
                 userInfo.avatar = snapshot.data;
-                print(snapshot);
               }
               return Container(
-                //  color: Colors.red,
+              
                 height: AppColors.pageheight,
-                // height: 200,
-                // appBar: AppBar(
-                //   // elevation: 10.0,
-                //   backgroundColor: Colors.transparent,
-                //   title: customSearch,
-                //   centerTitle: true,
-                //   leading: IconButton(
-                //     icon: Icon(Icons.arrow_back_ios),
-                //     onPressed: () {
-                //       // print('1st pressed');
-                //       // Navigator.push(
-                //       //     context,
-                //       //     MaterialPageRoute(
-                //       //         builder: (context) => TestPage(
-                //       //               userInfo: UserInfo(),
-                //       //             )));
-                //       // print('pressed');
-                //     },
-                //   ),
-
-                //   actions: <Widget>[
-                //     IconButton(
-                //       onPressed: () {
-                //         setState(
-                //           () {
-                //             if (this.customIcon.icon == Icons.search) {
-                //               this.customIcon = Icon(Icons.cancel);
-                //               this.customSearch = TextField(
-                //                 textInputAction: TextInputAction.go,
-                //                 decoration: InputDecoration(
-                //                   border: InputBorder.none,
-                //                   hintText: "Search",
-                //                 ),
-                //                 style: TextStyle(
-                //                   color: Colors.white,
-                //                   fontSize: 16.0,
-                //                 ),
-                //               );
-                //             } else {
-                //               this.customIcon = Icon(Icons.search);
-                //               this.customSearch = Text('Profile Test');
-                //             }
-                //           },
-                //         );
-                //       },
-                //       icon: customIcon,
-                //     )
-                //   ],
-                // ),
-                //child: SingleChildScrollView(
+               
                 child: Stack(
                   children: <Widget>[
                     Container(
@@ -177,9 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       profileCardDetail,
 
                     RaisedButton(onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              ProfileEdit(userInfo: userInfo)));
+
                     }),
 
                     Column(
@@ -216,38 +163,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ],
                     ),
-                    // ClipRRect(
-                    //   borderRadius: BorderRadius.circular(170.0),
-                    //   child: Container(
-                    //     margin: EdgeInsets.only(
-                    //         top: 490, left: 15.0, right: 15.0, bottom: 65.9),
-                    //     width: MediaQuery.of(context).size.width,
-                    //     child: ListView.builder(
-                    //       scrollDirection: Axis.horizontal,
-                    //       itemCount: 3,
-                    //       itemBuilder: (BuildContext contex, int index) {
-                    //         return Container(
-                    //           height: MediaQuery.of(context).size.height,
-                    //           width: 150.0,
-                    //           child: CircleAvatar(
-                    //             radius: 20.0,
-                    //             backgroundColor: Colors.black38,
-                    //             child: Column(
-                    //               children: <Widget>[
-                    //                 Text("userInfo[index].id"),
-                    //                 Text("userInfo[index].name"),
-                    //                 Text("userInfo[index].location"),
-                    //               ],
-                    //             ),
-                    //           ),
-                    //         );
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
+                    
                   ],
                 ),
-                // ),
               );
             },
           );

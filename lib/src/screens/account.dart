@@ -1,4 +1,6 @@
+import 'dart:collection';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
@@ -12,11 +14,9 @@ import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/customappbar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:highlighter_coachmark/highlighter_coachmark.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:provider/provider.dart';
 
 class AccountWidget extends StatefulWidget {
   final bool tutorialShow;
@@ -29,25 +29,23 @@ class AccountWidget extends StatefulWidget {
 typedef void VoidCallback(int data);
 
 class _AccountWidgetState extends State<AccountWidget> {
-  bool prefgender = false;
-  int prefcount = 0;
   TextEditingController _genderController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _ageController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
-  bool prefcontinent = false;
-  bool prefinterest = false;
+  FocusNode _nameFocusNode = FocusNode();
+  FocusNode _ageFocusNode = FocusNode();
+  FocusNode _emailFocusNode = FocusNode();
   File _image;
   bool _isLocalImage = false;
   bool edit = false;
-
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   CurrentUserInfo editableInfo;
   int check = 1;
   GlobalKey _editButtonKey = GlobalKey();
   GlobalKey _avatarKey = GlobalKey();
-
+  String tempGender;
   @override
   void initState() {
     if (widget.tutorialShow ?? false) {
@@ -58,9 +56,11 @@ class _AccountWidgetState extends State<AccountWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final position = Provider.of<Position>(context);
+    ScreenSizeConfig().init(context);
+
     if (check == 1) {
       editableInfo = widget.userInfo ?? CurrentUserInfo();
+      tempGender = widget.userInfo.gender;
       if (editableInfo.continent == null) {
         editableInfo.continent = [];
       }
@@ -72,14 +72,12 @@ class _AccountWidgetState extends State<AccountWidget> {
       if (editableInfo.interest == null) {
         editableInfo.interest = [];
       }
-      _nameController.text = editableInfo.name.toString() ?? '';
+      _nameController.text = editableInfo.name ?? '';
       _ageController.text = editableInfo.age.toString() ?? '';
-      _emailController.text = editableInfo.email.toString() ?? '';
-      _descriptionController.text = editableInfo.description.toString() ?? '';
+      _emailController.text = editableInfo.email ?? '';
+      _descriptionController.text = editableInfo.description ?? '';
       check = 2;
     }
-    print("-------------");
-    print(editableInfo.name);
     return MaterialApp(
       home: SafeArea(
         child: Scaffold(
@@ -109,7 +107,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                                       editableInfo.email != '')
                                   ? (editableInfo.email)
                                   : ("your@email"),
-                              // editableInfo.email,
                               style: Theme.of(context).textTheme.caption,
                             )
                           ],
@@ -154,8 +151,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                                                                 url, error) =>
                                                             Icon(Icons.error),
                                                       ),
-                                                      // Image.network(
-                                                      //     editableInfo.avatar),
                                                     )
                                                   : Container(
                                                       color: Colors.red,
@@ -179,7 +174,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                                           backgroundImage:
                                               CachedNetworkImageProvider(
                                                   editableInfo.avatar),
-                                          // NetworkImage(editableInfo.avatar),
                                         )
                                       : CircleAvatar()))),
                     ],
@@ -205,90 +199,145 @@ class _AccountWidgetState extends State<AccountWidget> {
                             child: InkWell(
                           onTap: () async {
                             if (edit) {
-                              showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: Text("Are you Sure"),
-                                      content: Text("Do you want to Save?"),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                            onPressed: () async {
-                                              ProgressDialog pr = loadingBar(
-                                                  context,
-                                                  "Updating Information");
-                                              if (_formKey.currentState.validate() &&
-                                                  _descriptionController.text !=
-                                                      null &&
-                                                  _descriptionController.text
-                                                          .trim() !=
-                                                      '' &&
-                                                  editableInfo
-                                                          .matchPrefs.length >
-                                                      0 &&
-                                                  editableInfo
-                                                          .continent.length >
-                                                      0 &&
-                                                  editableInfo.interest.length >
-                                                      0) {
-                                                pr.show();
-                                                editableInfo.description =
-                                                    _descriptionController.text;
-                                                await DatabaseService()
-                                                    .updateUserProfile(
-                                                        editableInfo);
-                                                PaintingBinding
-                                                    .instance.imageCache
-                                                    .clear();
-                                                await uploadAvatar(context);
-                                                await Prefs.setRangeData(
-                                                    DiscoverySetting.range);
-                                                await Prefs.setEndAgeData(
-                                                    DiscoverySetting
-                                                        .agePrefs.end);
-                                                await Prefs.setStartAgeData(
-                                                    DiscoverySetting
-                                                        .agePrefs.start);
-                                                pr.dismiss();
-                                                Navigator.of(context).pop();
-                                                setState(() {
-                                                  edit = !edit;
-                                                });
-                                                if (widget.tutorialShow ??
-                                                    false) {
-                                                  _readyForMatch(position);
-                                                }
-                                              } else {
-                                                Navigator.of(context).pop();
-                                                showDialog(
-                                                    context: (context),
-                                                    builder: (context) {
-                                                      return Dialog(
-                                                        child: Text(
-                                                          'Invalid form, please enter all field ',
-                                                          style: TextStyle(
-                                                              fontSize: 20),
-                                                        ),
-                                                      );
-                                                    });
-                                              }
-                                            },
-                                            child: Text("Yes")),
-                                        FlatButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                edit = !edit;
-                                                check = 1;
-                                                _image = null;
-                                                _isLocalImage = false;
-                                              });
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text("NO"))
-                                      ],
-                                    );
-                                  });
+                              ProgressDialog pr =
+                                  loadingBar(context, "Updating Information");
+                              if (_formKey.currentState.validate() &&
+                                  _descriptionController.text != null &&
+                                  _descriptionController.text.trim() != '' &&
+                                  editableInfo.continent.length > 0 &&
+                                  editableInfo.matchPrefs.length > 0 &&
+                                  editableInfo.interest.length > 0) {
+                                pr.show();
+                                editableInfo.description =
+                                    _descriptionController.text;
+                                editableInfo.gender = tempGender;
+                                PaintingBinding.instance.imageCache.clear();
+                                await Future.wait([
+                                  DatabaseService()
+                                      .updateUserProfile(editableInfo),
+                                  uploadAvatar(context),
+                                  Prefs.setRangeData(DiscoverySetting.range),
+                                  Prefs.setEndAgeData(
+                                      DiscoverySetting.agePrefs.end),
+                                  Prefs.setStartAgeData(
+                                      DiscoverySetting.agePrefs.start),
+                                ]);
+                                pr.dismiss();
+                                setState(() {
+                                  edit = !edit;
+                                });
+                                if (widget.tutorialShow ?? false) {
+                                  _readyForMatch();
+                                }
+                              } else {
+                                showDialog(
+                                    context: (context),
+                                    builder: (context) {
+                                      return Dialog(
+                                        child: Container(
+                                          padding: EdgeInsets.all(8),
+                                          child: Text(
+                                            'Invalid form, please enter all field ',
+                                            style: TextStyle(fontSize: 20),
+                                          ),
+                                        ),
+                                      );
+                                    });
+                              }
+                              // showDialog(
+                              //     context: context,
+                              //     barrierDismissible: false,
+                              //     builder: (context) {
+                              //       return AlertDialog(
+                              //         title: Text("Are you Sure"),
+                              //         content: Text("Do you want to Save?"),
+                              //         actions: <Widget>[
+                              //           FlatButton(
+                              //               onPressed: () async {
+                              //                 ProgressDialog pr = loadingBar(
+                              //                     context,
+                              //                     "Updating Information");
+                              //                 if (_formKey.currentState.validate() &&
+                              //                     _descriptionController.text !=
+                              //                         null &&
+                              //                     _descriptionController.text
+                              //                             .trim() !=
+                              //                         '' &&
+                              //                     editableInfo
+                              //                             .continent.length >
+                              //                         0 &&
+                              //                     editableInfo
+                              //                             .matchPrefs.length >
+                              //                         0 &&
+                              //                     editableInfo.interest.length >
+                              //                         0) {
+                              //                   pr.show();
+                              //                   editableInfo.description =
+                              //                       _descriptionController.text;
+                              //                   editableInfo.gender =
+                              //                       tempGender;
+                              //                   PaintingBinding
+                              //                       .instance.imageCache
+                              //                       .clear();
+                              //                   await Future.wait([
+                              //                     DatabaseService()
+                              //                         .updateUserProfile(
+                              //                             editableInfo),
+                              //                     uploadAvatar(context),
+                              //                     Prefs.setRangeData(
+                              //                         DiscoverySetting.range),
+                              //                     Prefs.setEndAgeData(
+                              //                         DiscoverySetting
+                              //                             .agePrefs.end),
+                              //                     Prefs.setStartAgeData(
+                              //                         DiscoverySetting
+                              //                             .agePrefs.start),
+                              //                   ]);
+
+                              //                   pr.dismiss();
+                              //                   Navigator.of(context).pop();
+                              //                   setState(() {
+                              //                     edit = !edit;
+                              //                   });
+                              //                   if (widget.tutorialShow ??
+                              //                       false) {
+                              //                     _readyForMatch();
+                              //                   }
+                              //                 } else {
+                              //                   Navigator.of(context).pop();
+                              //                   showDialog(
+                              //                       context: (context),
+                              //                       builder: (context) {
+                              //                         return Dialog(
+                              //                           child: Container(
+                              //                             padding:
+                              //                                 EdgeInsets.all(8),
+                              //                             child: Text(
+                              //                               'Invalid form, please enter all field ',
+                              //                               style: TextStyle(
+                              //                                   fontSize: 20),
+                              //                             ),
+                              //                           ),
+                              //                         );
+                              //                       });
+                              //                 }
+                              //               },
+                              //               child: Text("Yes")),
+                              //           // FlatButton(
+                              //           //     onPressed: () {
+                              //           //       edit = !edit;
+                              //           //       check = 1;
+                              //           //       _image = null;
+                              //           //       _isLocalImage = false;
+                              //           //       setState(() {});
+                              //           //       Navigator.of(context).pop();
+                              //           //     },
+                              //           //     child: Text("NO"))
+                              //         ],
+                              //       );
+                              //     }).then((onValue) {
+                              //   Navigator.pop(context);
+                              // });
                             } else {
                               setState(() {
                                 edit = !edit;
@@ -391,13 +440,14 @@ class _AccountWidgetState extends State<AccountWidget> {
                               SizedBox(width: 10),
                               Text(
                                 "Profile Settings",
-                                // style: Theme.of(context).textTheme.body2
                               )
                             ],
                           ),
                         ),
                         ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            _nameFocusNode.requestFocus();
+                          },
                           dense: true,
                           title: Text(
                             'Full name',
@@ -422,6 +472,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                                   return "Name cannot be empty";
                                 }
                               },
+                              focusNode: _nameFocusNode,
                               controller: _nameController,
                               style: TextStyle(
                                   color: Theme.of(context).focusColor),
@@ -444,7 +495,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                           trailing: Container(
                             width: ScreenSizeConfig.safeBlockHorizontal * 50,
                             child: Text(
-                              editableInfo.gender.toString(),
+                              tempGender.toString(),
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                   color: Theme.of(context).focusColor),
@@ -452,7 +503,9 @@ class _AccountWidgetState extends State<AccountWidget> {
                           ),
                         ),
                         ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            _ageFocusNode.requestFocus();
+                          },
                           dense: true,
                           title: Text(
                             'Age',
@@ -468,6 +521,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.right,
                               enabled: edit,
+                              focusNode: _ageFocusNode,
                               validator: (value) {
                                 if (int.parse(value) >= 18 &&
                                     int.parse(value) != null &&
@@ -485,7 +539,9 @@ class _AccountWidgetState extends State<AccountWidget> {
                           ),
                         ),
                         ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            _emailFocusNode.requestFocus();
+                          },
                           dense: true,
                           title: (Text(
                             'Email',
@@ -501,6 +557,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                               keyboardType: TextInputType.emailAddress,
                               textAlign: TextAlign.right,
                               enabled: edit,
+                              focusNode: _emailFocusNode,
                               validator: (value) {
                                 if (value != null &&
                                     value.trim() != "" &&
@@ -589,7 +646,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                     primary: false,
                     children: <Widget>[
                       ListTile(
-                        // leading: Icon(UiIcons.loupe),
                         title: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -597,7 +653,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                             SizedBox(width: 10),
                             Text(
                               "Search Preferences",
-                              // style: Theme.of(context).textTheme.body2,
                             )
                           ],
                         ),
@@ -628,12 +683,17 @@ class _AccountWidgetState extends State<AccountWidget> {
                         dense: true,
                         title: Text("Match Preferences",
                             style: Theme.of(context).textTheme.body1),
-                        trailing: (editableInfo.matchPrefs.length > 0)
-                            ? Text("[...........]",
-                                style: TextStyle(
-                                    color: Theme.of(context).focusColor))
-                            : Text("Match Preferences",
-                                style: TextStyle(color: Colors.black38)),
+                        subtitle: Wrap(
+                          spacing: 5,
+                          children: getChips(editableInfo.matchPrefs,
+                              ProfileMatchPreferences().colors),
+                        ),
+                        // trailing: (editableInfo.matchPrefs.length > 0)
+                        //     ? Text("[...........]",
+                        //         style: TextStyle(
+                        //             color: Theme.of(context).focusColor))
+                        //     : Text("Match Preferences",
+                        //         style: TextStyle(color: Colors.black38)),
                       ),
                       ListTile(
                         onTap: () async {
@@ -661,12 +721,17 @@ class _AccountWidgetState extends State<AccountWidget> {
                         dense: true,
                         title: Text("Continent",
                             style: Theme.of(context).textTheme.body1),
-                        trailing: (editableInfo.continent.length > 0)
-                            ? Text("[...........]",
-                                style: TextStyle(
-                                    color: Theme.of(context).focusColor))
-                            : Text("Continent",
-                                style: TextStyle(color: Colors.black38)),
+                        subtitle: Wrap(
+                          spacing: 5,
+                          children: getChips(editableInfo.continent,
+                              ProfileContinentPreferences().colors),
+                        ),
+                        // trailing: (editableInfo.continent.length > 0)
+                        //     ? Text("[...........]",
+                        //         style: TextStyle(
+                        //             color: Theme.of(context).focusColor))
+                        //     : Text("Continent",
+                        //         style: TextStyle(color: Colors.black38)),
                       ),
                       ListTile(
                         onTap: () async {
@@ -694,12 +759,17 @@ class _AccountWidgetState extends State<AccountWidget> {
                         dense: false,
                         title: Text("Interest",
                             style: Theme.of(context).textTheme.body1),
-                        trailing: (editableInfo.interest.length > 0)
-                            ? Text("[...........]",
-                                style: TextStyle(
-                                    color: Theme.of(context).focusColor))
-                            : Text("Interest",
-                                style: TextStyle(color: Colors.black38)),
+                        subtitle: Wrap(
+                          spacing: 5,
+                          children: getChips(editableInfo.interest,
+                              ProfileInterestPreferences().colors),
+                        ),
+                        // trailing: (editableInfo.interest.length > 0)
+                        //     ? Text("[...........]",
+                        //         style: TextStyle(
+                        //             color: Theme.of(context).focusColor))
+                        //     : Text("Interest",
+                        //         style: TextStyle(color: Colors.black38)),
                       )
                     ],
                   ),
@@ -730,7 +800,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                             SizedBox(width: 10),
                             Text(
                               "Discovery Settings",
-                              // style: Theme.of(context).textTheme.body2
                             ),
                           ],
                         )),
@@ -752,7 +821,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                             min: 0,
                             max: 20,
                             divisions: 10,
-                            // label: DiscoverySetting.range.toString(),
                           ),
                         ),
                         ListTile(
@@ -799,26 +867,18 @@ class _AccountWidgetState extends State<AccountWidget> {
                     primary: false,
                     children: <Widget>[
                       ListTile(
-                        // leading: Icon(UiIcons.settings_1),
-                        // title: Text(
-                        //   'Account Settings',
-                        //   style: Theme.of(context).textTheme.body2,
-                        // ),
                         title: Row(
                           children: <Widget>[
                             Icon(UiIcons.settings),
                             SizedBox(width: 10),
                             Text(
-                              "Accoutn Settings",
-                              // style: Theme.of(context).textTheme.body2
+                              "Account Settings",
                             ),
                           ],
                         ),
                       ),
                       ListTile(
-                        onTap: () {
-                          Navigator.of(context).pushNamed('/Languages');
-                        },
+                        onTap: () {},
                         dense: true,
                         title: Row(
                           children: <Widget>[
@@ -840,9 +900,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                         ),
                       ),
                       ListTile(
-                        onTap: () {
-                          Navigator.of(context).pushNamed('/Help');
-                        },
+                        onTap: () {},
                         dense: true,
                         title: Row(
                           children: <Widget>[
@@ -881,7 +939,7 @@ class _AccountWidgetState extends State<AccountWidget> {
     }
   }
 
-  uploadAvatar(BuildContext context) async {
+  Future<bool> uploadAvatar(BuildContext context) async {
     try {
       String fileName = _image.path.split('/').removeLast();
       print(fileName);
@@ -916,15 +974,11 @@ class _AccountWidgetState extends State<AccountWidget> {
                   ? editableInfo.matchPrefs.contains(pp.preferences[i])
                   : false,
               pressElevation: 5.0,
-              // disabledColor: Colors.red,
               selectedColor: Colors.blue,
               onSelected: (bool selected) {
                 if (selected) {
-                  prefcount++;
-                  prefgender = true;
                   editableInfo.matchPrefs.add(pp.preferences[i]);
                 } else {
-                  prefcount--;
                   editableInfo.matchPrefs.remove(pp.preferences[i]);
                 }
 
@@ -943,7 +997,6 @@ class _AccountWidgetState extends State<AccountWidget> {
   }
 
   List<Widget> _continentChipDesign() {
-    int count = 0;
     ProfileContinentPreferences pp = ProfileContinentPreferences();
     List<Widget> widgets = List<Widget>();
     for (int i = 0; i < pp.preferences.length; i++) {
@@ -963,16 +1016,9 @@ class _AccountWidgetState extends State<AccountWidget> {
               selectedColor: Colors.blue,
               onSelected: (bool selected) {
                 if (selected) {
-                  count++;
                   editableInfo.continent.add(pp.preferences[i]);
                 } else {
-                  count--;
                   editableInfo.continent.remove(pp.preferences[i]);
-                }
-                if (count > 0) {
-                  prefcontinent = true;
-                } else {
-                  prefcontinent = false;
                 }
                 setState(() {});
               },
@@ -989,10 +1035,8 @@ class _AccountWidgetState extends State<AccountWidget> {
   }
 
   List<Widget> _interestChipDesign() {
-    int count = 0;
     ProfileInterestPreferences pp = ProfileInterestPreferences();
     List<Widget> widgets = List<Widget>();
-    print("++++++++++++++++++++++");
     for (int i = 0; i < pp.preferences.length; i++) {
       Widget widget1 = StatefulBuilder(
         builder: (BuildContext context, setState) {
@@ -1010,16 +1054,9 @@ class _AccountWidgetState extends State<AccountWidget> {
               selectedColor: Colors.blue,
               onSelected: (bool selected) {
                 if (selected) {
-                  count++;
                   editableInfo.interest.add(pp.preferences[i]);
                 } else {
-                  count--;
                   editableInfo.interest.remove(pp.preferences[i]);
-                }
-                if (count > 0) {
-                  prefinterest = true;
-                } else {
-                  prefinterest = false;
                 }
                 setState(() {});
               },
@@ -1031,6 +1068,23 @@ class _AccountWidgetState extends State<AccountWidget> {
         },
       );
       widgets.add(widget1);
+    }
+    return widgets;
+  }
+
+  getChips(List<dynamic> chips, List<int> chipsColor) {
+    List<Widget> widgets = List<Widget>();
+    for (int i = 0; i < chips.length; i++) {
+      widgets.add(
+        ChoiceChip(
+          labelStyle: TextStyle(color: Colors.black),
+          label: Text(
+            chips[i],
+          ),
+          selected: true,
+          selectedColor: Color(chipsColor[i]),
+        ),
+      );
     }
     return widgets;
   }
@@ -1049,34 +1103,34 @@ class _AccountWidgetState extends State<AccountWidget> {
                 RadioListTile(
                     title: Text("Male"),
                     value: "Male",
-                    groupValue: editableInfo.gender,
+                    groupValue: tempGender,
                     onChanged: (value) {
                       setState(() {
-                        editableInfo.gender = value;
+                        tempGender = value;
                       });
                     }),
                 RadioListTile(
                     title: Text("Female"),
                     value: "Female",
-                    groupValue: editableInfo.gender,
+                    groupValue: tempGender,
                     onChanged: (value) {
                       setState(() {
-                        editableInfo.gender = value;
+                        tempGender = value;
                       });
                     }),
                 RadioListTile(
                     title: Text("Others"),
                     value: "Others",
-                    groupValue: editableInfo.gender,
+                    groupValue: tempGender,
                     onChanged: (value) {
                       setState(() {
-                        editableInfo.gender = value;
+                        tempGender = value;
                       });
                     }),
                 Center(
                   child: FlatButton(
                       onPressed: () {
-                        _genderController.text = editableInfo.gender.toString();
+                        _genderController.text = tempGender.toString();
                         Navigator.of(context).pop();
                       },
                       child: Text("OK")),
@@ -1119,7 +1173,7 @@ class _AccountWidgetState extends State<AccountWidget> {
     });
   }
 
-  void _readyForMatch(Position position) {
+  void _readyForMatch() {
     showDialog(
         context: context,
         barrierDismissible: false,

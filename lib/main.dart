@@ -13,6 +13,7 @@ import 'package:ecommerce_app_ui_kit/Model/settings.dart';
 import 'package:ecommerce_app_ui_kit/Pages/callReceive.dart';
 import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/account.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
@@ -78,8 +79,8 @@ void main() {
         ),
       ),
       home:
-          //newConnectionRequest(),
-          InitializePage(),
+         // AccountWidget(),
+         InitializePage(),
     ),
   );
 }
@@ -174,10 +175,8 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     if (gotoLogin != null && islocation == true) {
-      print(DatabaseService.uid);
       if (!gotoLogin) {
         internetStream.cancel();
-        //  internetStream.
         return MainPageWrapper();
       } else {
         internetStream.cancel();
@@ -226,7 +225,6 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
   @override
   void initState() {
     super.initState();
-//notification start
     _fcm.configure(onMessage: (Map<String, dynamic> message) async {
       print('onMessage : $message');
       final snackbar = SnackBar(
@@ -267,8 +265,6 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
       }
     });
     Connectivity().onConnectivityChanged.listen((onData) {
-      print("++++++++++++++++++++++++++++++++++++++++++");
-      print(onData);
       if (onData == ConnectivityResult.none) {
         isConnected = false;
         WidgetsBinding.instance.addPostFrameCallback((_) => p2.show());
@@ -308,10 +304,7 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
       child: Consumer<CallReceiveStatus>(
         builder: (context, data, child) {
           if (data != null) {
-            print(data);
-            print(prevData);
             if (data.receiveCall && data.receiveCall != prevData) {
-              print("-------------------------------vitra0000000000000000");
               prevData = true;
               DatabaseService().onCallStart();
               DatabaseService().disableReceiveCall();

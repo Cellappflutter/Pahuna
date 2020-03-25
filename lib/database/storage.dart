@@ -24,13 +24,11 @@ class StorageService {
 
   Future<String> getUserAvatar() async {
     try {
-      print("11111111111111111111111111");
       return await storageReference
           .child(uid)
           .child('avatar.jpg')
           .getDownloadURL();
     } catch (e) {
-      print("22222222222222222222222222222");
       return "";
     }
   }
@@ -52,10 +50,8 @@ class StorageService {
   }
 
   Future<List<RequestedUser>> getAvatarList(List<RequestedUser> data) async {
-    print("dssdsd");
     for (int i = 0; i < data.length; i++) {
       data[i].avatar = await getAvatar(data[i].uid);
-      // print(data[i].avatar);
     }
     return data;
   }
