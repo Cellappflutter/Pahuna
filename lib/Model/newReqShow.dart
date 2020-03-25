@@ -51,13 +51,38 @@ class _newConnectionRequestState extends State<newConnectionRequest>
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 if (snapshot.data != '') {
-                                  return CachedNetworkImage(
-                                    imageUrl: snapshot.data,
-                                    fit: BoxFit.fill,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.8,
-                                    height:
-                                        MediaQuery.of(context).size.width * 0.7,
+                                  return Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      child: CachedNetworkImage(
+                                        imageUrl: snapshot.data,
+                                        fit: BoxFit.fill,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.8,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.7,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      child: Image.asset(
+                                        "assets/placeholder.png",
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.8,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.7,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
                                   );
                                 }
                                 // else {
@@ -79,18 +104,11 @@ class _newConnectionRequestState extends State<newConnectionRequest>
                                 //   );
                                 // }
                               }
-                              return Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  child: Image.asset(
-                                    "assets/user3.jpg",
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.8,
-                                    height:
-                                        MediaQuery.of(context).size.width * 0.7,
-                                    fit: BoxFit.fill,
-                                  ),
+                              return Container(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                height: MediaQuery.of(context).size.width * 0.7,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
                                 ),
                               );
                             }),
@@ -122,51 +140,52 @@ class _newConnectionRequestState extends State<newConnectionRequest>
                       ),
                     ],
                   ),
-                  Positioned(
-                    right: MediaQuery.of(context).size.width * 0.20,
-                    top: MediaQuery.of(context).size.width * 0.65,
-                    child: Row(
-                      children: <Widget>[
-                        InkWell(
-                          child: Container(
-                            //  margin: EdgeInsets.only(bottom: 10, left: 5),
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.green,
-                            ),
-                            child: Icon(
-                              Icons.check,
-                              color: Colors.white,
-                              size: 25,
-                            ),
-                          ),
-                          onTap: () {
-                            controller.triggerLeft();
-                          },
-                        ),
-                        SizedBox(width: ScreenSizeConfig.blockSizeHorizontal*5),
-                        InkWell(
-                          onTap: () {
-                            controller.triggerRight();
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: 10, left: 5),
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.red,
-                            ),
-                            child: Icon(
-                              Icons.clear,
-                              color: Colors.white,
-                              size: 25,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Positioned(
+                  //   right: MediaQuery.of(context).size.width * 0.20,
+                  //   top: MediaQuery.of(context).size.width * 0.65,
+                  //   child: Row(
+                  //     children: <Widget>[
+                  //       InkWell(
+                  //         child: Container(
+                  //           //  margin: EdgeInsets.only(bottom: 10, left: 5),
+                  //           padding: EdgeInsets.all(8),
+                  //           decoration: BoxDecoration(
+                  //             shape: BoxShape.circle,
+                  //             color: Colors.green,
+                  //           ),
+                  //           child: Icon(
+                  //             Icons.check,
+                  //             color: Colors.white,
+                  //             size: 25,
+                  //           ),
+                  //         ),
+                  //         onTap: () {
+                  //           controller.triggerLeft();
+                  //         },
+                  //       ),
+                  //       SizedBox(
+                  //           width: ScreenSizeConfig.blockSizeHorizontal * 5),
+                  //       InkWell(
+                  //         onTap: () {
+                  //           controller.triggerRight();
+                  //         },
+                  //         child: Container(
+                  //           margin: EdgeInsets.only(bottom: 10, left: 5),
+                  //           padding: EdgeInsets.all(8),
+                  //           decoration: BoxDecoration(
+                  //             shape: BoxShape.circle,
+                  //             color: Colors.red,
+                  //           ),
+                  //           child: Icon(
+                  //             Icons.clear,
+                  //             color: Colors.white,
+                  //             size: 25,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -177,8 +196,7 @@ class _newConnectionRequestState extends State<newConnectionRequest>
                 if (widget.name != null) {
                   await DatabaseService().acceptReq(
                       widget.requestedUser[index].uid,
-                      widget.requestedUser[index].name,
-                      widget.name ?? DatabaseService.uid);
+                      widget.requestedUser[index].name);
                 }
                 checkLastIndex(index);
               }
