@@ -115,8 +115,8 @@ class DatabaseService {
   List<Message> _messagesnapshot(QuerySnapshot docs) {
     return docs.documents.map((f) {
       return Message(
-        from: f.data['from'] ?? '',
-        to:f.data['to']?? '',
+        from: f.data['From'] ?? '',
+        to:f.data['To']?? '',
         message: f.data['message'] ?? '',
         timestamp: f.data['date_time'] ?? '',
       );

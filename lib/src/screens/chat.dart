@@ -64,8 +64,8 @@ class _chat extends State<ChatWidget> {
                             itemCount: value.length,
                             itemBuilder: (context, index) {
                               print("fid:::::::::::::receive");
-                              print(widget.fid);
-                              print(widget.fid.hashCode);
+                              print('friendid '+widget.fid);
+                              print("from "+value[index].from );
                               if (value[index].from == widget.fid) {
                                 return Container(
                                   child: Row(
