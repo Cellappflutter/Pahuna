@@ -90,7 +90,8 @@ class DatabaseService {
         .collection(cid)
         .document()
         .setData({
-      'uid': uid,
+      'From': uid,
+      'To':fid,
       'message': message,
       'date_time': Timestamp.now(),
     });
@@ -120,7 +121,8 @@ class DatabaseService {
   List<Message> _messagesnapshot(QuerySnapshot docs) {
     return docs.documents.map((f) {
       return Message(
-        uid: f.data['uid'] ?? '',
+        from: f.data['from'] ?? '',
+        to:f.data['to']?? '',
         message: f.data['message'] ?? '',
         timestamp: f.data['date_time'] ?? '',
       );
