@@ -641,4 +641,23 @@ class DatabaseService {
       return onValue.data['onCall'] ?? true;
     });
   }
+
+  Future<List<String>> getUserPhotos(String userId) async {
+    List<String> images = [
+      "https://i.picsum.photos/id/111/200/300.jpg",
+      "https://i.picsum.photos/id/23/200/300.jpg",
+      "https://i.picsum.photos/id/13/200/300.jpg",
+      "https://i.picsum.photos/id/42/200/300.jpg",
+      "https://i.picsum.photos/id/253/200/300.jpg",
+      "https://i.picsum.photos/id/133/200/300.jpg",
+      "https://i.picsum.photos/id/442/200/300.jpg",
+      "https://i.picsum.photos/id/523/200/300.jpg",
+      "https://i.picsum.photos/id2/13/200/300.jpg",
+      "https://i.picsum.photos/id/432/200/300.jpg",
+      "https://i.picsum.photos/id/153/200/300.jpg",
+      "https://i.picsum.photos/id/153/200/300.jpg",
+      "https://i.picsum.photos/id/153/200/300.jpg",
+    ];
+    return Future.value(images);
+  }
 }
