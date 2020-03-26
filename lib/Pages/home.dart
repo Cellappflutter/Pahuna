@@ -1,6 +1,6 @@
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Pages/NearbySearch.dart';
-import 'package:ecommerce_app_ui_kit/Pages/bigmess.dart';
+import 'package:ecommerce_app_ui_kit/Pages/usershowpage.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:geolocator/geolocator.dart';
