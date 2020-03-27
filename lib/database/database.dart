@@ -85,7 +85,7 @@ class DatabaseService {
         .document()
         .setData({
       'From': uid,
-      'To':fid,
+      'To': fid,
       'message': message,
       'date_time': Timestamp.fromDate(DateTime.now().toUtc()),
     });
@@ -112,11 +112,18 @@ class DatabaseService {
         .map(_messagesnapshot);
   }
 
+  Future<String> getUserDescription(String userId) {
+    return reference.document(userId).get().then((onValue) {
+      return onValue.data['profile']['description'] ??
+          "No Description available";
+    });
+  }
+
   List<Message> _messagesnapshot(QuerySnapshot docs) {
     return docs.documents.map((f) {
       return Message(
-        from: f.data['from'] ?? '',
-        to:f.data['to']?? '',
+        from: f.data['From'] ?? '',
+        to: f.data['To'] ?? '',
         message: f.data['message'] ?? '',
         timestamp: f.data['date_time'] ?? '',
       );
@@ -314,7 +321,7 @@ class DatabaseService {
     return profileData;
   }
 
-  Future<void>updateUserProfile(CurrentUserInfo userInfo) async {
+  Future<void> updateUserProfile(CurrentUserInfo userInfo) async {
     try {
       return await reference.document(uid).updateData({
         "profile": _updateProfileData(userInfo),
@@ -395,6 +402,7 @@ class DatabaseService {
     } else
       return null;
   }
+
   List<dynamic> _interestValues(Map<dynamic, dynamic> data) {
     return data['interest'];
   }
@@ -499,12 +507,12 @@ class DatabaseService {
 
   Future<String> getName(String userid) {
     return reference.document(userid).get().then((onValue) {
-      return onValue.data['name'] ?? '';
+      return onValue.data['profile']['name'] ?? '';
     });
   }
 
-  Future<bool> acceptReq(
-      String user_id, String senderName, String receiverName) async {
+  Future<bool> acceptReq(String user_id, String senderName) async {
+    String receiverName = await getName(uid);
     try {
       await requestReference
           .document(user_id) //end_user UID
@@ -534,7 +542,6 @@ class DatabaseService {
   }
 
   Stream<List<RequestedUser>> getAllMatched() {
-
     return requestReference
         .document(uid)
         .collection("Accepted")
@@ -633,5 +640,24 @@ class DatabaseService {
     return callReference.document(userId).get().then((onValue) {
       return onValue.data['onCall'] ?? true;
     });
+  }
+
+  Future<List<String>> getUserPhotos(String userId) async {
+    List<String> images = [
+      "https://i.picsum.photos/id/111/200/300.jpg",
+      "https://i.picsum.photos/id/23/200/300.jpg",
+      "https://i.picsum.photos/id/13/200/300.jpg",
+      "https://i.picsum.photos/id/42/200/300.jpg",
+      "https://i.picsum.photos/id/253/200/300.jpg",
+      "https://i.picsum.photos/id/133/200/300.jpg",
+      "https://i.picsum.photos/id/442/200/300.jpg",
+      "https://i.picsum.photos/id/523/200/300.jpg",
+      "https://i.picsum.photos/id2/13/200/300.jpg",
+      "https://i.picsum.photos/id/432/200/300.jpg",
+      "https://i.picsum.photos/id/153/200/300.jpg",
+      "https://i.picsum.photos/id/153/200/300.jpg",
+      "https://i.picsum.photos/id/153/200/300.jpg",
+    ];
+    return Future.value(images);
   }
 }

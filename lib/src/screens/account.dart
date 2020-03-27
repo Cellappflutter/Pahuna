@@ -9,6 +9,7 @@ import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
 import 'package:ecommerce_app_ui_kit/Model/settings.dart';
+import 'package:ecommerce_app_ui_kit/Pages/photos.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/customappbar.dart';
@@ -372,19 +373,17 @@ class _AccountWidgetState extends State<AccountWidget> {
                         Expanded(
                             child: InkWell(
                                 onTap: () {
-                                  if (edit == true) {
-                                    setState(() {
-                                      edit = false;
-                                    });
-                                  } else {
-                                    print("This is from Following $edit");
-                                  }
+                                  Navigator.of(context)
+                                      .pushReplacement(MaterialPageRoute(
+                                          builder: (context) => UserPhotos(
+                                                userId: DatabaseService.uid,
+                                              )));
                                 },
                                 child: Container(
                                   child: Column(
                                     children: <Widget>[
-                                      Icon(UiIcons.favorites),
-                                      Text("Following",
+                                      Icon(UiIcons.photo_camera),
+                                      Text("Gallery",
                                           style: Theme.of(context)
                                               .textTheme
                                               .body1),

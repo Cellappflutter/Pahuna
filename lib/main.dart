@@ -11,6 +11,8 @@ import 'package:ecommerce_app_ui_kit/Model/prevUser.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/settings.dart';
 import 'package:ecommerce_app_ui_kit/Pages/callReceive.dart';
+import 'package:ecommerce_app_ui_kit/Pages/t.dart';
+import 'package:ecommerce_app_ui_kit/Pages/usershowpage.dart';
 import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/account.dart';
@@ -79,8 +81,8 @@ void main() {
         ),
       ),
       home:
-         // AccountWidget(),
-         InitializePage(),
+          // test1(),
+          InitializePage(),
     ),
   );
 }
@@ -252,13 +254,11 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
       if (onData != null) {
         if (onData.length > 0) {
           WidgetsBinding.instance.addPostFrameCallback((_) async {
-            String name = await DatabaseService().getName(DatabaseService.uid);
             showDialog(
                 context: context,
                 barrierDismissible: false,
                 builder: (context) {
-                  return newConnectionRequest(
-                      requestedUser: onData, name: name);
+                  return newConnectionRequest(requestedUser: onData);
                 });
           });
         }

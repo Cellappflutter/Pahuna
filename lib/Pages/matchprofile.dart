@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
@@ -122,8 +123,9 @@ class _MatchProfileState extends State<MatchProfile> {
                                     child: ((avatar != "" && avatar != null)
                                         ? CircleAvatar(
                                             backgroundImage:
-                                            CachedNetworkImageProvider(avatar),
-                                                // NetworkImage(avatar),
+                                                CachedNetworkImageProvider(
+                                                    avatar),
+                                            // NetworkImage(avatar),
                                           )
                                         : CircleAvatar()))),
                           ],
@@ -151,21 +153,15 @@ class _MatchProfileState extends State<MatchProfile> {
                             primary: false,
                             children: <Widget>[
                               ListTile(
-                                // leading: Icon(UiIcons.user_1),
-                                // title: Text(
-                                //   'Profile Settings',
-                                //   style: Theme.of(context).textTheme.body2,
-                                // ),
                                 title: Row(
                                   children: <Widget>[
                                     Icon(
                                       UiIcons.user_1,
-                                      color: Colors.red,
+                                      color: Colors.black,
                                     ),
                                     SizedBox(width: 10),
                                     Text("Profile Settings",
-                                        style:
-                                            Theme.of(context).textTheme.body2)
+                                        style: TextStyle(color: Colors.black))
                                   ],
                                 ),
                               ),
@@ -295,11 +291,13 @@ class _MatchProfileState extends State<MatchProfile> {
                                 children: <Widget>[
                                   Icon(
                                     UiIcons.file_2,
-                                    color: Colors.red,
+                                    color: Colors.black,
                                   ),
                                   SizedBox(width: 10),
-                                  Text("Description",
-                                      style: Theme.of(context).textTheme.body2)
+                                  Text(
+                                    "Description",
+                                    style: TextStyle(color: Colors.black),
+                                  )
                                 ],
                               ),
                             ),
@@ -345,19 +343,16 @@ class _MatchProfileState extends State<MatchProfile> {
                           primary: false,
                           children: <Widget>[
                             ListTile(
-                              // leading: Icon(UiIcons.loupe),
                               title: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Icon(
                                     UiIcons.loupe,
-                                    color: Colors.red,
+                                    color: Colors.black,
                                   ),
                                   SizedBox(width: 10),
-                                  Text(
-                                    "Search Preferences",
-                                    // style: Theme.of(context).textTheme.body2,
-                                  )
+                                  Text("Search Preferences",
+                                      style: TextStyle(color: Colors.black))
                                 ],
                               ),
                             ),
@@ -365,27 +360,38 @@ class _MatchProfileState extends State<MatchProfile> {
                               dense: true,
                               title: Text("Match Preferences",
                                   style: Theme.of(context).textTheme.body1),
-                              trailing: Text(editableInfo.matchPrefs.toString(),
-                                  style: TextStyle(
-                                      color: Theme.of(context).focusColor)),
+                              subtitle: Wrap(
+                                spacing: 5,
+                                children: getChips(editableInfo.matchPrefs,
+                                    ProfileMatchPreferences().colors),
+                              ),
                             ),
                             ListTile(
                               dense: true,
                               title: Text("Continent",
                                   style: Theme.of(context).textTheme.body1),
-                              trailing: Text(editableInfo.continent.toString(),
-                                  style: TextStyle(
-                                      color: Theme.of(context).focusColor)),
+                              subtitle: Wrap(
+                                spacing: 5,
+                                children: getChips(editableInfo.continent,
+                                    ProfileContinentPreferences().colors),
+                              ),
                             ),
                             ListTile(
-                                dense: false,
-                                title: Text("Interest",
-                                    style: Theme.of(context).textTheme.body1),
-                                trailing: Text(
-                                  editableInfo.interest.toString(),
-                                  style: TextStyle(
-                                      color: Theme.of(context).focusColor),
-                                ))
+                              dense: false,
+                              title: Text("Interest",
+                                  style: Theme.of(context).textTheme.body1),
+                              subtitle: Wrap(
+                                spacing: 5,
+                                children: getChips(editableInfo.interest,
+                                    ProfileInterestPreferences().colors),
+                              ),
+                              // trailing: (editableInfo.interest.length > 0)
+                              //     ? Text("[...........]",
+                              //         style: TextStyle(
+                              //             color: Theme.of(context).focusColor))
+                              //     : Text("Interest",
+                              //         style: TextStyle(color: Colors.black38)),
+                            )
                           ],
                         ),
                       ),
@@ -406,5 +412,22 @@ class _MatchProfileState extends State<MatchProfile> {
         ),
       ),
     );
+  }
+
+  getChips(List<dynamic> chips, List<int> chipsColor) {
+    List<Widget> widgets = List<Widget>();
+    for (int i = 0; i < chips.length; i++) {
+      widgets.add(
+        ChoiceChip(
+          labelStyle: TextStyle(color: Colors.black),
+          label: Text(
+            chips[i],
+          ),
+          selected: true,
+          selectedColor: Color(chipsColor[i]),
+        ),
+      );
+    }
+    return widgets;
   }
 }
