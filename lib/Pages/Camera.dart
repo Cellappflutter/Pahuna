@@ -142,6 +142,7 @@ class _CameraStateState extends State<CameraState>
       child: FloatingActionButton(
         onPressed: () {
           if (!isGalleryImage) {
+      //      Directory(_image.path).deleteSync(recursive: true);
             initCamera();
             _index = 2;
           } else {
