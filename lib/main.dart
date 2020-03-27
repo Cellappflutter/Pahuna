@@ -16,6 +16,7 @@ import 'package:ecommerce_app_ui_kit/Pages/usershowpage.dart';
 import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/account.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/photo.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
@@ -81,7 +82,9 @@ void main() {
         ),
       ),
       home:
+      // CustomScroll(requestData: ,),
           // test1(),
+          // Photo(),
           InitializePage(),
     ),
   );
