@@ -5,7 +5,9 @@ import 'package:ecommerce_app_ui_kit/Pages/friends.dart';
 
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
 import 'package:ecommerce_app_ui_kit/Pages/matchprofile.dart';
+import 'package:ecommerce_app_ui_kit/Pages/photos.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
+import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/src/models/user.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/account.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/cart.dart';
@@ -48,7 +50,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     ? CircleAvatar(
                         backgroundColor: Colors.blue,
                         backgroundImage:
-                        CachedNetworkImageProvider(widget.info.avatar), 
+                            CachedNetworkImageProvider(widget.info.avatar),
                         // NetworkImage(widget.info.avatar),
                       )
                     : CircleAvatar(
@@ -102,8 +104,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => FriendsWidget(tag: "Profile",)));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => FriendsWidget(
+                        tag: "Profile",
+                      )));
             },
             leading: Icon(
               UiIcons.users,
@@ -111,6 +115,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
             title: Text(
               "Friends",
+              style: Theme.of(context).textTheme.subhead,
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => UserPhotos(
+                        userId: DatabaseService.uid,
+                      )));
+            },
+            leading: Icon(
+              UiIcons.user,
+              color: Theme.of(context).focusColor.withOpacity(1),
+            ),
+            title: Text(
+              "Gallery",
               style: Theme.of(context).textTheme.subhead,
             ),
           ),
