@@ -1,5 +1,6 @@
 import 'package:ecommerce_app_ui_kit/Model/appbaraction.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
+import 'package:ecommerce_app_ui_kit/Pages/Camera.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/account.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/cart.dart';
@@ -60,10 +61,10 @@ class _TabsWidgetState extends State<TabsWidget> {
         ),
         actions: <Widget>[
           AppBarActions(
-            uiIcon: UiIcons.user,
+            uiIcon: Icons.cloud_upload,
             onTap: () {
               Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => CartWidget()));
+                  .push(MaterialPageRoute(builder: (context) => CameraState()));
             },
           ),
           AppBarActions(
