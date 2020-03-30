@@ -10,6 +10,7 @@ import 'package:ecommerce_app_ui_kit/Model/newReqShow.dart';
 import 'package:ecommerce_app_ui_kit/Model/prevUser.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/settings.dart';
+import 'package:ecommerce_app_ui_kit/Pages/Camera.dart';
 import 'package:ecommerce_app_ui_kit/Pages/callReceive.dart';
 import 'package:ecommerce_app_ui_kit/Pages/t.dart';
 import 'package:ecommerce_app_ui_kit/Pages/usershowpage.dart';
@@ -81,11 +82,7 @@ void main() {
               fontSize: 12.0, color: config.Colors().secondDarkColor(0.7)),
         ),
       ),
-      home:
-      // CustomScroll(requestData: ,),
-          // test1(),
-          // Photo(),
-          InitializePage(),
+      home: InitializePage(),
     ),
   );
 }
