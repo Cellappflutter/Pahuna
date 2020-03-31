@@ -15,16 +15,12 @@ class Wordget {
             title: post['title']['rendered'],
             image: post['jetpack_featured_media_url'],
             content: post['content']['rendered'],
-            id: post['id'].toString()
-
-            );
+            id: post['id'].toString());
         data.add(data1);
       }
       return data;
-    } catch (e) {
+   } catch (e) {
       return [];
-    }
+   }
   }
-
-  
 }

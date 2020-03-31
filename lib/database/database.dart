@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app_ui_kit/Model/callreceivestatus.dart';
 import 'package:ecommerce_app_ui_kit/Model/message.dart';
 import 'package:firebase_database/firebase_database.dart' as firebase_database;
+import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
@@ -12,7 +13,6 @@ import 'package:ecommerce_app_ui_kit/Model/prevUser.dart';
 
 class DatabaseService {
   static String uid;
-  // static String fid ;
   final CollectionReference reference = Firestore.instance.collection("pahuna");
   final CollectionReference reportReference =
       Firestore.instance.collection("report");
@@ -678,5 +678,31 @@ class DatabaseService {
     return callReference.document(userId).get().then((onValue) {
       return onValue.data['onCall'] ?? true;
     });
+  }
+
+  Future<List<String>> getUserPhotos(String userId) async {
+    print(userId);
+    List<dynamic> images;
+    try {
+    
+      images = await reference.document(userId).get().then((onValue) {
+        return onValue.data['images']??[];
+      });
+    } catch (e) {
+      images = [];
+    }
+    print(images);
+    return await StorageService().getAllUserImage(images, userId);
+  }
+
+  Future<bool> addUserPhoto(String userId, String fileName) async {
+    try {
+      reference.document(userId).setData({
+        "images": FieldValue.arrayUnion([fileName]),
+      }, merge: true);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
