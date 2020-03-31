@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app_ui_kit/Model/callreceivestatus.dart';
 import 'package:ecommerce_app_ui_kit/Model/message.dart';
+import 'package:firebase_database/firebase_database.dart' as firebase_database;
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
@@ -27,6 +28,43 @@ class DatabaseService {
       Firestore.instance.collection("ChatFriends");
   final CollectionReference notificationtokenreference =
       Firestore.instance.collection("Ntokens");
+  firebase_database.DatabaseReference databaseReference = firebase_database
+      .FirebaseDatabase.instance
+      .reference()
+      .child('.info/connected');
+  firebase_database.DatabaseReference stateReference = firebase_database
+      .FirebaseDatabase.instance
+      .reference()
+      .child('user')
+      .child(uid);
+ 
+  Future status() {
+    return Future.delayed(Duration(seconds: 3)).then((onValue) {
+      databaseReference.onValue.listen((firebase_database.Event event){
+      //once().then((firebase_database.DataSnapshot snapshot) {
+        var status = event.snapshot.value;
+        print('this is the staus-----------------------------------------');
+        print(status);
+        //print(Timestamp.fromDate(DateTime.now().toUtc()));
+        if (status == true || status == false) {
+          stateReference.set({
+            'isOnline': true,
+            'timeStamp': firebase_database.ServerValue.timestamp,});
+        }
+        stateReference.onDisconnect().set({
+          'isOnline': false,
+          'timeStamp': firebase_database.ServerValue.timestamp,
+
+        }).then((onValue) {
+          stateReference.set({
+            'isOnline': true,
+            'timeStamp': firebase_database.ServerValue.timestamp,
+          });
+        });
+      });
+    });
+  }
+  
 
   Future chatFriend(String fid, String name, String avatar, String ownname,
       String selfavatar) async {
@@ -579,7 +617,7 @@ class DatabaseService {
   }
 
   initUserDB() async {
-    await reference.document(uid).setData({"status": "online"}, merge: true);
+    await reference.document(uid).setData({"status": ""}, merge: true);
     await onCallEnd();
     await checkCallReference
         .document(uid)

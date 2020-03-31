@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:ecommerce_app_ui_kit/Helper/Animations/animator.dart';
 import 'package:ecommerce_app_ui_kit/Helper/ErrorHandler.dart';
 import 'package:ecommerce_app_ui_kit/Helper/loading.dart';
 import 'package:ecommerce_app_ui_kit/Helper/preferences.dart';
@@ -14,6 +15,8 @@ import 'package:ecommerce_app_ui_kit/Pages/callReceive.dart';
 import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/account.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
@@ -27,6 +30,17 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   final FirebaseApp app = await FirebaseApp.configure(
+//     name: 'db2',
+//     options:FirebaseOptions(
+//             googleAppID: '1:297855924061:android:669871c998cc21bd',
+//             apiKey: 'AIzaSyD_shO5mfO9lhy2TVWhfo1VUmARKlG4suk',
+//             databaseURL: 'https://flutterfire-cd2f7.firebaseio.com',
+//           ),
+//   );
+// }
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
@@ -222,9 +236,11 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
   bool prevData = false;
   FirebaseMessaging _fcm = FirebaseMessaging();
   DatabaseService databaseService = DatabaseService();
+
   @override
   void initState() {
     super.initState();
+    databaseService.status();
     _fcm.configure(onMessage: (Map<String, dynamic> message) async {
       print('onMessage : $message');
       final snackbar = SnackBar(
@@ -266,6 +282,7 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
       if (onData == ConnectivityResult.none) {
         isConnected = false;
         WidgetsBinding.instance.addPostFrameCallback((_) => p2.show());
+        
       } else {
         if (p2.isShowing()) {
           p2.dismiss();
