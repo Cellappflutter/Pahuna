@@ -21,10 +21,13 @@ class _CartWidgetState extends State<CartWidget> {
   Color pressed = Colors.white;
   Key dismissableKey = Key("Dismiss");
   bool isdismiss = false;
+  DatabaseService databaseService = DatabaseService();
 
   @override
   void initState() {
     _productsList = new ProductsList();
+    print('this is in requests ');
+    databaseService.status();
     super.initState();
   }
 
@@ -155,9 +158,8 @@ class _CartWidgetState extends State<CartWidget> {
                                   ),
                                   Text("Wants to connect with you",
                                       style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w300
-                                      ))
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w300))
                                 ],
                               ),
 
