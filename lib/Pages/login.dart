@@ -159,6 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                   if (snapshot.connectionState == ConnectionState.done) {
                     return FlatButton(
                         onPressed: () {
+                          Navigator.of(context).pop();
                           pr = loadingBar(context, "Signing In");
                           verifyPhone();
                         },

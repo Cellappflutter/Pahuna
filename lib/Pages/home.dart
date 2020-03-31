@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  height: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height*0.8,
                   width: MediaQuery.of(context).size.width,
                   child: Stack(children: <Widget>[
                     Container(
