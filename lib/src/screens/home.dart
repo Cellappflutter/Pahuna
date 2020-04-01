@@ -69,10 +69,8 @@ class _HomeWidgetState extends State<HomeWidget>
         SizedBox(height: 10),
         Consumer<List<Featuredata>>(builder: (context, snapshot, child) {
           if (snapshot != null) {
-            return Center(
-              child: Wrap(
-                children: featureChipDesign(snapshot),
-              ),
+            return Wrap(
+              children: featureChipDesign(snapshot),
             );
           } else {
             return Center(
@@ -87,28 +85,72 @@ class _HomeWidgetState extends State<HomeWidget>
   List<Widget> featureChipDesign(List<Featuredata> data) {
     List<Widget> widgets = List<Widget>();
     for (int i = 0; i < data.length; i++) {
-      widgets.add(featuresChip(data[i].id.toString(), data[i]));
+      widgets.add(featuresChip(
+        data[i].title.toString(),
+        data[i],
+      ));
     }
     return widgets;
   }
 
-  featuresChip(String title, Featuredata data) {
+  featuresChip(
+    String title,
+    Featuredata data,
+  ) {
     return Container(
-      margin: EdgeInsets.only(left: appColors.App(context).appHeight(3)),
-      child: RaisedButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          child: Text(
-            title,
-            style: TextStyle(color: Colors.white),
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 2.6,
+      margin: EdgeInsets.only(
+          left: appColors.App(context).appHeight(1),
+          right: appColors.App(context).appHeight(1)),
+      child: Column(
+        children: <Widget>[
+          Card(
+            elevation: (20.2),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 3,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 15),
+                    height: 160,
+                    child: data.image != null
+                        ? Image.network(
+                            data.image,
+                            // cacheHeight: 140,
+                            fit: BoxFit.cover,
+                            height: 140,
+                            // width: 170,
+                          )
+                        : Image.network("assets/brokenimage.png",
+                            fit: BoxFit.cover, height: 140),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Text(
+                      title,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    color: appColors.Colors().mainColor(1),
+                    onPressed: () {
+                      print("datacheck");
+                      print(data.content);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              FeaturePage(featureData: data)));
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
-          color: appColors.Colors().mainColor(1),
-          onPressed: () {
-            print("datacheck");
-            print(data.content);
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => FeaturePage(featureData: data)));
-          }),
+        ],
+      ),
     );
   }
 }

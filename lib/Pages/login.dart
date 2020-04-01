@@ -213,7 +213,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   FacebookLogin fblogin = FacebookLogin();
-  int _counter = 0;
 
   Widget build(BuildContext context) {
     ScreenSizeConfig().init(context);
