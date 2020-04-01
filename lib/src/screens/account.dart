@@ -82,7 +82,7 @@ class _AccountWidgetState extends State<AccountWidget> {
     return MaterialApp(
       home: SafeArea(
         child: Scaffold(
-          appBar: customAppBar(context, "Profile"),
+          appBar: customAppBar(context, "Edit Profile"),
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(vertical: 7),
             child: Column(
@@ -245,100 +245,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                                       );
                                     });
                               }
-                              // showDialog(
-                              //     context: context,
-                              //     barrierDismissible: false,
-                              //     builder: (context) {
-                              //       return AlertDialog(
-                              //         title: Text("Are you Sure"),
-                              //         content: Text("Do you want to Save?"),
-                              //         actions: <Widget>[
-                              //           FlatButton(
-                              //               onPressed: () async {
-                              //                 ProgressDialog pr = loadingBar(
-                              //                     context,
-                              //                     "Updating Information");
-                              //                 if (_formKey.currentState.validate() &&
-                              //                     _descriptionController.text !=
-                              //                         null &&
-                              //                     _descriptionController.text
-                              //                             .trim() !=
-                              //                         '' &&
-                              //                     editableInfo
-                              //                             .continent.length >
-                              //                         0 &&
-                              //                     editableInfo
-                              //                             .matchPrefs.length >
-                              //                         0 &&
-                              //                     editableInfo.interest.length >
-                              //                         0) {
-                              //                   pr.show();
-                              //                   editableInfo.description =
-                              //                       _descriptionController.text;
-                              //                   editableInfo.gender =
-                              //                       tempGender;
-                              //                   PaintingBinding
-                              //                       .instance.imageCache
-                              //                       .clear();
-                              //                   await Future.wait([
-                              //                     DatabaseService()
-                              //                         .updateUserProfile(
-                              //                             editableInfo),
-                              //                     uploadAvatar(context),
-                              //                     Prefs.setRangeData(
-                              //                         DiscoverySetting.range),
-                              //                     Prefs.setEndAgeData(
-                              //                         DiscoverySetting
-                              //                             .agePrefs.end),
-                              //                     Prefs.setStartAgeData(
-                              //                         DiscoverySetting
-                              //                             .agePrefs.start),
-                              //                   ]);
-
-                              //                   pr.dismiss();
-                              //                   Navigator.of(context).pop();
-                              //                   setState(() {
-                              //                     edit = !edit;
-                              //                   });
-                              //                   if (widget.tutorialShow ??
-                              //                       false) {
-                              //                     _readyForMatch();
-                              //                   }
-                              //                 } else {
-                              //                   Navigator.of(context).pop();
-                              //                   showDialog(
-                              //                       context: (context),
-                              //                       builder: (context) {
-                              //                         return Dialog(
-                              //                           child: Container(
-                              //                             padding:
-                              //                                 EdgeInsets.all(8),
-                              //                             child: Text(
-                              //                               'Invalid form, please enter all field ',
-                              //                               style: TextStyle(
-                              //                                   fontSize: 20),
-                              //                             ),
-                              //                           ),
-                              //                         );
-                              //                       });
-                              //                 }
-                              //               },
-                              //               child: Text("Yes")),
-                              //           // FlatButton(
-                              //           //     onPressed: () {
-                              //           //       edit = !edit;
-                              //           //       check = 1;
-                              //           //       _image = null;
-                              //           //       _isLocalImage = false;
-                              //           //       setState(() {});
-                              //           //       Navigator.of(context).pop();
-                              //           //     },
-                              //           //     child: Text("NO"))
-                              //         ],
-                              //       );
-                              //     }).then((onValue) {
-                              //   Navigator.pop(context);
-                              // });
+                              
                             } else {
                               setState(() {
                                 edit = !edit;
