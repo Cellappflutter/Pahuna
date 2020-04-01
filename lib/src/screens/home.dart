@@ -102,33 +102,39 @@ class _HomeWidgetState extends State<HomeWidget>
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.25,
-        margin: EdgeInsets.only(
-            left: appColors.App(context).appHeight(1),
-            right: appColors.App(context).appHeight(1)),
-        decoration: BoxDecoration(
-          color: Colors.white10,
-            image:
-                DecorationImage(image: NetworkImage(image), fit: BoxFit.cover),
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [BoxShadow(blurRadius: 9.0)]),
+      child: InkWell(
+        onTap: (){
+           Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => FeaturePage(featureData: data)));
+        },
+              child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.25,
+          margin: EdgeInsets.only(
+              left: appColors.App(context).appHeight(1),
+              right: appColors.App(context).appHeight(1)),
+          decoration: BoxDecoration(
+            color: Colors.white10,
+              image:
+                  DecorationImage(image: NetworkImage(image), fit: BoxFit.cover),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [BoxShadow(blurRadius: 9.0)]),
 
-        child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                title,
-                style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w800,
-                    color: Theme.of(context).accentColor),
-              ),
-            )),
+          child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w800,
+                      color: Theme.of(context).accentColor),
+                ),
+              )),
 
-        
+          
+        ),
       ),
     );
   }
