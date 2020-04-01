@@ -97,59 +97,38 @@ class _HomeWidgetState extends State<HomeWidget>
     String title,
     Featuredata data,
   ) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 2.6,
-      margin: EdgeInsets.only(
-          left: appColors.App(context).appHeight(1),
-          right: appColors.App(context).appHeight(1)),
-      child: Column(
-        children: <Widget>[
-          Card(
-            elevation: (20.2),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 3,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 15),
-                    height: 160,
-                    child: data.image != null
-                        ? Image.network(
-                            data.image,
-                            // cacheHeight: 140,
-                            fit: BoxFit.cover,
-                            height: 140,
-                            // width: 170,
-                          )
-                        : Image.network("assets/brokenimage.png",
-                            fit: BoxFit.cover, height: 140),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Text(
-                      title,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    color: appColors.Colors().mainColor(1),
-                    onPressed: () {
-                      print("datacheck");
-                      print(data.content);
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              FeaturePage(featureData: data)));
-                    },
-                  ),
-                ],
+    String image;
+    data.image != null ? image = data.image : image = "assets/sport7.webp";
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.25,
+        margin: EdgeInsets.only(
+            left: appColors.App(context).appHeight(1),
+            right: appColors.App(context).appHeight(1)),
+        decoration: BoxDecoration(
+          color: Colors.white10,
+            image:
+                DecorationImage(image: NetworkImage(image), fit: BoxFit.cover),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [BoxShadow(blurRadius: 9.0)]),
+
+        child: Align(
+            alignment: Alignment.bottomLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                title,
+                style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                    color: Theme.of(context).accentColor),
               ),
-            ),
-          ),
-        ],
+            )),
+
+        
       ),
     );
   }
