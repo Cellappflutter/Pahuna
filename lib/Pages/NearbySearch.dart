@@ -99,11 +99,11 @@ class _NearbySearchState extends State<NearbySearch>
           dx: -(ScreenSizeConfig.blockSizeHorizontal *
               8 *
               cos(info[i].bearing) *
-              (info[i].distance / 1200)),
+              (info[i].distance / 1000)),
           dy: ScreenSizeConfig.blockSizeVertical *
               8 *
               sin(info[i].bearing) *
-              (info[i].distance / 1200),
+              (info[i].distance / 1000),
           child: InkWell(
             child: (avatar != null && avatar != "")
                 ? CircleAvatar(

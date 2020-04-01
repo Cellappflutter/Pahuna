@@ -6,6 +6,7 @@ import 'package:ecommerce_app_ui_kit/Pages/friends.dart';
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
 import 'package:ecommerce_app_ui_kit/Pages/matchprofile.dart';
 import 'package:ecommerce_app_ui_kit/Pages/photos.dart';
+import 'package:ecommerce_app_ui_kit/Pages/profile.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/src/models/user.dart';
@@ -73,8 +74,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AccountWidget(
-                        userInfo: widget.info,
+                  builder: (context) => Profile(
+                        editableInfo: widget.info,
                       )));
             },
             leading: Icon(
