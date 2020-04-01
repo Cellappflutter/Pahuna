@@ -331,11 +331,11 @@ class _MainPageState extends State<MainPage>
 
       case 2:
         {
-          return ProfilePage();
+          return Profile();
         }
       case 3:
         {
-          return ProfilePage();
+          return Profile();
         }
       case 4:
         {

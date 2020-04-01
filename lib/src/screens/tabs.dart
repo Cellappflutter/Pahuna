@@ -1,6 +1,7 @@
 import 'package:ecommerce_app_ui_kit/Model/appbaraction.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Pages/Camera.dart';
+import 'package:ecommerce_app_ui_kit/Pages/profile.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/account.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/cart.dart';
@@ -9,6 +10,7 @@ import 'package:ecommerce_app_ui_kit/src/screens/messages.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/DrawerWidget.dart';
 import 'package:ecommerce_app_ui_kit/src/widgets/ShoppingCartButtonWidget.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as appColors;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -71,9 +73,11 @@ class _TabsWidgetState extends State<TabsWidget> {
             uiIcon: UiIcons.user_1,
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AccountWidget(
-                        userInfo: info,
-                      )));
+                  builder: (context) => Profile(editableInfo: info,)
+                  // AccountWidget(
+                  //       userInfo: info,
+                  //     )
+                      ));
             },
           ),
           AppBarActions(

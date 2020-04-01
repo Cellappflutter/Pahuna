@@ -27,7 +27,8 @@ class _chat extends State<ChatWidget> {
   final DatabaseService messageService = DatabaseService();
   final TextEditingController message = TextEditingController();
   BubbleStyle styleSomebody = BubbleStyle(
-    nip: BubbleNip.leftTop,
+    //nip: BubbleNip.leftTop,
+    radius:Radius.circular(20),
     color: Colors.white,
     elevation: 5,
     margin: BubbleEdges.only(top: 8.0, right: 50.0),
@@ -35,7 +36,9 @@ class _chat extends State<ChatWidget> {
   );
 
   BubbleStyle styleMe = BubbleStyle(
-    nip: BubbleNip.rightTop,
+    //nip: BubbleNip.rightTop,
+    radius:Radius.circular(20),
+    
     color: Color.fromARGB(255, 225, 255, 199),
     elevation: 5,
     margin: BubbleEdges.only(top: 8.0, left: 50.0),
@@ -71,13 +74,17 @@ class _chat extends State<ChatWidget> {
                                   child: Row(
                                     children: <Widget>[
                                       SizedBox(
-                                        height:
+                                        width:
                                             ScreenSizeConfig.safeBlockVertical *
-                                                1,
+                                                0.7,
                                       ),
-                                      Bubble(
-                                        style: styleSomebody,
-                                        child: Text(value[index].message),
+                                      CircleAvatar(backgroundImage: CachedNetworkImageProvider(widget.avatar),radius: 16,),
+                                      Container(
+                                        width: MediaQuery.of(context).size.width*0.85,
+                                        child: Bubble(
+                                          style: styleSomebody,
+                                          child: Text(value[index].message),
+                                        ),
                                       ),
                                       SizedBox(
                                         height:
@@ -93,9 +100,12 @@ class _chat extends State<ChatWidget> {
                                     SizedBox(
                                       height: 2,
                                     ),
-                                    Bubble(
-                                      style: styleMe,
-                                      child: Text(value[index].message),
+                                    Container(
+                                         width: MediaQuery.of(context).size.width*0.9,
+                                      child: Bubble(
+                                        style: styleMe,
+                                        child: Text(value[index].message),
+                                      ),
                                     ),
                                     SizedBox(
                                       height: 2,
