@@ -78,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
         codeSent: smsCode,
         codeAutoRetrievalTimeout: autoRetrieve);
   }
+  
 
   verifyFailed(PlatformException exception) {
     print("Numver verify failed");
@@ -122,6 +123,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             contentPadding: EdgeInsets.all(10.0),
             actions: <Widget>[
+              
               FlatButton(
                 onPressed: () {
                   if (this.smsCode == null || this.smsCode.length == 0) {
@@ -149,10 +151,39 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 },
                 child: Text("Done"),
-              )
+              ),
+              StreamBuilder(
+                stream: _stream(),
+                initialData: 0,
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          pr = loadingBar(context, "Signing In");
+                          verifyPhone();
+                        },
+                        child: Text("Resend"));
+                  } else {
+                    return Text("${snapshot.data.toString()}",
+                          style: TextStyle(fontSize: 18));
+                  }
+                },
+              ),
             ],
           );
         });
+  }
+
+  Stream<int> _stream() {
+    Duration interval = Duration(seconds: 1);
+    Stream<int> stream = Stream<int>.periodic(interval, transform);
+    stream = stream.take(60);
+    return stream;
+  }
+
+  int transform(int value) {
+    return value;
   }
 
   signIn() async {
