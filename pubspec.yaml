@@ -69,6 +69,9 @@ dependencies:
   camera: ^0.5.7+4
   path: ^1.6.4
   path_provider: ^1.6.5
+ # mapbox_gl: ^0.0.5
+  flutter_mapbox_navigation: ^0.0.10
+  google_maps_flutter: ^0.5.25+3
 
 dev_dependencies:
   flutter_test:
