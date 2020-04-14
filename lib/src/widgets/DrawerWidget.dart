@@ -12,6 +12,7 @@ import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/src/models/user.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/account.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/cart.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/maps.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/database/auth.dart';
@@ -134,6 +135,20 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             title: Text(
               "Gallery",
               style: Theme.of(context).textTheme.subhead,
+            ),
+          ),
+           ListTile(
+            onTap: (){
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Gmaps()));
+            },
+            title: Text(
+              'Maps',
+              style: Theme.of(context).textTheme.subhead,
+            ),
+            leading: Icon(
+              UiIcons.map,
+              color: Theme.of(context).focusColor.withOpacity(1),
             ),
           ),
           ListTile(
