@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/Model/profile_preferences.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
@@ -24,100 +25,121 @@ class _profile extends State<Profile> {
     // TODO: implement build
     return MaterialApp(
       home: SafeArea(
-              child: Scaffold(
+        child: Scaffold(
           appBar: customAppBar(context, 'Profile'),
-          body: 
-             Column(
+          body: SingleChildScrollView(
+            child: Column(
               children: <Widget>[
-                 Wrap(
-                                  children:<Widget>[ Container(
-                       // height: MediaQuery.of(context).size.height * 0.3,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                Wrap(children: <Widget>[
+                  Container(
+                      // height: MediaQuery.of(context).size.height * 0.3,
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Stack(
                           children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Stack(
-                                children: <Widget>[
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: CircleAvatar(
-                                      backgroundImage:
-                                          NetworkImage(widget.editableInfo.avatar),
-                                      radius: 40,
+                            Align(
+                              alignment: Alignment.center,
+                              child: InkWell(
+                                onTap: (){
+                                  showDialog(
+                                    context: context,
+                                    barrierDismissible: true,
+                                    builder: (context){
+                                      return Dialog(
+                                        child:Container(
+                                          child: CachedNetworkImage(
+                                            imageUrl: widget.editableInfo.avatar,
+                                            placeholder: (context,url) => CircularProgressIndicator(),
+                                          ),
+                                        )
+                                      );
+                                    }
+                                  );
+                                },
+                                child: CircleAvatar(
+                                  backgroundImage: CachedNetworkImageProvider(
+                                    widget.editableInfo.avatar,
+                                  ),
+                                  radius: 70,
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: InkWell(
+                                  onTap: () {
+                                    print('Edit pressed');
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => AccountWidget(
+                                                  userInfo: widget.editableInfo,
+                                                  tutorialShow: false,
+                                                )));
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.black12,
+                                        borderRadius:
+                                            BorderRadius.circular(40)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 10, 20, 10),
+                                      child: Text(
+                                        'Edit',
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).accentColor),
+                                      ),
                                     ),
                                   ),
-                                  Align(
-                                      alignment: Alignment.topRight,
-                                      child: InkWell(
-                                        onTap: () {
-                                          print('Edit pressed');
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      AccountWidget(
-                                                        userInfo:
-                                                            widget.editableInfo,
-                                                        tutorialShow: true,
-                                                      )));
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.black12,
-                                              borderRadius:
-                                                  BorderRadius.circular(40)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                20, 10, 20, 10),
-                                            child: Text('Edit',style: TextStyle(color: Theme.of(context).accentColor),),
-                                          ),
-                                        ),
-                                      )),
-                                  
-                                ],
-                              ),
-                            ),
-                            Text(widget.editableInfo.name,
-                                style: Theme.of(context).textTheme.display3),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.person_pin_circle,
-                                  color: Theme.of(context).accentColor,
-                                  size: 20,
-                                ),
-                                Text(
-                                  'Pepsicola-35, Kathmandu',
-                                  style: TextStyle(
-                                      color: Theme.of(context).accentColor,
-                                      fontWeight: FontWeight.w100,
-                                      fontSize: 13,
-                                      fontStyle: FontStyle.italic),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              widget.editableInfo.email,
-                              style: TextStyle(
-                                  color: Theme.of(context).accentColor,
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 15,
-                                  fontStyle: FontStyle.italic),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: 30, right: 30, top: 8),
-                              child: Text(
-                                widget.editableInfo.description,
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.body2,
-                              ),
-                            ),
+                                )),
                           ],
-                        )),]
-                 ),
-               
+                        ),
+                      ),
+                      Text(widget.editableInfo.name,
+                          style: Theme.of(context).textTheme.display3),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.person_pin_circle,
+                            color: Theme.of(context).accentColor,
+                            size: 20,
+                          ),
+                          Text(
+                            'Pepsicola-35, Kathmandu',
+                            style: TextStyle(
+                                color: Theme.of(context).accentColor,
+                                fontWeight: FontWeight.w100,
+                                fontSize: 13,
+                                fontStyle: FontStyle.italic),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        widget.editableInfo.email,
+                        style: TextStyle(
+                            color: Theme.of(context).accentColor,
+                            fontWeight: FontWeight.w300,
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: 30, right: 30, top: 8),
+                        child: Text(
+                          widget.editableInfo.description,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.body2,
+                        ),
+                      ),
+                    ],
+                  )),
+                ]),
+
                 SizedBox(
                   height: 10,
                 ),
@@ -221,7 +243,7 @@ class _profile extends State<Profile> {
                 //     )),
               ],
             ),
-          
+          ),
         ),
       ),
     );

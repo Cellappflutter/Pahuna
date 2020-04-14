@@ -452,7 +452,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Poppins',
         primaryColor: config.Colors().whiteColor(1),
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
         accentColor: config.Colors().mainColor(1),
         focusColor: config.Colors().accentColor(1),
         hintColor: config.Colors().secondColor(1),

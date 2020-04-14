@@ -78,7 +78,6 @@ class _LoginPageState extends State<LoginPage> {
         codeSent: smsCode,
         codeAutoRetrievalTimeout: autoRetrieve);
   }
-  
 
   verifyFailed(PlatformException exception) {
     print("Numver verify failed");
@@ -121,9 +120,10 @@ class _LoginPageState extends State<LoginPage> {
                 this.smsCode = value;
               },
             ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(14))),
             contentPadding: EdgeInsets.all(10.0),
             actions: <Widget>[
-              
               FlatButton(
                 onPressed: () {
                   if (this.smsCode == null || this.smsCode.length == 0) {
@@ -152,23 +152,28 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 child: Text("Done"),
               ),
-              StreamBuilder(
-                stream: _stream(),
-                initialData: 0,
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return FlatButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          pr = loadingBar(context, "Signing In");
-                          verifyPhone();
-                        },
-                        child: Text("Resend"));
-                  } else {
-                    return Text("${snapshot.data.toString()}",
-                          style: TextStyle(fontSize: 18));
-                  }
-                },
+              Container(
+                width: 90,
+                child: Center(
+                  child: StreamBuilder(
+                    stream: _stream(),
+                    initialData: 0,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return FlatButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              pr = loadingBar(context, "Signing In");
+                              verifyPhone();
+                            },
+                            child: Text("Resend"));
+                      } else {
+                        return Text("${snapshot.data.toString()}",
+                            style: TextStyle(fontSize: 18));
+                      }
+                    },
+                  ),
+                ),
               ),
             ],
           );
@@ -178,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
   Stream<int> _stream() {
     Duration interval = Duration(seconds: 1);
     Stream<int> stream = Stream<int>.periodic(interval, transform);
-    stream = stream.take(60);
+    stream = stream.take(62);
     return stream;
   }
 

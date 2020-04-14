@@ -13,6 +13,7 @@ import 'package:ecommerce_app_ui_kit/Pages/photos.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/database.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/customappbar.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/messages.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:highlighter_coachmark/highlighter_coachmark.dart';
@@ -245,7 +246,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                                       );
                                     });
                               }
-                              
                             } else {
                               setState(() {
                                 edit = !edit;
@@ -278,25 +278,31 @@ class _AccountWidgetState extends State<AccountWidget> {
                                 ),
                         )),
                         Expanded(
-                            child: InkWell(
-                                onTap: () {
-                                  Navigator.of(context)
-                                      .pushReplacement(MaterialPageRoute(
-                                          builder: (context) => UserPhotos(
-                                                userId: DatabaseService.uid,
-                                              )));
-                                },
-                                child: Container(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Icon(UiIcons.photo_camera),
-                                      Text("Gallery",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .body1),
-                                    ],
-                                  ),
-                                ))),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => UserPhotos(
+                                        userId: DatabaseService.uid,
+                                      )));
+                              // Navigator.of(context).pushReplacement(
+                              //   MaterialPageRoute(
+                              //     builder: (context) => UserPhotos(
+                              //       userId: DatabaseService.uid,
+                              //     ),
+                              //   ),
+                              // );
+                            },
+                            child: Container(
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(UiIcons.photo_camera),
+                                  Text("Gallery",
+                                      style: Theme.of(context).textTheme.body1),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                         Expanded(
                           child: InkWell(
                             onTap: () {
@@ -304,6 +310,8 @@ class _AccountWidgetState extends State<AccountWidget> {
                                 return null;
                               } else {
                                 print("This is from message $edit");
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => Messagelist()));
                               }
                             },
                             child: Container(
