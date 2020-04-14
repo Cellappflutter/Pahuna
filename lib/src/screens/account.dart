@@ -246,7 +246,6 @@ class _AccountWidgetState extends State<AccountWidget> {
                                       );
                                     });
                               }
-                              
                             } else {
                               setState(() {
                                 edit = !edit;
@@ -281,7 +280,10 @@ class _AccountWidgetState extends State<AccountWidget> {
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserPhotos(userId: DatabaseService.uid,)));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => UserPhotos(
+                                        userId: DatabaseService.uid,
+                                      )));
                               // Navigator.of(context).pushReplacement(
                               //   MaterialPageRoute(
                               //     builder: (context) => UserPhotos(

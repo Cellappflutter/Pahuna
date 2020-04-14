@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/Model/Data.dart';
+import 'package:ecommerce_app_ui_kit/Pages/book.dart';
 import 'package:ecommerce_app_ui_kit/Pages/categories_tabs.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as appColors;
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
@@ -29,90 +30,107 @@ class _FeaturePageState extends State<FeaturePage> {
       body: SafeArea(
         child: Container(
           height: 800,
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
-                backgroundColor: Color(0xFF2C2C2C),
-                forceElevated: true,
-                elevation: 10,
-                centerTitle: true,
-                expandedHeight: ScreenSizeConfig.safeBlockVertical * 40,
-                pinned: true,
-                stretch: true,
-                floating: false,
-                leading: InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Icon(
-                    UiIcons.return_icon,
-                    color: Colors.white,
-                  ),
-                ),
-                flexibleSpace: Stack(
-                  children: <Widget>[
-                    FlexibleSpaceBar(
-                      background: topImage(context),
-                      collapseMode: CollapseMode.parallax,
-                      title: Text(
-                        widget.featureData.title,
-                        style: TextStyle(color: Colors.white),
+          child: Stack(
+            children: <Widget>[
+              CustomScrollView(
+                slivers: <Widget>[
+                  SliverAppBar(
+                    backgroundColor: Color(0xFF2C2C2C),
+                    forceElevated: true,
+                    elevation: 10,
+                    centerTitle: true,
+                    expandedHeight: ScreenSizeConfig.safeBlockVertical * 40,
+                    pinned: true,
+                    stretch: true,
+                    floating: false,
+                    leading: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Icon(
+                        UiIcons.return_icon,
+                        color: Colors.white,
                       ),
                     ),
-                  ],
-                ),
-              ),
-              SliverStickyHeader(
-                header: Container(
-                  //  height: 60.0,
-                  color: Colors.white.withOpacity(0.8),
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      RaisedButton(
-                        color: Color(0xffdd2827),
-                        highlightColor: Colors.yellow,
-                        onPressed: () {
-                          setState(() {
-                            indexWidget = 0;
-                          });
-                        },
-                        child: Text(
-                          "Medias",
-                          style: TextStyle(color: Colors.white),
+                    flexibleSpace: Stack(
+                      children: <Widget>[
+                        FlexibleSpaceBar(
+                          background: topImage(context),
+                          collapseMode: CollapseMode.parallax,
+                          title: Text(
+                            widget.featureData.title,
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
-                      ),
-                      RaisedButton(
-                        color: Color(0xffdd2827),
-                        onPressed: () {
-                          setState(() {
-                            indexWidget = 1;
-                          });
-                        },
-                        child: Text(
-                          "Information",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      RaisedButton(
-                        color: Color(0xffdd2827),
-                        onPressed: () {
-                          setState(() {
-                            indexWidget = 2;
-                          });
-                        },
-                        child: Text(
-                          "Reviews",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                sliver: getSliverWidgets(),
+                  SliverStickyHeader(
+                    header: Container(
+                      //  height: 60.0,
+                      color: Colors.white.withOpacity(0.8),
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          RaisedButton(
+                            color: Color(0xffdd2827),
+                            highlightColor: Colors.yellow,
+                            onPressed: () {
+                              setState(() {
+                                indexWidget = 0;
+                              });
+                            },
+                            child: Text(
+                              "Medias",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          RaisedButton(
+                            color: Color(0xffdd2827),
+                            onPressed: () {
+                              setState(() {
+                                indexWidget = 1;
+                              });
+                            },
+                            child: Text(
+                              "Information",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          RaisedButton(
+                            color: Color(0xffdd2827),
+                            onPressed: () {
+                              setState(() {
+                                indexWidget = 2;
+                              });
+                            },
+                            child: Text(
+                              "Reviews",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    sliver: getSliverWidgets(),
+                  ),
+                ],
               ),
+              Align(
+                  alignment: Alignment.bottomRight,
+                  child: FloatingActionButton.extended(
+                    elevation: 3,
+                    backgroundColor: Colors.blueAccent,
+                    label: Text(
+                      "Book Now",
+                      style: TextStyle(letterSpacing: 3.3),
+                    ),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Book()));
+                    },
+                  )),
             ],
           ),
         ),
