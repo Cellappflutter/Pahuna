@@ -129,16 +129,19 @@ class _FeaturePageState extends State<FeaturePage> {
               ),
               Align(
                   alignment: Alignment.bottomRight,
-                  child: FloatingActionButton.extended(
-                    elevation: 3,
-                    backgroundColor: Colors.blueAccent,
-                    label: Text(
-                      "Book Now",
-                      style: TextStyle(letterSpacing: 3.3),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom:15.0, right: 9.0),
+                    child: FloatingActionButton.extended(
+                      elevation: 3,
+                      backgroundColor: Colors.blueAccent,
+                      label: Text(
+                        "Book Now",
+                        style: TextStyle(letterSpacing: 3.3),
+                      ),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Book()));
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Book()));
-                    },
                   )),
             ],
           ),

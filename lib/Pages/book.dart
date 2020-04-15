@@ -1,6 +1,7 @@
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/country_pickers.dart';
+import 'package:ecommerce_app_ui_kit/Helper/screen_size_config.dart';
 import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/customappbar.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,6 +21,7 @@ class _BookState extends State<Book> {
   // ScreenSizeConfig().init(context);
   @override
   Widget build(BuildContext context) {
+    ScreenSizeConfig().init(context);
     String _formattedate = new DateFormat.yMMMd().format(_currentDate);
     Future<Null> _selectdate(BuildContext context) async {
       final DateTime _seldate = await showDatePicker(
@@ -47,8 +49,11 @@ class _BookState extends State<Book> {
             child: Center(
               child: Container(
                 // margin: EdgeInsets.only(bottom: 40),
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                // height: MediaQuery.of(context).size.height / 1.08,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 29,
+                ),
+                height: ScreenSizeConfig.safeBlockVertical * 120,
+                // height: MediaQuery.of(context).size.height * 1.1,
                 color: Theme.of(context).primaryColor,
                 // decoration: BoxDecoration(
                 //   borderRadius: BorderRadius.circular(18.0),
@@ -62,18 +67,19 @@ class _BookState extends State<Book> {
                           fontSize: 30.0,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 2.5,
-                          height: 2.4),
+                          height: 3.5),
                     ),
                     Divider(
-                      height: 80,
+                      height: 50,
                     ),
                     Container(
-                      margin: EdgeInsets.only(bottom: 100),
-                      padding: EdgeInsets.symmetric(horizontal: 7, vertical: 8),
+                      // margin: EdgeInsets.only(bottom: 0),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 7, vertical: 8),
                       // padding: EdgeInsets.only(bottom:17.0),
                       // height: MediaQuery.of(context).size.height/1.2,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
+                          color: Theme.of(context).primaryColor,
                           borderRadius: BorderRadius.circular(18.0),
                           border: Border.all(width: 2, color: Colors.red),
                           boxShadow: [
@@ -133,8 +139,8 @@ class _BookState extends State<Book> {
                             },
                           ),
                           new TextFormField(
-                            style:
-                                TextStyle(color: Theme.of(context).accentColor),
+                            style: TextStyle(
+                                color: Theme.of(context).accentColor),
                             keyboardType: TextInputType.phone,
                             validator: validateMobile,
                             decoration: new InputDecoration(
@@ -197,7 +203,7 @@ class _BookState extends State<Book> {
                             //   ],
                             // ),
                           ),
-                          Divider(height: 40),
+                          Divider(height: 15),
                           RaisedButton(
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(10.0),
@@ -218,6 +224,7 @@ class _BookState extends State<Book> {
                               ),
                             ),
                           ),
+                          SizedBox(height: 15.0,)
                         ],
                       ),
                     ),
