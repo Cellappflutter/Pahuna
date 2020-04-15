@@ -73,7 +73,31 @@ class _Maps extends State<Gmaps> {
     mapController = controller;
   }
 
+  var points = <LatLng>[
+    LatLng(27.694729, 85.320307),
+    LatLng(27.694834, 85.320477),
+    LatLng(27.694834, 85.320692),
+    LatLng(27.694683, 85.320796),
+    LatLng(27.694512, 85.320781),
+    LatLng(27.694223, 85.320759),
+    LatLng(27.694013, 85.32096),
+    LatLng(27.693842, 85.321249),
+    LatLng(27.693652, 85.321687),
+    LatLng(27.692532, 85.324061),
+    LatLng(27.690209, 85.328587),
+    LatLng(27.690274, 85.328485),
+    LatLng(27.689459, 85.330548),
+    LatLng(27.689012, 85.33244),
+    LatLng(27.688335, 85.335482),
+    LatLng(27.688329, 85.335545),
+    LatLng(27.690474, 85.336002),
+    LatLng(27.690453, 85.336358),
+    LatLng(27.690639, 85.33636),
+  ];
+
   String to = '';
+
+  bool _showroute= false;
 
   List<Marker> _markers = [Marker(), Marker()];
   Location _destination;
@@ -90,7 +114,7 @@ class _Maps extends State<Gmaps> {
     _markers[0] = (Marker(
       point: new LatLng(userData.latitude, userData.longitude),
       builder: (ctx) => new Container(
-        child: Icon(Icons.my_location,color:Colors.blueAccent),
+        child: Icon(Icons.my_location, color: Colors.blueAccent),
       ),
     ));
     // TODO: implement build
@@ -109,14 +133,18 @@ class _Maps extends State<Gmaps> {
                       _markers[1] = (Marker(
                         point: new LatLng(c.latitude, c.longitude),
                         builder: (ctx) => new Container(
-                          child: Icon(Icons.location_on,color: Colors.redAccent,),
+                          child: Icon(
+                            Icons.location_on,
+                            color: Colors.redAccent,
+                          ),
                         ),
                       ));
-                      to = c.latitude.toString() + " ," + c.longitude.toString();
-                _destination = Location(
-                    name: "Destiantion",
-                    latitude: c.latitude,
-                    longitude: c.longitude);
+                      to =
+                          c.latitude.toString() + " ," + c.longitude.toString();
+                      _destination = Location(
+                          name: "Destiantion",
+                          latitude: c.latitude,
+                          longitude: c.longitude);
                     });
                   }),
               layers: [
@@ -132,6 +160,11 @@ class _Maps extends State<Gmaps> {
                 new MarkerLayerOptions(
                   markers: _markers,
                 ),
+                
+                 PolylineLayerOptions(polylines: _showroute==true?[
+                  Polyline(
+                      points: points, strokeWidth: 5.0, color: Colors.amber),
+                ]:[])
               ],
             ),
             Align(
@@ -195,6 +228,24 @@ class _Maps extends State<Gmaps> {
                             language: "German",
                             units: VoiceUnits.metric)
                         : null;
+                  },
+                ),
+              ),
+            ),
+             Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: FlatButton(
+                  splashColor: Colors.blue,
+                  color: Colors.red,
+                  shape:CircleBorder(),
+                  
+                  child: Text("C R"),
+                  onPressed: ()  {
+                    setState(() {
+                      _showroute?_showroute=false:_showroute=true; 
+                    });
                   },
                 ),
               ),
