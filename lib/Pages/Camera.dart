@@ -274,8 +274,11 @@ class _CameraStateState extends State<CameraState>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return 
+    SafeArea(
+     
+      child: 
+      Scaffold(
         appBar: customAppBar(context, "Upload Image"),
         key: _scaffoldKey,
         body: Stack(

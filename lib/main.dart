@@ -336,9 +336,12 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
             title: 'Pahuna',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
+              //primarySwatch: ,
+              secondaryHeaderColor:config.Colors().secondColor(1) ,
+              backgroundColor: config.Colors().secondColor(1),
               fontFamily: 'Poppins',
               primaryColor: config.Colors().whiteColor(1),
-              brightness: Brightness.dark,
+              brightness: Brightness.light,
               accentColor: config.Colors().mainDarkColor(1),
               focusColor: config.Colors().accentColor(1),
               hintColor: config.Colors().secondColor(1),
