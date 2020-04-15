@@ -20,7 +20,7 @@ class FeaturePage extends StatefulWidget {
 }
 
 class _FeaturePageState extends State<FeaturePage> {
-  int indexWidget = 2;
+  int indexWidget = 0;
   Widget currentWidget;
 
   @override
@@ -75,6 +75,9 @@ class _FeaturePageState extends State<FeaturePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0)
+                            ),
                             color: Color(0xffdd2827),
                             highlightColor: Colors.yellow,
                             onPressed: () {
@@ -88,6 +91,9 @@ class _FeaturePageState extends State<FeaturePage> {
                             ),
                           ),
                           RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0)
+                            ),
                             color: Color(0xffdd2827),
                             onPressed: () {
                               setState(() {
@@ -100,6 +106,9 @@ class _FeaturePageState extends State<FeaturePage> {
                             ),
                           ),
                           RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius:BorderRadius.circular(8.0)
+                            ),
                             color: Color(0xffdd2827),
                             onPressed: () {
                               setState(() {

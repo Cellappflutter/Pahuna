@@ -43,13 +43,17 @@ class _BookState extends State<Book> {
         child: Scaffold(
           // appBar: customAppBar(context, 'BookNow'),
           body: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 3),
+            // padding: EdgeInsets.symmetric(horizontal: 3),
             child: Center(
               child: Container(
-                margin: EdgeInsets.only(top: 5),
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                height: MediaQuery.of(context).size.height / 1.08,
+                // margin: EdgeInsets.only(bottom: 40),
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                // height: MediaQuery.of(context).size.height / 1.08,
                 color: Theme.of(context).primaryColor,
+                // decoration: BoxDecoration(
+                //   borderRadius: BorderRadius.circular(18.0),
+                //   border: Border.all(color: Colors.grey, width: 3),
+                // ),
                 child: Column(
                   children: <Widget>[
                     Text(
@@ -63,119 +67,158 @@ class _BookState extends State<Book> {
                     Divider(
                       height: 80,
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                          // border: Border.al,,
-                          labelText: 'Name'),
-                      validator: (name){
-                        if(name.isEmpty){
-                          return "Enter your name";
-                        }
-                        return null; 
-                      },
-                    ),
-                    Divider(height: 20),
-                    TextFormField(
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          labelText: 'Email',
-                          hintText: 'name@example.com'),
-                          validator: (email){
-                            if(email.isEmpty){
-                              return "Enter your email";
-                            }
-                            return null;
-                          },
-                    ),
-                    Divider(height: 20),
-                    TextFormField(
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          labelText: 'Country',
-                          hintText: 'Nepal'),
-                          validator: (country){
-                            if(country.isEmpty){
-                              return "Enter country name";
-                            }
-                            return null;
-                          },
-                    ),
-                    Divider(height: 20),
-                    CountryPickerDropdown(
-                          initialValue: 'np',
-                          itemBuilder: _builderDropdownItem,
-                          onValuePicked: (Country country) {
-                            setState(() {
-                              holder = int.parse(country.phoneCode);
-                            });
-                          },
-                        ),
-                        new TextFormField(
-                          style:
-                              TextStyle(color: Theme.of(context).accentColor),
-                          keyboardType: TextInputType.phone,
-                          validator: validateMobile,
-                          decoration: new InputDecoration(
-                            hintText: 'Phone No.',
-                            hintStyle: Theme.of(context).textTheme.body1.merge(
-                                  TextStyle(
-                                      color: Theme.of(context).accentColor),
-                                ),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Theme.of(context)
-                                        .accentColor
-                                        .withOpacity(0.2))),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).accentColor)),
-                            prefixIcon: Icon(
-                              UiIcons.smartphone,
-                              color: Theme.of(context).accentColor,
+                    Container(
+                      margin: EdgeInsets.only(bottom: 100),
+                      padding: EdgeInsets.symmetric(horizontal: 7, vertical: 8),
+                      // padding: EdgeInsets.only(bottom:17.0),
+                      // height: MediaQuery.of(context).size.height/1.2,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(18.0),
+                          border: Border.all(width: 2, color: Colors.red),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 9.0,
+                                spreadRadius: 8.0,
+                                offset: Offset(4, 7))
+                          ]),
+                      child: Column(
+                        children: <Widget>[
+                          TextFormField(
+                            decoration: InputDecoration(
+                                // border: Border.al,,
+                                labelText: 'Name'),
+                            validator: (name) {
+                              if (name.isEmpty) {
+                                return "Enter your name";
+                              }
+                              return null;
+                            },
+                          ),
+                          Divider(height: 20),
+                          TextFormField(
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                labelText: 'Email',
+                                hintText: 'name@example.com'),
+                            validator: (email) {
+                              if (email.isEmpty) {
+                                return "Enter your email";
+                              }
+                              return null;
+                            },
+                          ),
+                          Divider(height: 20),
+                          TextFormField(
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                labelText: 'Country',
+                                hintText: 'Nepal'),
+                            validator: (country) {
+                              if (country.isEmpty) {
+                                return "Enter country name";
+                              }
+                              return null;
+                            },
+                          ),
+                          Divider(height: 20),
+                          CountryPickerDropdown(
+                            initialValue: 'np',
+                            itemBuilder: _builderDropdownItem,
+                            onValuePicked: (Country country) {
+                              setState(() {
+                                holder = int.parse(country.phoneCode);
+                              });
+                            },
+                          ),
+                          new TextFormField(
+                            style:
+                                TextStyle(color: Theme.of(context).accentColor),
+                            keyboardType: TextInputType.phone,
+                            validator: validateMobile,
+                            decoration: new InputDecoration(
+                              hintText: 'Phone No.',
+                              hintStyle: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .merge(
+                                    TextStyle(
+                                        color: Theme.of(context).accentColor),
+                                  ),
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context)
+                                          .accentColor
+                                          .withOpacity(0.2))),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).accentColor)),
+                              prefixIcon: Icon(
+                                UiIcons.smartphone,
+                                color: Theme.of(context).accentColor,
+                              ),
+                            ),
+                            onChanged: (value) {
+                              this.phoneNo = "+" + holder.toString() + value;
+                              print(phoneNo);
+                            },
+                          ),
+                          Divider(height: 20),
+                          InkWell(
+                            onTap: () {
+                              _selectdate(context);
+                            },
+                            child: ListTile(
+                              leading: Icon(
+                                Icons.calendar_today,
+                                color: Theme.of(context).accentColor,
+                                size: 30.0,
+                              ),
+                              title: Text("$_formattedate",
+                                  style: TextStyle(fontSize: 18.0)),
+                            ),
+                            // child: Row(
+                            //   children: <Widget>[
+                            //     IconButton(
+                            //       icon: Icon(
+                            //         Icons.calendar_today,
+                            //         color: Theme.of(context).accentColor,
+                            //         size: 30.0,
+                            //       ),
+                            //       onPressed: () {
+                            //         _selectdate(context);
+                            //       },
+                            //     ),
+                            //     Text(
+                            //       '$_formattedate',
+                            //       style: TextStyle(fontSize: 18.0),
+                            //     )
+                            //   ],
+                            // ),
+                          ),
+                          Divider(height: 40),
+                          RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0),
+                              // side: BorderSide(color: Colors.red)
+                            ),
+                            onPressed: () {
+                              if (_formKey.currentState.validate()) {
+                                print('Everything is done !!!');
+                              } else {
+                                return print("Somethings not right");
+                              }
+                            },
+                            child: Text(
+                              "Submit",
+                              style: TextStyle(
+                                fontSize: 21.0,
+                                // color: Theme.of(context).buttonColor,
+                              ),
                             ),
                           ),
-                          onChanged: (value) {
-                            this.phoneNo = "+" + holder.toString() + value;
-                            print(phoneNo);
-                          },
-                        ),
-                    Divider(height: 20),
-                    Row(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            Icons.calendar_today,
-                            color: Theme.of(context).accentColor,
-                            size: 30.0,
-                          ),
-                          onPressed: () {
-                            _selectdate(context);
-                          },
-                        ),
-                        Text(
-                          '$_formattedate',
-                          style: TextStyle(fontSize: 18.0),
-                        )
-                      ],
-                    ),
-                    Divider(height: 40),
-                    RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(10.0),
-                        // side: BorderSide(color: Colors.red)
-                      ),
-                      onPressed: (){
-                        if(_formKey.currentState.validate()){
-                          print('Everything is done !!!');
-                        }
-                        return print("Somethings not right");
-                      },
-                      child: Text(
-                        "Submit",
-                        style: TextStyle(
-                          fontSize: 21.0,
-                          // color: Theme.of(context).buttonColor,
-                        ),
+                        ],
                       ),
                     ),
                   ],

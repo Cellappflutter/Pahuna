@@ -47,10 +47,10 @@ class _Detail extends State<Details_Tab> {
                         width: 10,
                       ),
                       Container(
-                          margin: EdgeInsets.all(10),
+                          margin: EdgeInsets.all(19),
                           child: Text(
                             "Description",
-                            style: TextStyle(fontSize: 20, color: Colors.red),
+                            style: TextStyle(fontSize: 23, color: Colors.red),
                           )),
                     ])),
                 Container(
@@ -59,7 +59,7 @@ class _Detail extends State<Details_Tab> {
                   // color: Colors.green,
                   child: Text(
                     sth.body.text,
-                    style: TextStyle(color: Colors.red),
+                    style: TextStyle(color: Colors.red,fontSize: 18.0,letterSpacing: 2),
                   ),
                 )
               ],
@@ -97,9 +97,10 @@ class _Media extends State<Medias_Tab> {
         return Hero(
           tag: "image" + index.toString(),
           child: InkWell(
-              child: 
-              // Image.network(
-                Image(image: CachedNetworkImageProvider(url[index]),
+              child:
+                  // Image.network(
+                  Image(
+                image: CachedNetworkImageProvider(url[index]),
                 fit: BoxFit.fill,
                 loadingBuilder: (context, child, data) {
                   if (data == null) {
@@ -143,9 +144,9 @@ class _Media extends State<Medias_Tab> {
         );
       }, childCount: url.length),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisSpacing: 3,
-        mainAxisSpacing: 3,
-        crossAxisCount: 3,
+        crossAxisSpacing: 19,
+        mainAxisSpacing: 19,
+        crossAxisCount: 2,
         childAspectRatio: 1,
       ),
     );
@@ -211,9 +212,9 @@ class _review extends State<Review_tab> {
     List<Reviewdata> reviewdata = [
       Reviewdata(
           username: 'Pratik',
-          review: 'Not bad',
+          review: 'Not bad, it is very good, i like to move it move it, you like to move it move it, we like to move it, physically fit, physically fit, Not bad, it is very good, i like to move it move it, you like to move it move it, we like to move it, physically fit, physically fit, Not bad, it is very good, i like to move it move it, you like to move it move it, we like to move it, physically fit, physically fit, ',
           date_time: '10:00',
-          rating: '4',
+          rating: '5',
           url_image: 'img/user1.jpg'),
       Reviewdata(
           username: 'Pratik',
