@@ -36,7 +36,7 @@ class App {
 class Colors {
   Color _mainColor = Color.fromRGBO(216, 48, 48, 1);
   Color _mainDarkColor =  Color.fromRGBO(216, 40, 32, 1);
-  Color _secondColor = Color.fromRGBO(216, 40, 32, 1);
+  Color _secondColor = Color.fromRGBO(208, 72, 80, 1);
   Color _secondDarkColor = Color.fromRGBO(216, 40, 32, 1);//Color(0xFFE7F6F8);
   Color _accentColor = Color.fromRGBO(216, 40, 32, 1);//Color(0xFFADC4C8);
   Color _accentDarkColor = Color.fromRGBO(216, 40, 32, 1);//Color(0xFFADC4C8);

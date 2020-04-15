@@ -10,13 +10,15 @@ PreferredSizeWidget customAppBar(BuildContext context, String title,
     {bool callShow, String uid}) {
   return PreferredSize(
       child: Container(
-        decoration: BoxDecoration(color: Colors.white, boxShadow: [
-          BoxShadow(
-              blurRadius: 2,
-              offset: Offset(0, 2),
-              color: Colors.black.withOpacity(0.6),
-              spreadRadius: 2)
-        ]),
+        decoration: BoxDecoration(color: Colors.white,
+        //  boxShadow: [
+        //   BoxShadow(
+        //       blurRadius: 0,
+        //       offset: Offset(0, 2),
+        //       color: Colors.black.withOpacity(0.6),
+        //       spreadRadius: 2)
+        // ]
+        ),
         child: Stack(
           children: <Widget>[
             Align(
