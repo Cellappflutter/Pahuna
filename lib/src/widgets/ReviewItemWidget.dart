@@ -155,12 +155,16 @@ class ReviewItemWidget extends StatelessWidget {
                       );
                     });
               },
-              child: Text(
-                review,
-                style: Theme.of(context).textTheme.body2,
-                overflow: TextOverflow.ellipsis,
-                softWrap: false,
-                maxLines: 3,
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Text(
+                  review,
+                  style: Theme.of(context).textTheme.body2,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  maxLines: 3,
+                ),
               ),
             ),
             // Divider(color: Colors.white,)
