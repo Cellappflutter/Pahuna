@@ -1,14 +1,16 @@
 import 'package:ecommerce_app_ui_kit/Model/currentuser.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/customappbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_boom_menu/flutter_boom_menu.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_mapbox_navigation/flutter_mapbox_navigation.dart';
-import 'package:geodesy/geodesy.dart';
+import 'package:geodesy/geodesy.dart' ;
 
 import 'package:geolocator/geolocator.dart';
 //import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
+import 'package:flutter/src/material/animated_icons.dart';
 
 import 'package:flutter/services.dart';
 
@@ -22,9 +24,11 @@ class Gmaps extends StatefulWidget {
   }
 }
 
-class _Maps extends State<Gmaps> {
-  MapController mapController;
+class _Maps extends State<Gmaps> with TickerProviderStateMixin {
+  MapController mapController = MapController();
+  AnimationController animationController;
   String _platformVersion = 'Unknown';
+  bool scrollVisible = true;
 
   MapboxNavigation _directions;
   bool _arrived = false;
@@ -34,6 +38,9 @@ class _Maps extends State<Gmaps> {
   void initState() {
     super.initState();
     initPlatformState();
+    animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 4));
+    animationController.forward();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -96,11 +103,12 @@ class _Maps extends State<Gmaps> {
   ];
 
   String to = '';
-
-  bool _showroute= false;
+  LatLng routestart= LatLng(27.694729, 85.320307);
+  bool _showroute = false;
 
   List<Marker> _markers = [Marker(), Marker()];
   Location _destination;
+
   @override
   Widget build(BuildContext context) {
     final userData = Provider.of<Position>(context);
@@ -118,6 +126,7 @@ class _Maps extends State<Gmaps> {
       ),
     ));
     // TODO: implement build
+    ;
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -125,8 +134,10 @@ class _Maps extends State<Gmaps> {
             FlutterMap(
               mapController: mapController,
               options: MapOptions(
+                
                   center: LatLng(userData.latitude, userData.longitude),
                   zoom: 18.0,
+                  debug: true,
                   maxZoom: 18.0,
                   onTap: (c) {
                     setState(() {
@@ -160,15 +171,19 @@ class _Maps extends State<Gmaps> {
                 new MarkerLayerOptions(
                   markers: _markers,
                 ),
-                
-                 PolylineLayerOptions(polylines: _showroute==true?[
-                  Polyline(
-                      points: points, strokeWidth: 5.0, color: Colors.amber),
-                ]:[])
+                PolylineLayerOptions(
+                    polylines: _showroute == true
+                        ? [
+                            Polyline(
+                                points: points,
+                                strokeWidth: 5.0,
+                                color: Colors.amber),
+                          ]
+                        : [])
               ],
             ),
             Align(
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.topCenter,
               child: Padding(
                 padding: EdgeInsets.all(5),
                 child: Container(
@@ -190,10 +205,10 @@ class _Maps extends State<Gmaps> {
               ),
             ),
             Align(
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.topCenter,
               child: Padding(
                 padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).size.height * 0.05 + 10,
+                  top: MediaQuery.of(context).size.height * 0.05 + 10,
                 ),
                 child: Container(
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -213,47 +228,103 @@ class _Maps extends State<Gmaps> {
               ),
             ),
             Align(
-              alignment: Alignment.topLeft,
+              alignment: Alignment.bottomLeft,
               child: Padding(
                 padding: EdgeInsets.all(10),
-                child: FloatingActionButton(
-                  child: Text("GO"),
-                  onPressed: () async {
+                child: InkWell(
+                  onTap: () async {
                     _destination != null
                         ? await _directions.startNavigation(
                             origin: _origin,
                             destination: _destination,
                             mode: NavigationMode.drivingWithTraffic,
                             simulateRoute: true,
-                            language: "German",
+                            language: "English",
                             units: VoiceUnits.metric)
                         : null;
                   },
+                  splashColor: Colors.blueAccent,
+                  child: ClipOval(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      width: MediaQuery.of(context).size.height * 0.08,
+                      color: Colors.red,
+                      child: Center(
+                          child: Text(
+                        'GO',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      )),
+                    ),
+                  ),
                 ),
               ),
             ),
-             Align(
-              alignment: Alignment.topRight,
+            Align(
+              alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: EdgeInsets.all(10),
-                child: FlatButton(
-                  splashColor: Colors.blue,
-                  color: Colors.red,
-                  shape:CircleBorder(),
-                  
-                  child: Text("C R"),
-                  onPressed: ()  {
-                    setState(() {
-                      _showroute?_showroute=false:_showroute=true; 
-                    });
-                  },
-                ),
+                child: FlatButton.icon(
+                  label: Text('you'),
+                  icon: Icon(Icons.gps_fixed),
+                  onPressed: (){
+                  mapController.move(LatLng(userData.latitude, userData.longitude),18);
+                },)
               ),
             )
           ],
         ),
+        floatingActionButton: boomMenu(),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    animationController.dispose();
+    
+  }
+
+  BoomMenu boomMenu() {
+    return BoomMenu(
+        animatedIcon: AnimatedIcons.menu_close,
+        animatedIconTheme: IconThemeData(size: 22.0),
+        //child: Icon(Icons.add),
+        onOpen: () => print('OPENING DIAL'),
+        onClose: () => print('DIAL CLOSED'),
+        scrollVisible: scrollVisible,
+        overlayColor: Colors.black,
+        overlayOpacity: 0.7,
+        children: [
+          MenuItem(
+            child: Icon(
+              Icons.accessibility,
+              color: Colors.black,
+            ),
+//          child: Image.asset('assets/logout_icon.png', color: Colors.grey[850]),
+            title: "Custom Routes",
+            titleColor: Colors.grey[850],
+            subtitle: "These are the custom routes we have for you",
+            subTitleColor: Colors.grey[850],
+            backgroundColor: Colors.grey[50],
+            onTap: () => print('THIRD CHILD'),
+          ),
+          MenuItem(
+            child: Icon(Icons.directions_run),
+            title: "Route 1",
+            titleColor: Colors.white,
+            subtitle: "From Maitighar to RBB Baneshwer",
+            subTitleColor: Colors.white,
+            backgroundColor: _showroute? Colors.pinkAccent:Colors.purple,
+            onTap: () {
+              setState(() {
+                _showroute ? _showroute = false : _showroute = true;
+                mapController.move(routestart, 15);
+               // mapController.rotate(30);
+              });
+            },
+          ),
+        ]);
   }
 }
 
@@ -408,6 +479,7 @@ class _Maps extends State<Gmaps> {
 //               child: FloatingActionButton(
 //                 child: Text("GO"),
 //                 onPressed: ()async{
+                  
 //                   _destination !=null?
 //                   await _directions.startNavigation(
 //                     origin: _origin,

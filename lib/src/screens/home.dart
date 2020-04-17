@@ -114,7 +114,7 @@ class _HomeWidgetState extends State<HomeWidget>
               left: appColors.App(context).appHeight(1),
               right: appColors.App(context).appHeight(1)),
           decoration: BoxDecoration(
-            color: Colors.white10,
+            color: Colors.white,
               image:
                   DecorationImage(image: NetworkImage(image), fit: BoxFit.cover),
               borderRadius: BorderRadius.circular(20),

@@ -18,8 +18,8 @@ class RouteGenerator {
     final args = settings.arguments;
 
     switch (settings.name) {
-      case '/':
-        return MaterialPageRoute(builder: (_) => OnBoardingWidget());
+      // case '/':
+      //   return MaterialPageRoute(builder: (_) => OnBoardingWidget());
       case '/SignUp':
         return MaterialPageRoute(builder: (_) => SignUpWidget());
       case '/SignIn':

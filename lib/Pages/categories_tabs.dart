@@ -19,20 +19,21 @@ class Details_Tab extends StatefulWidget {
 class _Detail extends State<Details_Tab> {
   @override
   Widget build(BuildContext context) {
-    return SliverList(
-        delegate: SliverChildListDelegate([_description(widget.details)]));
+    return  Container(
+        height: MediaQuery.of(context).size.height*0.7,
+        child: SingleChildScrollView(
+          child: _description(widget.details),
+        ),
+      
+    );
   }
 
   _description(String detail) {
     var sth = parse(detail);
     return Container(
       margin: EdgeInsets.all(2),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Card(
-            color: Colors.white,
-            child: Column(
+      child: 
+      Column(
               children: <Widget>[
                 Container(
                     child: Row(
@@ -40,7 +41,7 @@ class _Detail extends State<Details_Tab> {
                         children: <Widget>[
                       Icon(
                         UiIcons.file_1,
-                        size: 15,
+                        size: 25,
                         color: Colors.black,
                       ),
                       SizedBox(
@@ -50,7 +51,7 @@ class _Detail extends State<Details_Tab> {
                           margin: EdgeInsets.all(19),
                           child: Text(
                             "Description",
-                            style: TextStyle(fontSize: 23, color: Colors.red),
+                            style: TextStyle(fontSize: 23, color: Colors.red,fontWeight: FontWeight.w800),
                           )),
                     ])),
                 Container(
@@ -59,14 +60,9 @@ class _Detail extends State<Details_Tab> {
                   // color: Colors.green,
                   child: Text(
                     sth.body.text,
-                    style: TextStyle(color: Colors.red,fontSize: 18.0,letterSpacing: 2),
+                    style: TextStyle(color: Colors.red,fontSize: 18.0,letterSpacing: 2,fontWeight: FontWeight.w600),
                   ),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
+                )])
     );
   }
 }
@@ -254,10 +250,14 @@ class _review extends State<Review_tab> {
           url_image: 'img/user1.jpg')
     ];
     // TODO: implement build
-    return SliverList(
-        delegate: SliverChildBuilderDelegate((context, index) {
-      return _listreview(reviewdata[index]);
-    }, childCount: reviewdata.length));
+    return Container(
+      height: MediaQuery.of(context).size.height*0.7,
+          child: ListView.builder(
+        itemCount: reviewdata.length,
+        itemBuilder: (context,item){
+          return _listreview(reviewdata[item]);
+        }),
+    );
   }
 
   _listreview(Reviewdata data) {
