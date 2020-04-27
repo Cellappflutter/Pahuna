@@ -35,29 +35,37 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          UserAccountsDrawerHeader(
-            decoration: BoxDecoration(
-              color: Theme.of(context).hintColor.withOpacity(0.1),
+          InkWell(
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Profile(
+                          editableInfo: widget.info,
+                        ))),
+            child: UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).hintColor.withOpacity(0.1),
+              ),
+              accountName: Text(
+                widget.info.name ?? "Name",
+                style: Theme.of(context).textTheme.title,
+              ),
+              accountEmail: Text(
+                widget.info.email ?? "EmailID",
+                style: Theme.of(context).textTheme.caption,
+              ),
+              currentAccountPicture:
+                  (widget.info.avatar != null && widget.info.avatar != "")
+                      ? CircleAvatar(
+                          backgroundColor: Colors.blue,
+                          backgroundImage:
+                              CachedNetworkImageProvider(widget.info.avatar),
+                          // NetworkImage(widget.info.avatar),
+                        )
+                      : CircleAvatar(
+                          backgroundColor: Colors.blue,
+                        ),
             ),
-            accountName: Text(
-              widget.info.name ?? "Name",
-              style: Theme.of(context).textTheme.title,
-            ),
-            accountEmail: Text(
-              widget.info.email ?? "EmailID",
-              style: Theme.of(context).textTheme.caption,
-            ),
-            currentAccountPicture:
-                (widget.info.avatar != null && widget.info.avatar != "")
-                    ? CircleAvatar(
-                        backgroundColor: Colors.blue,
-                        backgroundImage:
-                            CachedNetworkImageProvider(widget.info.avatar),
-                        // NetworkImage(widget.info.avatar),
-                      )
-                    : CircleAvatar(
-                        backgroundColor: Colors.blue,
-                      ),
           ),
           ListTile(
             onTap: () {
@@ -137,10 +145,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               style: Theme.of(context).textTheme.subhead,
             ),
           ),
-           ListTile(
-            onTap: (){
+          ListTile(
+            onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Gmaps()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Gmaps()));
             },
             title: Text(
               'Maps',

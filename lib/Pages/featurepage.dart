@@ -36,9 +36,9 @@ class _FeaturePageState extends State<FeaturePage> {
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                gradient: RadialGradient(
-                    colors: [Colors.redAccent, Colors.blueAccent])),
+            // decoration: BoxDecoration(
+            //     gradient: RadialGradient(
+            //         colors: [Colors.redAccent, Colors.blueAccent])),
             child: Stack(
               children: <Widget>[
                 ImagesSlider(image: widget.featureData.image,),

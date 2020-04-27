@@ -31,11 +31,11 @@ class SearchBarWidget extends StatelessWidget {
               focusedBorder: UnderlineInputBorder(borderSide: BorderSide.none),
             ),
           ),
-          IconButton(
-            onPressed: () {
-            },
-            icon: Icon(UiIcons.settings_2, size: 20, color: Theme.of(context).hintColor.withOpacity(0.5)),
-          ),
+          // IconButton(
+          //   onPressed: () {
+          //   },
+          //   icon: Icon(UiIcons.settings_2, size: 20, color: Theme.of(context).hintColor.withOpacity(0.5)),
+          // ),
         ],
       ),
     );
