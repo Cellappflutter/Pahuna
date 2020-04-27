@@ -15,12 +15,15 @@ import 'package:ecommerce_app_ui_kit/Pages/Camera.dart';
 import 'package:ecommerce_app_ui_kit/Pages/callReceive.dart';
 import 'package:ecommerce_app_ui_kit/Pages/t.dart';
 import 'package:ecommerce_app_ui_kit/Pages/usershowpage.dart';
+import 'package:ecommerce_app_ui_kit/config/ui_icons.dart';
 import 'package:ecommerce_app_ui_kit/database/Word.dart';
 import 'package:ecommerce_app_ui_kit/database/storage.dart';
+import 'package:ecommerce_app_ui_kit/route_generator.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/account.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app_ui_kit/Pages/login.dart';
 import 'package:ecommerce_app_ui_kit/config/app_config.dart' as config;
@@ -237,21 +240,56 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
   bool prevData = false;
   FirebaseMessaging _fcm = FirebaseMessaging();
   DatabaseService databaseService = DatabaseService();
+  BuildContext _context;
+  GlobalKey<NavigatorState> navigatorkey = new GlobalKey<NavigatorState>();
 
   @override
   void initState() {
     super.initState();
     databaseService.status();
     _fcm.configure(onMessage: (Map<String, dynamic> message) async {
-      print('onMessage : $message');
+      print("message");
+      String path = message['data']['status'];
+      showModalBottomSheet(
+          context: context,
+          elevation: 5,
+          builder: (BuildContext cot) {
+            return ListTile(
+              leading: Icon(UiIcons.user),
+              title: Text(message["notification"]['title']),
+              trailing: FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    navigatorkey.currentState.pushNamed(path);
+                  
+                  },
+                  child: Text(
+                    'GO',
+                    style: TextStyle(color: Colors.greenAccent),
+                  )),
+            );
+          });
+      
       final snackbar = SnackBar(
         content: Text(message['notification']['title']),
       );
       Scaffold.of(context).showSnackBar(snackbar);
     }, onLaunch: (Map<String, dynamic> message) async {
-      print('onLaunch : $message');
+      // print('onLaunch : $message');
+      String path = message['data']['status'];
+      print('asdfasdfasdfasdfasdfa');
+      print(path);
+      navigatorkey.currentState.pushNamed(path);
+      // // Navigator.pushNamed(context, path);
+      // // Navigator.push(context, MaterialPageRoute(builder: (_context)=>path));
     }, onResume: (Map<String, dynamic> message) async {
       print('onResume : $message');
+      print('onLaunch : $message');
+      String path = message['data']['status'];
+      print(path.toString());
+      navigatorkey.currentState.pushNamed(path);
+      //Navigator.pushNamed(context, path);
+      // Navigator.push(context, MaterialPageRoute(builder: (context)=>path));
     });
     _fcm.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, alert: true, badge: true));
@@ -265,25 +303,11 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
     });
 
     ProgressDialog p2 = loadingBar(context, "Searching Connection");
-    DatabaseService().getUnseenReq().listen((onData) {
-      if (onData != null) {
-        if (onData.length > 0) {
-          WidgetsBinding.instance.addPostFrameCallback((_) async {
-            showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) {
-                  return newConnectionRequest(requestedUser: onData);
-                });
-          });
-        }
-      }
-    });
+
     Connectivity().onConnectivityChanged.listen((onData) {
       if (onData == ConnectivityResult.none) {
         isConnected = false;
         WidgetsBinding.instance.addPostFrameCallback((_) => p2.show());
-        
       } else {
         if (p2.isShowing()) {
           p2.dismiss();
@@ -335,9 +359,11 @@ class _MainPageWrapperState extends State<MainPageWrapper> {
           return MaterialApp(
             title: 'Pahuna',
             debugShowCheckedModeBanner: false,
+            navigatorKey: navigatorkey,
+            onGenerateRoute: RouteGenerator.generateRoute,
             theme: ThemeData(
               //primarySwatch: ,
-              secondaryHeaderColor:config.Colors().secondColor(1) ,
+              secondaryHeaderColor: config.Colors().secondColor(1),
               backgroundColor: config.Colors().secondColor(1),
               fontFamily: 'Poppins',
               primaryColor: config.Colors().whiteColor(1),

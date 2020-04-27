@@ -5,6 +5,7 @@ import 'package:ecommerce_app_ui_kit/src/screens/checkout.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/checkout_done.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/help.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/languages.dart';
+import 'package:ecommerce_app_ui_kit/src/screens/messages.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/on_boarding.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/product.dart';
 import 'package:ecommerce_app_ui_kit/src/screens/signin.dart';
@@ -48,8 +49,8 @@ class RouteGenerator {
 //            ));
       case '/Cart':
         return MaterialPageRoute(builder: (_) => CartWidget());
-      case '/Checkout':
-        return MaterialPageRoute(builder: (_) => CheckoutWidget());
+      case '/Chat':
+        return MaterialPageRoute(builder: (_) => Messagelist());
       case '/CheckoutDone':
         return MaterialPageRoute(builder: (_) => CheckoutDoneWidget());
       case '/Help':
